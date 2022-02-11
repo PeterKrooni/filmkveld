@@ -1,13 +1,25 @@
-import express from 'express'
-import cors from 'cors'
-import users from './api/users.route.js'
-
+const express = require('express')
+const cors = require('cors')
+const colors = require('colors')
+const connectDB = require('./config/db')
+const dotenv = require('dotenv')
+const {errorHandler} = require('./middleware/errorMiddleware')
+const users = require('./api/users.route.js')
 const app = express();
+
+dotenv.config()
+const port = process.env.PORT || 8000
+
+connectDB()
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }))
+app.use(errorHandler)
 
-app.use("/api/v1/", users);
-app.use("*", (req, res) => res.status(404).json({error: "Not found"}));
+app.use("/api/v1/user", users);
 
-export default app;
+
+app.listen(port, () => console.log(`Server listening on port ${port}`))
+
+module.exports.app;

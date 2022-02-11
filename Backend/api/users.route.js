@@ -1,8 +1,21 @@
-import express from 'express'
-import UsersCtrl from './users.controller.js'
+const express = require('express')
+const {
+    apiAddUser, 
+    apiUpdateUser, 
+    apiGetUser, apiGetUsers,
+    apiDeleteUser 
+} = require('./users.controller')
 
 const router = express.Router()
 
-router.route("/").get(UsersCtrl.apiGetUsers)
+router.route("/")
+    .get(apiGetUsers)
+    .post(apiAddUser)
 
-export default router
+router.route("/:id")
+    .get(apiGetUser)
+    .put(apiUpdateUser)
+    .delete(apiDeleteUser)
+
+
+module.exports = router;

@@ -1,3 +1,4 @@
+/**
 let users
 
 export default class UsersdDAO{
@@ -6,7 +7,7 @@ export default class UsersdDAO{
             return
         }
         try {
-            users = await conn.db (process.env.FILMKVELD_NS).collection("users") // insert collection here
+            users = await conn.db (process.env.FILMKVELD_NS).collection("users") 
         } catch (e){
             console.error(`Unable to establish a collection handle in usersDAO: ${e}`)
         }
@@ -41,7 +42,7 @@ export default class UsersdDAO{
             try {
                 const usersList = await displayCursor.toArray()
                 const totalNumUsers = await users.countDocuments(query)
-            return { usersList, totalNumUsers }
+                return { usersList, totalNumUsers }
             } catch (e) {
                 console.log("hellao")
                 console.error(
@@ -51,7 +52,10 @@ export default class UsersdDAO{
         }
     }
 
-    /*
+    static async addUser(user){
+        return
+    }
+
     static async getUsers({
         filters = null,
     } = {}) {
@@ -71,5 +75,5 @@ export default class UsersdDAO{
         }
         
     } 
-    }) */
-}
+    })
+} */
