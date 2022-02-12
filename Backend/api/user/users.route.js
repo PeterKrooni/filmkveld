@@ -1,19 +1,25 @@
 const express = require('express')
 const {
-    apiAddUser, 
+    apiRegisterUser, 
     apiUpdateUser, 
-    apiGetUser, apiGetUsers,
-    apiDeleteUser 
+    apiGetMe, apiGetUsers,
+    apiDeleteUser, apiAuthUser
 } = require('./users.controller')
 
 const router = express.Router()
+const protect = require('../../middleware/authMiddleware')
 
 router.route("/")
     .get(apiGetUsers)
-    .post(apiAddUser)
+    .post(apiRegisterUser)
+
+router.route("/login")
+    .post(apiAuthUser)
+
+router.route("/me")
+    .get(protect, apiGetMe) // protect is middleware the requires a JWT auth token
 
 router.route("/:id")
-    .get(apiGetUser)
     .put(apiUpdateUser)
     .delete(apiDeleteUser)
 

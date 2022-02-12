@@ -10,7 +10,8 @@ const userSchema = mongoose.Schema({
         required: [true, 'Password required']
     },
     email: {
-        type: String
+        type: String,
+        required: [true, 'Email required']
     }
 }, {
     timestamps: true
