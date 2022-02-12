@@ -10,14 +10,16 @@ const {
 
 const router = express.Router()
 
+const protect = require('../../middleware/authMiddleware')
+
 router.route("/")
     .get(apiGetMovies)
-    .post(apiAddMovieSuggestion)
+    .post(protect, apiAddMovieSuggestion)
 
 router.route("/:id")
     .get(apiGetMovieWithID)
-    .put(apiUpdateMovie)
-    .delete(apiDeleteMovie)
+    .put(protect, apiUpdateMovie)
+    .delete(protect, apiDeleteMovie)
 
 router.route("/:title")
     .get(apiGetMovieWithTitle)
