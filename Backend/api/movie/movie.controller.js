@@ -61,7 +61,7 @@ const apiUpdateMovie = asyncHandler(async(req, res, next)=>{
         res.status(400)
         throw new Error (`Movie with id ${req.params.id} was not found.`)
     }
-    const newMovie = await Movie.findById(req.params.id, req.body, {new: true}) /*<-- creates new movie if not found*/
+    const newMovie = await Movie.findByIdAndUpdate(req.params.id, req.body, {new: true}) /*<-- creates new movie if not found*/
     res.status(200).json(newMovie)
 })
 
