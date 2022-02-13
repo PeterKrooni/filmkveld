@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../model/user')
 const asyncHandler = require('express-async-handler')
 
+// verifies header token, adds user to header
 const protect = asyncHandler (async (req, res, next) => {
     let token
 
