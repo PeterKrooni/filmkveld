@@ -4,37 +4,50 @@
             <div id="form">
                 <input v-model="email" type="text" name="email" class='default-input' placeholder="Email">
                 <input v-model="pass" type="password" name="password" class='default-input' placeholder="Password" id="pass">
-                <input type="submit" @click="login()" id="login-button" value="Log in">
+                <input type="submit" @click="login()" class="default-button" value="Log in">
+                
+                <div v-if="loggedIn" style="margin-top: 50px;">Logged in
+                    <button @click="logOut()" class="default-button">Log out</button>
+                 </div>    
+                 <button @click="sendRequest()" class="default-button">Send test request</button>
+               
             </div>
         </div>
-        <div v-if="loggedIn">Logged in</div>
     </div>
+    <!--<Teleport />-->
 </template>
 
 <script>
+import { apiLogin }  from '../api/login.js'
+import { logout } from '../helpers/logout.js'
 import axios from 'axios'
-import { set } from '../helpers/auth'
-
 export default{
     name: 'Login',
     data() {
         return {
-            email: "",
-            pass: "",
+            email: "tob@email.com",
+            pass: "tob",
             loggedIn: false,
         }
-    },
+    }, 
     methods:{
         login: async function(){
-            // login here
-            console.log("here")
-            const result = {email: this.email, password: this.pass}
-            console.log("here1")
-            axios.post("http://localhost:5000/api/v1/user/login", result)
-                .then((res)=>{set(res.data.token); console.log("here2")})
-                .catch((err)=>{console.error(`Could not login: ${err}`); console.log("here3")})
+            //Uncaught (in promise) TypeError: Object(...) is not a functions
+            //const success = await apiLogin(this.email, this.pass)
+            this.loggedIn = await apiLogin(this.email, this.pass)
+        },
+        logOut: async function(){
+            await logout();
+            this.loggedIn = false;
+        },
+        sendRequest: async function(){
+            axios.get('http://localhost:5000/api/v1/user/me')
+                .then((response)=>{console.log(response)})
         }
     },
+    mounted(){
+        
+    }
 }
 </script>
 
@@ -67,7 +80,7 @@ export default{
     flex-flow: column;
 }
 
-#login-button{
+.default-button{
     margin-top: 25px;
     font-size: 16px;
     border-radius: 0.4em;

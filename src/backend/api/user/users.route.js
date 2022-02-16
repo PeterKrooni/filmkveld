@@ -10,7 +10,7 @@ const router = express.Router()
 const protect = require('../../middleware/authMiddleware')
 
 router.route("/")
-    .get(apiGetUsers)
+    .get(protect, apiGetUsers)
     .post(apiRegisterUser)
 
 router.route("/login")

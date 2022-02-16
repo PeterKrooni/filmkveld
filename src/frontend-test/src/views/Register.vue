@@ -1,38 +1,34 @@
 <template>
-    <div id="login">
+    <div id="register">
         <div id="form-container">
             <div id="form">
-                <input v-model="email" type="text" name="email" class='default-input' placeholder="Email">
+                <input v-model="user" type="text" name="username" class='default-input' placeholder="Username" id="user">
+                <input v-model="email" type="text" name="email" class='default-input' placeholder="Email" id="email">
                 <input v-model="pass" type="password" name="password" class='default-input' placeholder="Password" id="pass">
                 <input type="submit" @click="login()" id="login-button" value="Log in">
             </div>
         </div>
-        <div v-if="loggedIn">Logged in</div>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
-import { set } from '../helpers/auth'
-
 export default{
-    name: 'Login',
+    name: 'Register',
     data() {
-        return {
+        return{
+            user: "",
             email: "",
-            pass: "",
-            loggedIn: false,
+            pass: ""
         }
     },
     methods:{
         login: async function(){
             // login here
-            console.log("here")
-            const result = {email: this.email, password: this.pass}
-            console.log("here1")
-            axios.post("http://localhost:5000/api/v1/user/login", result)
-                .then((res)=>{set(res.data.token); console.log("here2")})
-                .catch((err)=>{console.error(`Could not login: ${err}`); console.log("here3")})
+            console.log(this.user + " " + this.pass)
+            const result = {email: this.email, name: this.user, password: this.pass}
+            axios.post("http://localhost:5000/api/v1/user/", result)
+                .then(res=>console.log(res))
         }
     },
 }
