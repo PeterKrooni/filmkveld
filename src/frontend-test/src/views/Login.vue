@@ -10,7 +10,14 @@
                     <button @click="logOut()" class="default-button">Log out</button>
                  </div>    
                  <button @click="sendRequest()" class="default-button">Send test request</button>
-               
+
+                <Alert 
+                    :show="showMessage" @close="showMessage = false"
+                    :header="'Message'"
+                    :body="`Logged in as ${this.email}`"
+                    :footer="'Success'"
+                    :confirmation="'Ok'">
+                </Alert>
             </div>
         </div>
     </div>
@@ -21,20 +28,26 @@
 import { apiLogin }  from '../api/login.js'
 import { logout } from '../helpers/logout.js'
 import axios from 'axios'
+import Alert from '../components/modals/Alert.vue'
 export default{
-    name: 'Login',
+    name: 'Login',  
+    components: {
+        Alert
+    },  
     data() {
         return {
             email: "tob@email.com",
             pass: "tob",
             loggedIn: false,
+            showMessage: false,
         }
     }, 
     methods:{
         login: async function(){
-            //Uncaught (in promise) TypeError: Object(...) is not a functions
-            //const success = await apiLogin(this.email, this.pass)
             this.loggedIn = await apiLogin(this.email, this.pass)
+            if (this.loggedIn){
+                this.showMessage = true; 
+            }
         },
         logOut: async function(){
             await logout();
