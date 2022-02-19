@@ -9,12 +9,26 @@ const apiGetSuggestions = asyncHandler(async(req, res, next) => {
     return res.status(200).json(test)
 })
 
-// @desc    Get all suggestions
+// @desc    Get suggestion
 // @route   GET /api/v1/suggestion/:id
 // @access  Public
 const apiGetSuggestion = asyncHandler(async(req, res, next) => {
     const suggestion = await Suggestion.findOne(req.body.suggested_by)
     return res.status(200).json(suggestion)
+})
+
+// @desc    Delete suggestion
+// @route   DELETE /api/v1/suggestion/:id
+// @access  Private
+const apiDeleteSuggestion = asyncHandler(async(req, res, next) => {
+    const suggestion = await Suggestion.findById(req.params.id)
+
+    if(!suggestion){
+        res.status(400)
+        throw new Error (`Suggestion with id ${req.params.id} was not found.`)
+    }
+    await suggestion.remove()
+    res.status(200).json({id: req.params.id})
 })
 
 // @desc    Add movie suggestion
@@ -31,4 +45,5 @@ module.exports = {
     apiGetSuggestions,
     apiAddSuggestion,
     apiGetSuggestion,
+    apiDeleteSuggestion,
 }

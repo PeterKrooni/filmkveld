@@ -1,7 +1,7 @@
 const express = require('express')
 
 const {
-    apiGetSuggestions, apiAddSuggestion, apiGetSuggestion
+    apiGetSuggestions, apiAddSuggestion, apiGetSuggestion, apiDeleteSuggestion
 } = require('./suggestion.controller')
 
 const router = express.Router()
@@ -12,4 +12,5 @@ router.route("/")
     .post(protect, apiAddSuggestion)
 
 router.route("/:id")
-    .post(apiGetSuggestion)
+    .get(apiGetSuggestion)
+    .delete(protect, apiDeleteSuggestion)
