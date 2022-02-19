@@ -5,14 +5,14 @@
                 <input v-model="user" type="text" name="username" class='default-input' placeholder="Username" id="user">
                 <input v-model="email" type="text" name="email" class='default-input' placeholder="Email" id="email">
                 <input v-model="pass" type="password" name="password" class='default-input' placeholder="Password" id="pass">
-                <input type="submit" @click="login()" id="login-button" value="Log in">
+                <input type="submit" @click="register()" id="login-button" value="Register">
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios'
+import { apiRegister } from '../api/register'
 export default{
     name: 'Register',
     data() {
@@ -23,12 +23,11 @@ export default{
         }
     },
     methods:{
-        login: async function(){
-            // login here
-            console.log(this.user + " " + this.pass)
-            const result = {email: this.email, name: this.user, password: this.pass}
-            axios.post("http://localhost:5000/api/v1/user/", result)
-                .then(res=>console.log(res))
+        register: async function(){
+            const success = apiRegister(this.user, this.email, this.pass)
+            if (success){
+                this.$router.push({name: "Home", params:{loggedin: success}})
+            }
         }
     },
 }
