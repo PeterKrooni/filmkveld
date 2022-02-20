@@ -77,11 +77,11 @@ const apiUpdateVote = asyncHandler(async(req, res, next) => {
 })
 
 // @desc    Remove vote on suggestion 
-// @route   DELETE /api/v1/vote/
+// @route   DELETE /api/v1/vote/:suggestions
 // @access  Private
 const apiRemoveVote = asyncHandler(async(req, res, next) => {
     const userID = req.user.id
-    const suggestionID = req.body.suggestion
+    const suggestionID = req.params.suggestion
     const vote = Vote.findOne({voted_by: userID, suggestion: suggestionID})
 
     if (!vote){
