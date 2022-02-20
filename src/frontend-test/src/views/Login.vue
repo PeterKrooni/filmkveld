@@ -118,6 +118,9 @@ export default{
             this.loggedIn = await apiLogin(this.email, this.pass)
             if (this.loggedIn){
                 this.showMessage = true; 
+                this.getMovies()
+                this.getSuggestions()
+                this.getMyVotes()
             }
         },
         logOut: async function(){

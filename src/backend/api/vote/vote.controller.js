@@ -6,7 +6,7 @@ const Suggestion = require('../../model/suggestion')
 // @route   POST /api/v1/vote/:suggestionid
 // @access  Private
 const apiVoteSuggestion = asyncHandler(async(req, res, next) => {
-    const suggestion = await Suggestion.findOne({suggestion: req.params.suggestion}) 
+    const suggestion = await Suggestion.findById(req.params.suggestion)
     const want_to_see_rating = req.body.want_to_see_rating
     const seen_rating = req.body.seen_rating
 
