@@ -20,3 +20,5 @@ const voteSchema = mongoose.Schema({
         type: Number,
     }
 })
+
+module.exports = mongoose.model("Vote", voteSchema)

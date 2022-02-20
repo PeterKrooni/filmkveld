@@ -12,3 +12,5 @@ const suggestionSchema = mongoose.Schema({
         ref: 'Movie',
     },
 })
+
+module.exports = mongoose.model("Suggestion", suggestionSchema)
