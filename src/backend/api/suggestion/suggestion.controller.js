@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const Suggestion = require('../../model/suggestion')
+const Movie = require('../../model/movie')
 
 // @desc    Get all suggestions
 // @route   GET /api/v1/suggestion/
@@ -9,7 +10,7 @@ const apiGetSuggestions = asyncHandler(async(req, res, next) => {
     return res.status(200).json(suggestions)
 })
 
-// @desc    Get suggestion
+// @desc    Get suggestion by user
 // @route   GET /api/v1/suggestion/:id
 // @access  Public
 const apiGetSuggestion = asyncHandler(async(req, res, next) => {
@@ -35,11 +36,18 @@ const apiDeleteSuggestion = asyncHandler(async(req, res, next) => {
 // @route   POST /api/v1/suggestion/
 // @access  Private
 const apiAddSuggestion = asyncHandler(async(req, res, next) => { 
-    const exists = await Suggestion.findOne({movie_id: req.body.movieid})
-    if (exists){
+    const suggestionExists = await Suggestion.findOne({movie_id: req.body.movieid})
+    if (suggestionExists){
         res.status(409)
         throw new Error("Movie has already been suggested")
     }
+
+    const movieExists = await Movie.findById(req.body.movieid)
+    if (!movieExists){
+        res.status(400)
+        throw new Error(`Tried to suggest movie, but no movie with id ${req.body.movieid} was found.`)
+    } 
+
     const suggestion = await Suggestion.create({ 
         suggested_by: req.user.id, 
         movie_id: req.body.movieid })
