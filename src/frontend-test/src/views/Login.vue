@@ -58,8 +58,8 @@
                 <input v-model="vote_suggID" type="text" placeholder="suggestionID" style="margin-top: 25px;">
                 <input v-model="vote_amnt" type="text" placeholder="Want to see 1-10">
                 <button @click="addVote()" >Add</button>    
-                <button @click="updateVote()" >Update TODO</button>    
-                <button @click="remove()" >Remove TODO</button>    
+                <button @click="updateVote()" >Update</button>    
+                <button @click="removeVote()" >Remove</button>    
            </div>
         </div>
         <div v-if="loggedIn" id="movie-container" class="main-containers">
@@ -87,7 +87,9 @@ import { apiGetAllSuggestions,
          apiAddSuggestion,
          apiRemoveSuggestion }  from '../api/suggestion.js'
 import { apiGetVotesByLoggedIn,
-         apiAddVote } from '../api/vote.js'
+         apiAddVote,
+         apiRemoveVote,
+         apiUpdateVote } from '../api/vote.js'
 import { logout } from '../helpers/logout.js'
 import axios from 'axios'
 import Alert from '../components/modals/Alert.vue'
@@ -157,6 +159,14 @@ export default{
         },
         addVote: async function(){
             await apiAddVote(this.vote_suggID, this.vote_amnt)
+                .then(()=>{this.getMyVotes()})
+        },
+        updateVote: async function(){
+            await apiUpdateVote(this.vote_suggID, this.vote_amnt)
+                .then(()=>{this.getMyVotes()})
+        },
+        removeVote: async function(){
+            await apiRemoveVote(this.vote_suggID)
                 .then(()=>{this.getMyVotes()})
         }
     },
