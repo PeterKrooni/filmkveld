@@ -28,6 +28,10 @@ const apiDeleteSuggestion = asyncHandler(async(req, res, next) => {
         res.status(400)
         throw new Error (`Suggestion with id ${req.params.id} was not found.`)
     }
+    if(suggestion.suggested_by != req.user.id){
+        res.status(400)
+        throw new Error (`${req.user.id} tried to delete a suggestion but suggestion suggested by was ${suggestion.suggested_by}`)
+    }
     await suggestion.remove()
     res.status(200).json({id: req.params.id})
 })

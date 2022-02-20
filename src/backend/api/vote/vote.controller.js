@@ -15,10 +15,10 @@ const apiVoteSuggestion = asyncHandler(async(req, res, next) => {
         throw new Error (`Suggestion with ID ${req.params.suggestion} was not found.`)
     }
     
-    const exists = Vote.findOne({suggestion: req.params.suggestion, voted_by: req.user.id})
+    const exists = await Vote.findOne({suggestion: req.params.suggestion, voted_by: req.user.id})
     if (exists){
         res.status(400)
-        throw new Error (`User with ID ${req.user.id} already has a vote for this suggestion. Try updating instead.`)
+        throw new Error (`User with ID ${req.user.id} already has a vote for suggestion ${req.params.suggestion}. Try updating instead.`)
     }
 
     if (want_to_see_rating && !seen_rating){
