@@ -11,6 +11,8 @@ const suggestionSchema = mongoose.Schema({
         required: [true, 'Movie ID required to add suggestion'],
         ref: 'Movie',
     },
+}, {
+    timestamps: true
 })
 
 module.exports = mongoose.model("Suggestion", suggestionSchema)

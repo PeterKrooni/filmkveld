@@ -2,23 +2,25 @@ const mongoose = require('mongoose')
 
 const voteSchema = mongoose.Schema({
     voted_by: {
-        type: mongoose.Schema.type.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         required: [true, 'User ID required to vote'],
         ref: 'User',
     },
-    movie_id: {
-        type: mongoose.Schema.type.ObjectId,
-        required: [true, 'Movie ID required to vote'],
+    suggestion: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: [true, 'Suggestion ID required to vote'],
         ref: 'Suggestion',
     },
     want_to_see_rating: {
-        default: true,
+        default: 0,
         type: Number,
     },
     seen_rating: {
-        default: false,
+        default: 0,
         type: Number,
     }
+}, {
+    timestamps: true
 })
 
 module.exports = mongoose.model("Vote", voteSchema)

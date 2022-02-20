@@ -1,12 +1,21 @@
 const express = require('express')
 
 const {
-    // apiAddVote etc.
+    apiVoteSuggestion,
+    apiRemoveVote,
+    apiGetVote,
+    apiUpdateVote
 } = require ('./vote.controller')
 
 const router = express.Router()
 const protect = require('../../middleware/authMiddleware')
 
 router.route("/")
+    .delete(protect, apiRemoveVote)
+
+router.route("/:suggestion")
+    .get(protect, apiGetVote)
+    .post(protect, apiVoteSuggestion)
+    .put(protect, apiUpdateVote)
 
 module.exports = router;

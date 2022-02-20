@@ -5,8 +5,8 @@ const Suggestion = require('../../model/suggestion')
 // @route   GET /api/v1/suggestion/
 // @access  Public
 const apiGetSuggestions = asyncHandler(async(req, res, next) => {
-    const test = await Suggestion.find()
-    return res.status(200).json(test)
+    const suggestions = await Suggestion.find()
+    return res.status(200).json(suggestions)
 })
 
 // @desc    Get suggestion
@@ -35,9 +35,14 @@ const apiDeleteSuggestion = asyncHandler(async(req, res, next) => {
 // @route   POST /api/v1/suggestion/
 // @access  Private
 const apiAddSuggestion = asyncHandler(async(req, res, next) => { 
+    const exists = await Suggestion.findOne({movie_id: req.body.movieid})
+    if (exists){
+        res.status(409)
+        throw new Error("Movie has already been suggested")
+    }
     const suggestion = await Suggestion.create({ 
         suggested_by: req.user.id, 
-        movieid: req.body.movieid })
+        movie_id: req.body.movieid })
     return res.status(200).json(suggestion)
 })
 

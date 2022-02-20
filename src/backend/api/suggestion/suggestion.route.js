@@ -9,10 +9,10 @@ const protect = require('../../middleware/authMiddleware')
 
 router.route("/")
     .get(apiGetSuggestions)
+    .post(protect, apiAddSuggestion)
 
 router.route("/:id")
     .get(apiGetSuggestion)
-    .post(protect, apiAddSuggestion)
     .delete(protect, apiDeleteSuggestion)
 
 module.exports = router;
