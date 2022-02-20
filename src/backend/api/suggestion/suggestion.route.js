@@ -14,3 +14,5 @@ router.route("/:id")
     .get(apiGetSuggestion)
     .post(protect, apiAddSuggestion)
     .delete(protect, apiDeleteSuggestion)
+
+module.exports = router;
