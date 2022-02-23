@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const Suggestion = require('../../model/suggestion')
+const Vote = require('../../model/vote')
 const Movie = require('../../model/movie')
 
 // @desc    Get all suggestions
@@ -18,7 +19,7 @@ const apiGetSuggestion = asyncHandler(async(req, res, next) => {
     return res.status(200).json(suggestion)
 })
 
-// @desc    Delete suggestion
+// @desc    Delete suggestion, and all corresponding votes on suggestion
 // @route   DELETE /api/v1/suggestion/:id
 // @access  Private
 const apiDeleteSuggestion = asyncHandler(async(req, res, next) => {
@@ -33,6 +34,8 @@ const apiDeleteSuggestion = asyncHandler(async(req, res, next) => {
         throw new Error (`${req.user.id} tried to delete a suggestion but suggestion suggested by was ${suggestion.suggested_by}`)
     }
     await suggestion.remove()
+    await Vote.deleteMany({suggestion: req.params.id}) // delete votes on suggestion
+
     res.status(200).json({id: req.params.id})
 })
 
