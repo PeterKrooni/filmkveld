@@ -1,14 +1,11 @@
 const mongoose = require('mongoose')
 
 const movieSchema = mongoose.Schema({
-    source: {
-        type: String,
-        default: "manually added",
-    },
     title: {
         type: String,
         required: [true, "Movie title required"]
     },
+    source: String,
     runtime: String,
     rating: Number,
 })
