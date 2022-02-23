@@ -1,6 +1,6 @@
 const express = require('express')
 const {
-    apiAddMovieSuggestion,
+    apiAddMovie,
     apiDeleteMovie,
     apiGetMovieWithTitle,
     apiGetMovies,
@@ -14,7 +14,7 @@ const protect = require('../../middleware/authMiddleware')
 
 router.route("/")
     .get(apiGetMovies)
-    .post(protect, apiAddMovieSuggestion)
+    .post(protect, apiAddMovie)
 
 router.route("/:id")
     .get(apiGetMovieWithID)

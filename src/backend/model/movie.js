@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
 
 const movieSchema = mongoose.Schema({
-    suggested_by:{
-        type: mongoose.Schema.Types.ObjectId,
-        required: [true, "User ID required to suggest movie"],
-        ref: 'User',
+    source: {
+        type: String,
+        default: "manually added",
     },
     title: {
         type: String,

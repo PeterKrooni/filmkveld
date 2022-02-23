@@ -4,7 +4,7 @@ const Movie = require('../../model/movie')
 
 // @desc    Get all movies
 // @route   GET /api/v1/movie/
-// @access  Publicc
+// @access  Public
 const apiGetMovies = asyncHandler(async(req, res, next)=>{
     const movies = await Movie.find()
     res.status(200).json(movies)
@@ -37,14 +37,14 @@ const apiGetMovieWithTitle = asyncHandler(async(req, res, next)=>{
 // @desc    Add movie
 // @route   POST /api/v1/movie/
 // @access  Private
-const apiAddMovieSuggestion = asyncHandler(async(req, res, next)=>{
-    if (!req.body.title || !req.body.suggested_by){
+const apiAddMovie = asyncHandler(async(req, res, next)=>{
+    if (!req.body.title){
         res.status(400)
-        throw new Error("Title and suggested by required.")
+        throw new Error("Title required to add movie")
     }
     const movie = await Movie.create({
         title: req.body.title,
-        suggested_by: req.body.suggested_by,
+        source: req.body.source ? req.body.source : "manually added",
         runtime: req.body.runtime,
         rating: req.body.rating
     })
@@ -80,7 +80,7 @@ const apiDeleteMovie = asyncHandler(async(req, res, next)=>{
 })
 
 module.exports = {
-    apiAddMovieSuggestion,
+    apiAddMovie,
     apiDeleteMovie,
     apiGetMovieWithTitle,
     apiGetMovies,
