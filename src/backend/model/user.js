@@ -12,6 +12,14 @@ const userSchema = mongoose.Schema({
     email: {
         type: String,
         required: [true, 'Email required']
+    },
+    want_to_see_karmascore: { 
+        type: Number,
+        default: 10
+    },
+    seen_karmascore: {
+        type: Number,
+        default: 10
     }
 }, {
     timestamps: true
