@@ -6,10 +6,15 @@
         </div>
         <div id="body">
             <div id="information">
-                <p>⌛ 1h 44m</p>
-                <p>🔗 <a href="https://www.imdb.com/title/tt0208092/" target="_blank">Link</a></p>
-                <p>🎬 Guy Ritchie</p>
-                <p>🙉 Froske Faen</p>
+                <div id="info-bulletpoints">
+                    <p>⌛ 1h 44m</p>
+                    <p>🔗 <a href="https://www.imdb.com/title/tt0208092/" target="_blank">Link</a></p>
+                    <p>🎬 Guy Ritchie</p>
+                </div>
+                <div id="profile-frame">
+                    <img style="width: 19px; height: 19px; border-radius: 20em;" src="https://cdn.britannica.com/84/206384-050-00698723/Javan-gliding-tree-frog.jpg" alt=""> 
+                    Brukeren239
+                </div>
             </div>
             <div id="poster">
                 <img src="https://m.media-amazon.com/images/I/91+1XVS3MdL._AC_SY606_.jpg" id="poster-img" alt="">
@@ -100,6 +105,21 @@ export default {
 }
 #information a{
     color: rgb(221, 217, 217);
+}
+#profile-frame{
+    display: flex;
+    flex-flow: row;
+    justify-content: left;
+    align-items: center;
+    font-size: 12px;
+    margin: 8%;
+    padding: 4px;
+    width: 75%;
+    border-radius: 0.5em;
+    box-shadow: rgba(23, 23, 126, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+#profile-frame img{
+    margin-right: 7px;
 }
 #poster{
     height: 100%;

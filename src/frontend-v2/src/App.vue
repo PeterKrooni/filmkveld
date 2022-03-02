@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <Suggestion class="sugg" />
-    <Suggestion class="sugg" />
   </div>
 </template>
 
