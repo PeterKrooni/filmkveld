@@ -46,6 +46,7 @@ const apiAddMovie = asyncHandler(async(req, res, next)=>{
         title: req.body.title,
         source: req.body.source ? req.body.source : "manually added",
         runtime: req.body.runtime,
+        director: req.body.director,
         rating: req.body.rating
     })
     res.status(200).json(movie)
