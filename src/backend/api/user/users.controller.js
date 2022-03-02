@@ -119,7 +119,7 @@ const apiGetUser = asyncHandler(async(req, res, next) => {
         res.status(400)
         throw new Error(`User with id ${req.params.id} not found.`)
     }
-    const ret = {username: user.username, userid: user._id}
+    const ret = {username: user.name, userid: user._id}
     res.status(200).json(ret)
 })
 

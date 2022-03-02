@@ -20,8 +20,8 @@ router.route("/me")
     .get(protect, apiGetMe) // protect is middleware the requires a JWT auth token
 
 router.route("/:id")
-    .put(apiUpdateUser)
-    .delete(apiDeleteUser)
+    .put(protect, apiUpdateUser)
+    .delete(protect, apiDeleteUser)
     .get(protect, apiGetUser)
 
 
