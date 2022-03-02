@@ -1,13 +1,13 @@
 <template>
     <div id="rating">
         <div v-for="i in numstars" :key="i" id="stars">
-            <div v-if="i<=test_rating">
+            <div v-if="i<=rating" @click="vote(i)">
                 <svg height="21" width="20">
                     <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"
                     style="fill:gold;fill-rule:nonzero;" />
                 </svg>
             </div>
-            <div v-else>
+            <div v-else @click="vote(i)">
                 <svg height="21" width="20">
                     <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"
                     style="fill:grey;fill-rule:nonzero;" />
@@ -21,12 +21,21 @@
 export default {
     name: 'Rating',
     props: {
-        averageVote: Number,
     },
     data(){
         return {
             numstars: 10,
-            test_rating: 6,
+            rating: 0,
+        }
+    },
+    methods:{
+        vote: function(i){
+            if (i==1 && this.rating == 1){
+                this.rating = 0;
+            }else{
+                this.rating = i;
+            }
+            // TODO this.$emit(this.rating);
         }
     }
 }
