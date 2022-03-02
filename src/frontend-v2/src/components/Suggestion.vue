@@ -1,28 +1,28 @@
 <template>
     <div id="container">
         <div id="header">
-            <div id="title"><p>Snatch</p></div>
-            <div id="rating"><p>8.3 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/575px-IMDB_Logo_2016.svg.png?20200406194337" style="width: 20px; height: 10px;" alt=""></p></div>
+            <div id="title"><p>{{title}}</p></div>
+            <div id="rating"><p>{{external_rating}} <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/575px-IMDB_Logo_2016.svg.png?20200406194337" style="width: 20px; height: 10px;" alt=""></p></div>
         </div>
         <div id="body">
             <div id="information">
                 <div id="info-bulletpoints">
-                    <p>⌛ 1h 44m</p>
-                    <p>🔗 <a href="https://www.imdb.com/title/tt0208092/" target="_blank">Link</a></p>
-                    <p>🎬 Guy Ritchie</p>
+                    <p>⌛ {{runtime}}</p>
+                    <p>🔗 <a :href='source' target="_blank">Source</a></p>
+                    <p>🎬 {{director}}</p>
                 </div>
                 <div id="profile-frame">
                     <img style="width: 19px; height: 19px; border-radius: 20em;" src="https://cdn.britannica.com/84/206384-050-00698723/Javan-gliding-tree-frog.jpg" alt=""> 
-                    Brukeren239
+                    {{suggestor_username}}
                 </div>
             </div>
             <div id="poster">
-                <img src="https://m.media-amazon.com/images/I/91+1XVS3MdL._AC_SY606_.jpg" id="poster-img" alt="">
+                <img :src="poster" id="poster-img" alt="">
             </div>
         </div>
         <div id="footer">
             <div id="rating-text">Want to see it?</div>
-            <div id="rating-stars"><Rating /></div>
+            <div id="rating-stars"><Rating @rated="rateChange" /></div>
         </div>
     </div>    
 </template>
@@ -34,6 +34,47 @@ export default {
     name: 'Suggestion',
     components: {
         Rating
+    },
+    props: {
+        title: {
+            type: String,
+            default: "Title",
+        },
+        external_rating: {
+            type: String,
+            default: "0.0",
+        },
+        runtime: {
+            type: String,
+            default: "---"
+        },
+        source: {
+            type: String,
+            default: "Unknown"
+        },
+        director: {
+            type: String,
+            default: "Unknown"
+        },
+        suggestor_username: {
+            type: String,
+            default: "None"
+        },
+        poster: {
+            type: String,
+            default: "https://s.studiobinder.com/wp-content/uploads/2017/12/Movie-Poster-Template-Dark-with-Image.jpg?x81279" 
+        },
+        suggestionID: {
+            type: String,
+            default: "none"
+        }
+    },
+    methods: {
+        rateChange({rating}){
+            console.log("rating changed to " + rating)
+            // get userid
+            // change vote on suggestion
+        }
     }
 }
 </script>

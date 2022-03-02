@@ -32,10 +32,10 @@ export default {
         vote: function(i){
             if (i==1 && this.rating == 1){
                 this.rating = 0;
-            }else{
-                this.rating = i;
+            } else {
+            this.rating = i;
             }
-            // TODO this.$emit(this.rating);
+            this.$emit("rated", {rating: this.rating});
         }
     }
 }
