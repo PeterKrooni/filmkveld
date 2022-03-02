@@ -1,18 +1,18 @@
 <template>
     <div id="container">
         <div id="header">
-            <div id="title"><p>Movie Title</p></div>
-            <div id="rating"><p>7.5 ⭐</p></div>
+            <div id="title"><p>Snatch</p></div>
+            <div id="rating"><p>8.3 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/575px-IMDB_Logo_2016.svg.png?20200406194337" style="width: 20px; height: 10px;" alt=""></p></div>
         </div>
         <div id="body">
             <div id="information">
-                <p>⌛ 2:25:04</p>
-                <p>🎬 Director Directorsen</p>
-                <p>🔗 Link</p>
-                <p>🙉 Suggested by</p>
+                <p>⌛ 1h 44m</p>
+                <p>🔗 <a href="https://www.imdb.com/title/tt0208092/" target="_blank">Link</a></p>
+                <p>🎬 Guy Ritchie</p>
+                <p>🙉 Froske Faen</p>
             </div>
             <div id="poster">
-                <img src="https://s.studiobinder.com/wp-content/uploads/2017/12/Movie-Poster-Template-Dark-with-Image.jpg?x81279" id="poster-img" alt="">
+                <img src="https://m.media-amazon.com/images/I/91+1XVS3MdL._AC_SY606_.jpg" id="poster-img" alt="">
             </div>
         </div>
         <div id="footer">
@@ -64,15 +64,18 @@ export default {
 #title{
     height: 40px;
     width: 75%;
-    font-size: 16px;
+    font-size: 15px;
 }
 #title p{
+    font-weight: bolder;
     margin-left: 10%;
 }
 #rating{
+    color: rgba(255, 217, 0, 0.863);
     height: 40px;
-    font-size: 14px;
+    font-size: 15px;
     width: 25%;
+    font-style: italic;
 }
 
 #body{
@@ -93,6 +96,9 @@ export default {
 }
 #information p {
     margin-left: 10%;
+}
+#information a{
+    color: rgb(221, 217, 217);
 }
 #poster{
     height: 100%;
