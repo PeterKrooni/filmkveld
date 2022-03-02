@@ -59,6 +59,7 @@ export default {
     flex-flow: row;
     justify-content: space-between;
     align-items: center;
+    box-shadow: rgba(104, 104, 104, 0.719) 0px 48px 100px 0px;
 }
 
 #title{
@@ -121,6 +122,11 @@ export default {
     flex-flow: column;
     justify-content: center;
     border-top: 1px solid #2C2F33;
+    transition-duration: 150ms;
+}
+#footer:hover{
+    transition-duration: 150ms;
+    box-shadow: rgba(133, 133, 133, 0.1) 0px 10px 50px;
 }
 #rating-text{
     text-align: center;
