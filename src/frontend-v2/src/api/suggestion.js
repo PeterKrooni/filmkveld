@@ -1,8 +1,12 @@
 import axios from 'axios'
-import suggestion from '../../../backend/model/suggestion'
 
 export async function apiGetAllSuggestions(){
     return axios.get("http://localhost:5000/api/v1/suggestion/")
+}
+
+export async function getUserFromSuggestion(suggestionID){
+    const suggestion = await axios.get("http://localhost:5000/api/v1/suggestion/"+suggestionID)
+    return axios.get("http://localhost:5000/api/v1/user/"+suggestion.suggested_by)
 }
 
 export async function apiAddSuggestion(movieid){

@@ -2,7 +2,7 @@ const express = require('express')
 const {
     apiRegisterUser, 
     apiUpdateUser, 
-    apiGetMe, apiGetUsers,
+    apiGetMe, apiGetUsers, apiGetUser,
     apiDeleteUser, apiAuthUser
 } = require('./users.controller')
 
@@ -22,6 +22,7 @@ router.route("/me")
 router.route("/:id")
     .put(apiUpdateUser)
     .delete(apiDeleteUser)
+    .get(protect, apiGetUser)
 
 
 module.exports = router;

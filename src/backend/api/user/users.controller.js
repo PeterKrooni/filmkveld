@@ -110,6 +110,19 @@ const apiGetUsers = asyncHandler(async(req, res, next) => {
     res.status(200).json(users)    
 })
 
+// @desc    Get user with ID
+// @route   GET /api/v1/user/:id
+// @access  Private
+const apiGetUser = asyncHandler(async(req, res, next) => {
+    const user = await User.findById(req.params.id)
+    if (!user){
+        res.status(400)
+        throw new Error(`User with id ${req.params.id} not found.`)
+    }
+    const ret = {username: user.username, userid: user._id}
+    res.status(200).json(ret)
+})
+
 const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET, { expiresIn: '90d' })
 }
@@ -117,6 +130,6 @@ const generateToken = (id) => {
 module.exports = {
     apiRegisterUser,
     apiDeleteUser,
-    apiGetMe, apiGetUsers,
+    apiGetMe, apiGetUsers, apiGetUser,
     apiUpdateUser, apiAuthUser
 }
