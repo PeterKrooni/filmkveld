@@ -33,7 +33,7 @@ export default {
             if (i==1 && this.rating == 1){
                 this.rating = 0;
             } else {
-            this.rating = i;
+                this.rating = i;
             }
             this.$emit("rated", {rating: this.rating});
         }
