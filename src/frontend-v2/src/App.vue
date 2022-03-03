@@ -1,97 +1,28 @@
 <template>
   <div id="app">
-    <button @click="login" style="width:50px;">log in</button>
-
-    <div v-if="loaded">
-      <div v-for="i in this.suggestions" :key="i" id="suggestions">
-          <Suggestion class="sugg"
-            :title="i.title"
-            :external_rating="i.external_rating"
-            :runtime="i.runtime"
-            :source="i.source"
-            :director="i.director"
-            :suggestor_username="i.suggestor_name"
-            :poster="i.poster"
-            :suggestionID="i.suggestionid"
-          />
-      </div>
+    <div id="menu">
+      <button  @click="logOut">log out</button>
     </div>
   </div>
+  <router-view/>
 </template>
 
 <script>
-import Suggestion from './components/Suggestion.vue'
-import { apiGetAllSuggestions } from './api/suggestion'
-import { apiGetUser } from './api/user'
-import { apiGetMovie } from './api/movie'
-
-import { apiLogin } from './api/login'
+import { apiIsLoggedIn } from './helpers/auth'
+import { logout } from './helpers/logout'
 
 export default {
-  components: {
-    Suggestion
-  },
+  name: 'App',
   data() {
     return {
-      suggestions: [],
-      loaded: false,
     }
   },
   methods: {
-    async login(){
-      await apiLogin("tob@email.com", "tob");
+    logOut(){
+      logout();
+      this.loggedIn = apiIsLoggedIn();
+      this.$router.push('/login')
     }
-  },
-  async mounted(){
-    const suggestionsRequest = await apiGetAllSuggestions();
-    const suggestions = suggestionsRequest.data; 
-    for (var i = 0; i<suggestions.length; i++){
-      const user = await apiGetUser(suggestions[i].suggested_by)
-      const movie = await apiGetMovie(suggestions[i].movie_id)
-
-      var s_rating = movie.data.rating;
-      var s_runtime = movie.data.runtime;
-      var s_source = movie.data.source;
-      var s_title = movie.data.title;
-      var s_director = movie.data.director;
-      var s_suggestionid = suggestions[i]._id
-      var s_suggestor_name = user.username;
-
-      //todo
-      var s_poster = "https://s.studiobinder.com/wp-content/uploads/2017/12/Movie-Poster-Template-Dark-with-Image.jpg?x81279"; 
-
-      const sugg = { 
-        external_rating: s_rating, 
-        runtime: s_runtime, 
-        source: s_source, 
-        title: s_title, 
-        director: s_director, 
-        suggestionid: s_suggestionid,
-        suggestor_name: s_suggestor_name, 
-        poster: s_poster 
-      }
-
-      this.suggestions.push(sugg);
-    }
-    console.log(this.suggestions)
-    this.loaded = true;
   }
 }
 </script>
-
-<style scoped>
-#app{
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  display: flex;
-  justify-content: center; 
-  flex-flow: column;
-}
-#suggestions {
-  display: flex; 
-  justify-content: space-evenly;
-  flex-flow: row;
-}
-.sugg{
-  margin: 50px;
-}
-</style>

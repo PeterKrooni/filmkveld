@@ -21,5 +21,18 @@ export function setJWT(token){
     }
  }
 
+ /**
+  * Check if user is logged in, by checking if they have a JWT cookie set
+  * Called when accessing privileged views
+  */
+export function apiIsLoggedIn(){
+    const cookie = Cookies.getItem("jwt")
+    if (cookie == undefined){
+        return false
+    } else {
+        return axios.post("http://localhost:5000/api/v1/auth/", {token: cookie})
+    }
+}
+
  export default setJWT;
 

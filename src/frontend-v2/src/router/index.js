@@ -1,12 +1,26 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import { apiIsLoggedIn } from '../helpers/auth'
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Home',   
+    component: () => import('../views/Home.vue'),
+    beforeEnter: (to, from, next) => {
+      if (!apiIsLoggedIn()){
+        return next({
+          name: 'Login'
+        })
+      } else {
+        next();
+      }
+    },
   },
+  {
+    path: '/login',
+    name: 'Login',   
+    component: () => import('../views/Login.vue')
+  }
 ]
 
 const router = createRouter({
