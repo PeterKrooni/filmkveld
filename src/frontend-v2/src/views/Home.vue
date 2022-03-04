@@ -84,6 +84,6 @@ export default {
   flex-flow: row;
 }
 .sugg{
-  margin: 50px;
+  margin: 40px;
 }
 </style>

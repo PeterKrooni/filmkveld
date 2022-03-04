@@ -24,7 +24,6 @@ const updateKarma = asyncHandler(async(userid)=>{
         res.status(400)
         throw new Error(`User with id ${userid} not found.`)
     }
-    console.log("update karma")
     // take average of seen and want to see and assign those values as karma
     var seen = []
     var want_to_see = []
