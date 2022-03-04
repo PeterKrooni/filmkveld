@@ -1,5 +1,6 @@
 <template>
   <div id="home">
+    <NavMenu />
     <div v-if="loaded">
       <div v-for="i in this.suggestions" :key="i" id="suggestions">
           <Suggestion class="sugg"
@@ -19,6 +20,7 @@
 
 <script>
 import Suggestion from '../components/Suggestion.vue'
+import NavMenu from '../components/NavMenu.vue'
 import { apiGetAllSuggestions } from '../api/suggestion'
 import { apiGetUser } from '../api/user'
 import { apiGetMovie } from '../api/movie'
@@ -26,7 +28,8 @@ import { apiGetMovie } from '../api/movie'
 export default {
   name: 'Home',
   components: {
-    Suggestion
+    Suggestion,
+    NavMenu
   },
   data() {
     return {
