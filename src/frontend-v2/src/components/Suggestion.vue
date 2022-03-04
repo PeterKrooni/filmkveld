@@ -29,12 +29,14 @@
 
 <script>
 import Rating from './Rating.vue'
+import Button from './Button.vue'
 import { apiVoteWTS, apiGetVote } from '../api/vote'
 
 export default {
     name: 'Suggestion',
     components: {
-        Rating
+        Rating,
+        Button
     },
     props: {
         title: {
@@ -102,6 +104,16 @@ export default {
 #container{
     width: 250px;
     height: 255px;
+    border: 0.1px solid rgba(87, 87, 87, 0.15);
+    border-radius: 0.25em;
+    background-color: #373b40;
+    color: rgb(221, 217, 217);
+
+    transition-duration: 100ms;
+    transition-timing-function: ease-out;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+#seen-container{
     border: 0.1px solid rgba(87, 87, 87, 0.15);
     border-radius: 0.25em;
     background-color: #373b40;
