@@ -21,6 +21,7 @@
 export default {
     name: 'Rating',
     props: {
+        WTS_rated: 0
     },
     data(){
         return {
@@ -37,6 +38,9 @@ export default {
             }
             this.$emit("rated", {rating: this.rating});
         }
+    },
+    mounted(){
+        this.rating = this.WTS_rated
     }
 }
 </script>
@@ -45,5 +49,12 @@ export default {
 #rating{
     display: flex;
     flex-flow: row;
+}
+#stars{
+    opacity: 1;
+    transition-duration: 100ms;
+}#stars:hover{
+    opacity: 0.5;
+    transition-duration: 100ms;
 }
 </style>

@@ -22,13 +22,14 @@
         </div>
         <div id="footer">
             <div id="rating-text">Want to see it?</div>
-            <div id="rating-stars"><Rating @rated="rateChange" /></div>
+            <div v-if="rating_loaded" id="rating-stars"><Rating @rated="WTS_rateChange" :WTS_rated="WTS_rated" /></div>
         </div>
     </div>    
 </template>
 
 <script>
 import Rating from './Rating.vue'
+import { apiVoteWTS, apiGetVote } from '../api/vote'
 
 export default {
     name: 'Suggestion',
@@ -69,12 +70,30 @@ export default {
             default: "none"
         }
     },
-    methods: {
-        rateChange({rating}){
-            console.log("rating changed to " + rating)
-            // get userid
-            // change vote on suggestion
+    data() {
+        return {
+            rating_loaded: false,
+            WTS_rated: 0,
+            S_rated: 0,
         }
+    },
+    methods: {
+        async WTS_rateChange({rating}){
+            await apiVoteWTS(this.suggestionID, rating)
+        }
+    },
+    async mounted() {
+        await apiGetVote(this.suggestionID)
+        .then((res)=>{
+                this.WTS_rated = res.data.want_to_see_rating; 
+                this.S_rated = res.data.seen_rating; 
+                this.rating_loaded = true;
+            })
+        .catch((res)=>{
+                this.WTS_rated = 0; 
+                this.S_rated = 0; 
+                this.rating_loaded = true;
+        })
     }
 }
 </script>

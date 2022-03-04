@@ -20,12 +20,11 @@ const getVotesForUser = asyncHandler(async(userid) => {
 const updateKarma = asyncHandler(async(userid)=>{
     const votes = await getVotesForUser(userid) 
     const user = await User.findById(userid)
-    console.log(votes)
     if (!user){
         res.status(400)
         throw new Error(`User with id ${userid} not found.`)
     }
-
+    console.log("update karma")
     // take average of seen and want to see and assign those values as karma
     var seen = []
     var want_to_see = []
@@ -35,7 +34,6 @@ const updateKarma = asyncHandler(async(userid)=>{
     }
     const seen_karma = seen.reduce((partialSum, a) => partialSum + a, 0) / seen.length
     const want_to_see_karma = want_to_see.reduce((partialSum, a) => partialSum + a, 0) / want_to_see.length
-    console.log(seen); console.log(want_to_see)
     // update karma scores for user
     const newUser = await User.findByIdAndUpdate(userid, {want_to_see_karmascore: want_to_see_karma, seen_karmascore: seen_karma})
     //res.status(200).json(newUser)

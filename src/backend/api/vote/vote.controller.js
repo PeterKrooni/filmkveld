@@ -23,7 +23,6 @@ const apiVoteSuggestion = asyncHandler(async(req, res, next) => {
     }
 
     if (want_to_see_rating && !seen_rating){
-        console.log(want_to_see_rating)
         const vote = await Vote.create({
             suggestion: req.params.suggestion,
             voted_by: req.user.id,
