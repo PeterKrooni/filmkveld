@@ -2,7 +2,7 @@
     <div id="menu">
         <div id="box">
             <Button class='menu-btn' @click="logOut" :text='"Log out"' /> 
-            <Button class='menu-btn' @click="logOut" :text='"Profile"' /> 
+            <Button class='menu-btn' @click="this.$router.push('/profile')" :text='"Profile"' /> 
             <Button class='menu-btn' @click="logOut" :text='"➕Add movie"' /> 
         </div>
     </div>

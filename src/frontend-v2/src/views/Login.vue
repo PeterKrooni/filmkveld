@@ -55,8 +55,8 @@ export default {
     return {
       register: false,
       username: "",
-      password: "",
-      email: ""
+      password: "tob",
+      email: "tob@email.com"
     }
   }
 }

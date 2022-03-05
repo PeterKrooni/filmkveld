@@ -12,3 +12,7 @@ export async function apiAddSuggestion(movieid){
 export async function apiRemoveSuggestion(suggestionid){
     return axios.delete("http://localhost:5000/api/v1/suggestion/" + suggestionid)
 }
+
+export async function apiGetSuggestionsBy(userID){
+    return axios.get("http://localhost:5000/api/v1/suggestion/" + userID)
+}
