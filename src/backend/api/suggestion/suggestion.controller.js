@@ -11,11 +11,11 @@ const apiGetSuggestions = asyncHandler(async(req, res, next) => {
     return res.status(200).json(suggestions)
 })
 
-// @desc    Get suggestion by user
-// @route   GET /api/v1/suggestion/:id
+// @desc    Get suggestions by user
+// @route   GET /api/v1/suggestion/:userid
 // @access  Public
 const apiGetSuggestion = asyncHandler(async(req, res, next) => {
-    const suggestion = await Suggestion.findOne(req.body.suggested_by)
+    const suggestion = await Suggestion.find({suggested_by: req.params.id})
     return res.status(200).json(suggestion)
 })
 
