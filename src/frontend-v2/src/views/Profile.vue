@@ -10,7 +10,7 @@
             </div>
             <div id="user-stats">
                 <div id="suggestions-container">
-
+                
                 </div>
                 <div id="karma-container">
 
@@ -103,8 +103,8 @@ export default {
 }
 #PP{
     border-radius: 20em;
-    height: 300px; 
-    width: 300px; 
+    height: 100px; 
+    width: 100px; 
 }
 #PP:hover{
     transition-duration: 100ms;

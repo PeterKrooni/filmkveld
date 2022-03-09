@@ -39,7 +39,7 @@ export default {
   },
   methods: {
   },
-  async created(){
+  async mounted(){
     const suggestionsRequest = await apiGetAllSuggestions();
     const suggestions = suggestionsRequest.data; 
     for (var i = 0; i<suggestions.length; i++){
