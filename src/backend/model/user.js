@@ -13,6 +13,10 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, 'Email required']
     },
+    profile_picture: {
+        type: String,
+        default: "" // TODO find default profile picture
+    },
     want_to_see_karmascore: { 
         type: Number,
         default: 10
