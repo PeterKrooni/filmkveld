@@ -12,7 +12,7 @@
                     <p>🎬 {{director}}</p>
                 </div>
                 <div id="profile-frame">
-                    <img style="width: 19px; height: 19px; border-radius: 20em;" src="https://cdn.britannica.com/84/206384-050-00698723/Javan-gliding-tree-frog.jpg" alt=""> 
+                    <img style="width: 19px; height: 19px; border-radius: 20em;" :src="suggestor_profile_picture" alt=""> 
                     {{suggestor_username}}
                 </div>
             </div>
@@ -44,7 +44,7 @@ export default {
             default: "Title",
         },
         external_rating: {
-            type: String,
+            type: Number,
             default: "0.0",
         },
         runtime: {
@@ -62,6 +62,10 @@ export default {
         suggestor_username: {
             type: String,
             default: "None"
+        },
+        suggestor_profile_picture: {
+            type: String,
+            default: ""
         },
         poster: {
             type: String,

@@ -10,6 +10,7 @@
             :source="i.source"
             :director="i.director"
             :suggestor_username="i.suggestor_name"
+            :suggestor_profile_picture="i.suggestor_profile_picture" 
             :poster="i.poster"
             :suggestionID="i.suggestionid"
           />
@@ -43,7 +44,7 @@ export default {
     const suggestionsRequest = await apiGetAllSuggestions();
     const suggestions = suggestionsRequest.data; 
     for (var i = 0; i<suggestions.length; i++){
-      const user = await apiGetUser(suggestions[i].suggested_by)
+      const user = await apiGetUser(suggestions[i].suggested_by, true)
       const movie = await apiGetMovie(suggestions[i].movie_id)
       
       var s_rating = movie.data.rating;
@@ -53,6 +54,7 @@ export default {
       var s_director = movie.data.director;
       var s_suggestionid = suggestions[i]._id
       var s_suggestor_name = user.username;
+      var s_suggestor_profile_picture = user.profile_picture ? user.profile_picture : /* need some default image handling*/ "https://cdn.britannica.com/84/206384-050-00698723/Javan-gliding-tree-frog.jpg";
 
       //todo
       var s_poster = "https://s.studiobinder.com/wp-content/uploads/2017/12/Movie-Poster-Template-Dark-with-Image.jpg?x81279"; 
@@ -64,7 +66,8 @@ export default {
         title: s_title, 
         director: s_director, 
         suggestionid: s_suggestionid,
-        suggestor_name: s_suggestor_name, 
+        suggestor_name: s_suggestor_name,
+        suggestor_profile_picture: s_suggestor_profile_picture, 
         poster: s_poster 
       }
 

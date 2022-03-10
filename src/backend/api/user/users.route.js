@@ -2,7 +2,7 @@ const express = require('express')
 const {
     apiRegisterUser, 
     apiUpdateUser, 
-    apiGetMe, apiGetUsers, apiGetUser,
+    apiGetMe, apiGetUsers, apiGetUser, apiGetProfilePicture,
     apiDeleteUser, apiAuthUser
 } = require('./users.controller')
 
@@ -24,5 +24,9 @@ router.route("/:id")
     .delete(protect, apiDeleteUser)
     .get(protect, apiGetUser)
 
+// because profile pictures are stored as b64 dump of the image, I separated profile pictures from just user data,
+// as this can help performance by not getting the profile picture unneccesarily
+router.route("/:id/avatar")
+    .get(protect, apiGetProfilePicture)
 
 module.exports = router;
