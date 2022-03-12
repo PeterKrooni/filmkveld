@@ -1,7 +1,7 @@
 const express = require('express')
 
 const {
-    apiGetSuggestions, apiAddSuggestion, apiGetSuggestion, apiDeleteSuggestion
+    apiGetSuggestions, apiAddSuggestion, apiGetSuggestion, apiDeleteSuggestion, apiGetSuggestionById
 } = require('./suggestion.controller')
 
 const router = express.Router()
@@ -14,5 +14,8 @@ router.route("/")
 router.route("/:id")
     .get(apiGetSuggestion)
     .delete(protect, apiDeleteSuggestion)
+
+router.route("/get/:suggestion_id")
+    .get(protect, apiGetSuggestionById)
 
 module.exports = router;

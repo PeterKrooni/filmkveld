@@ -61,9 +61,22 @@ const apiAddSuggestion = asyncHandler(async(req, res, next) => {
     return res.status(200).json(suggestion)
 })
 
+// @desc    Add movie suggestion
+// @route   GET /api/v1/suggestion/get/:suggestion_id
+// @access  Private
+const apiGetSuggestionById = asyncHandler(async(req, res, next) => {
+    const suggestion = await Suggestion.findById(req.params.suggestion_id)
+    if (!suggestion){
+        res.status(400)
+        throw new Error(`Tried getting suggestion, but could not find suggestion with ID ${req.body.suggesiton_id}`)
+    }
+    return res.status(200).json(suggestion);
+})
+
 module.exports = {
     apiGetSuggestions,
     apiAddSuggestion,
     apiGetSuggestion,
     apiDeleteSuggestion,
+    apiGetSuggestionById,
 }
