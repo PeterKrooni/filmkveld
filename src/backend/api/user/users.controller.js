@@ -27,12 +27,14 @@ const apiAuthUser = asyncHandler(async(req, res, next) => {
 // @route   GET /api/v1/user/me
 // @access  Private
 const apiGetMe = asyncHandler(async(req, res, next) => {
-    const {_id, name, email, profile_picture} = await User.findById(req.user.id) // user.id from auth middleware
+    const {_id, name, email, profile_picture, want_to_see_karmascore, seen_karmascore} = await User.findById(req.user.id) // user.id from auth middleware
     res.status(200).json({
         id: _id,
         name: name,
         email: email,
-        profile_picture: profile_picture
+        profile_picture: profile_picture,
+        wts_karma: want_to_see_karmascore,
+        seen_karma: seen_karmascore
     })
 })
 
