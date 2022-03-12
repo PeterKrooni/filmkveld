@@ -10,7 +10,13 @@
             </div>
             <div id="user-stats">
                 <div id="suggestions-container">
-                
+                    <div v-if="loaded">
+                        <div v-for="i in this.suggestionsByUser" :key="i" id="suggestions">
+                            <Suggestion class="sugg"
+                                :id="i"
+                            />
+                        </div>
+                    </div>
                 </div>
                 <div id="karma-container">
 
@@ -22,30 +28,37 @@
 
 <script>
 import NavMenu from '../components/NavMenu'
+import Suggestion from '../components/Suggestion'
+
 import { apiGetSuggestionsBy } from '../api/suggestion'
 import { getMe, apiUpdateProfilePicture } from '../api/user'
 
 export default {
     components: {
         NavMenu,
+        Suggestion,
     },
     data() {
         return {
             imgSource: "https://us.123rf.com/450wm/happyvector071/happyvector0711904/happyvector071190414500/120957417-creative-illustration-of-default-avatar-profile-placeholder-isolated-on-background-art-design-grey-p.jpg?ver=6",
             name: "",
             text: "Some text",
-            suggestionsByUser: []
+            suggestionsByUser: [],
+            loaded: false,
         }
     },
     async mounted() {
         const me = await getMe()
         this.imgSource = me.profile_picture
         this.name = me.username;
-        const suggestions = await apiGetSuggestionsBy(me.userid)
-        for (var i = 0; i<suggestions.data.length; i++){
-            this.suggestionsByUser.push(suggestions.data[i])
-        }   
-        console.log(this.suggestionsByUser)
+
+        const suggestion = await apiGetSuggestionsBy(me.userid)
+        const suggs = suggestion.data; 
+        for (var i = 0; i<suggs.length; i++){
+            this.suggestionsByUser.push(suggs[i]._id)
+        }
+
+        this.loaded = true;
     },
     methods: {
         async updateProfilePicture(event) {
@@ -102,6 +115,7 @@ export default {
     width: 70%;
 }
 #PP{
+    border: 3px solid rgb(70, 69, 69);
     border-radius: 20em;
     height: 100px; 
     width: 100px; 

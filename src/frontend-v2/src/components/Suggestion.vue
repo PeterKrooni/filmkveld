@@ -1,28 +1,28 @@
 <template>
     <div id="container">
         <div id="header">
-            <div id="title"><p>{{title}}</p></div>
-            <div id="rating"><p>{{external_rating}} <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/575px-IMDB_Logo_2016.svg.png?20200406194337" style="width: 20px; height: 10px;" alt=""></p></div>
+            <div id="title"><p>{{this.title}}</p></div>
+            <div id="rating"><p>{{this.external_rating}} <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/575px-IMDB_Logo_2016.svg.png?20200406194337" style="width: 20px; height: 10px;" alt=""></p></div>
         </div>
         <div id="body">
             <div id="information">
                 <div id="info-bulletpoints">
-                    <p>⌛ {{runtime}}</p>
+                    <p>⌛ {{this.runtime}}</p>
                     <p>🔗 <a :href='source' target="_blank">Source</a></p>
-                    <p>🎬 {{director}}</p>
+                    <p>🎬 {{this.director}}</p>
                 </div>
                 <div id="profile-frame">
-                    <img style="width: 19px; height: 19px; border-radius: 20em;" :src="suggestor_profile_picture" alt=""> 
-                    {{suggestor_username}}
+                    <img style="width: 19px; height: 19px; border-radius: 20em;" :src="this.suggestor_profile_picture" alt=""> 
+                    {{this.suggestor_username}}
                 </div>
             </div>
             <div id="poster">
-                <img :src="poster" id="poster-img" alt="">
+                <img :src="this.poster" id="poster-img" alt="">
             </div>
         </div>
         <div id="footer">
             <div id="rating-text">Want to see it?</div>
-            <div v-if="rating_loaded" id="rating-stars"><Rating @rated="WTS_rateChange" :WTS_rated="WTS_rated" /></div>
+            <div v-if="rating_loaded" id="rating-stars"><Rating @rated="this.WTS_rateChange" :WTS_rated="this.WTSeen_rated" /></div>
         </div>
     </div>    
 </template>
@@ -30,48 +30,31 @@
 <script>
 import Rating from './Rating.vue'
 import Button from './Button.vue'
+import { apiGetMovie } from '../api/movie'
+import { apiGetUser } from '../api/user'
 import { apiVoteWTS, apiGetVote } from '../api/vote'
+import { apiGetSuggestionById } from '../api/suggestion'
 
 export default {
     name: 'Suggestion',
     components: {
         Rating,
-        Button
+        Button,
     },
+    data() {
+        return {
+            title: "Title",
+            external_rating: "0.0",
+            runtime: "Unknown",
+            source: "Unknown",
+            director: "Unknown",
+            suggestor_username: "None",
+            suggestor_profile_picture: "",            
+            poster: "https://s.studiobinder.com/wp-content/uploads/2017/12/Movie-Poster-Template-Dark-with-Image.jpg?x81279",
+        }   
+    }, 
     props: {
-        title: {
-            type: String,
-            default: "Title",
-        },
-        external_rating: {
-            type: Number,
-            default: "0.0",
-        },
-        runtime: {
-            type: String,
-            default: "---"
-        },
-        source: {
-            type: String,
-            default: "Unknown"
-        },
-        director: {
-            type: String,
-            default: "Unknown"
-        },
-        suggestor_username: {
-            type: String,
-            default: "None"
-        },
-        suggestor_profile_picture: {
-            type: String,
-            default: ""
-        },
-        poster: {
-            type: String,
-            default: "https://s.studiobinder.com/wp-content/uploads/2017/12/Movie-Poster-Template-Dark-with-Image.jpg?x81279" 
-        },
-        suggestionID: {
+        id: {
             type: String,
             default: "none"
         }
@@ -79,25 +62,41 @@ export default {
     data() {
         return {
             rating_loaded: false,
-            WTS_rated: 0,
-            S_rated: 0,
+            WTSeen_rated: 0,
+            Seen_rated: 0,
+            loaded: false,
         }
     },
     methods: {
         async WTS_rateChange({rating}){
-            await apiVoteWTS(this.suggestionID, rating)
+            await apiVoteWTS(this.id, rating)
+        },
+        async fetchDisplayData(){
+            const suggestion = await apiGetSuggestionById(this.id)
+            const movie = await apiGetMovie(suggestion.data.movie_id)
+            const user = await apiGetUser(suggestion.data.suggested_by, true)
+
+            this.title = movie.data.title
+            this.external_rating = movie.data.rating
+            this.runtime = movie.data.runtime
+            this.source = movie.data.source
+            this.director = movie.data.director
+            this.suggestor_username = user.username
+            this.suggestor_profile_picture = user.profile_picture ? user.profile_picture : /* need some default image handling*/ "https://cdn.britannica.com/84/206384-050-00698723/Javan-gliding-tree-frog.jpg";
+            this.poster = "https://s.studiobinder.com/wp-content/uploads/2017/12/Movie-Poster-Template-Dark-with-Image.jpg?x81279"; 
         }
     },
     async mounted() {
-        await apiGetVote(this.suggestionID)
+        await this.fetchDisplayData();
+        await apiGetVote(this.id)
         .then((res)=>{
-                this.WTS_rated = res.data.want_to_see_rating; 
-                this.S_rated = res.data.seen_rating; 
+                this.WTSeen_rated = res.data.want_to_see_rating; 
+                this.Seen_rated = res.data.seen_rating; 
                 this.rating_loaded = true;
             })
         .catch((res)=>{
-                this.WTS_rated = 0; 
-                this.S_rated = 0; 
+                this.WTSeen_rated = 0; 
+                this.Seen_rated = 0; 
                 this.rating_loaded = true;
         })
     }
