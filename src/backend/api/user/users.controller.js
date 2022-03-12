@@ -122,7 +122,12 @@ const apiGetUser = asyncHandler(async(req, res, next) => {
         res.status(400)
         throw new Error(`User with id ${req.params.id} not found.`)
     }
-    const ret = {username: user.name, userid: user._id}
+    const ret = {
+        username: user.name, 
+        userid: user._id,
+        wts_karma: user.want_to_see_karmascore,
+        seen_karma: user.seen_karmascore
+    }
     res.status(200).json(ret)
 })
 
