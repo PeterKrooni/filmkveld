@@ -4,15 +4,33 @@ export async function apiGetUser(userid, profile_picture=false){
     const user = await axios.get("http://localhost:5000/api/v1/user/"+userid)
     if (profile_picture){
         const avatar = await axios.get("http://localhost:5000/api/v1/user/"+userid+"/avatar")
-        return {username: user.data.username, userid: user.data.userid, profile_picture: avatar.data.profile_picture};
+        return {
+            username: user.data.username, 
+            userid: user.data.userid, 
+            profile_picture: avatar.data.profile_picture,
+            wts_karma: user.data.wts_karma,
+            seen_karma: user.data.seen_karma,
+        };
     } else {
-        return {username: user.data.username, userid: user.data.userid};
+        return {
+            username: user.data.username, 
+            userid: user.data.userid,
+            wts_karma: user.data.wts_karma,
+            seen_karma: user.data.seen_karma,
+        };
     }
 }
 
 export async function getMe(){
     const user = await axios.get("http://localhost:5000/api/v1/user/me")
-    return {username: user.data.name, userid: user.data.id, profile_picture: user.data.profile_picture};
+    console.log(user)
+    return { 
+        username: user.data.name, 
+        userid: user.data.id, 
+        profile_picture: user.data.profile_picture,
+        wts_karma: user.data.wts_karma,
+        seen_karma: user.data.seen_karma,
+    };
 }
 
 export async function apiUpdateProfilePicture(userid, base64_img){

@@ -6,20 +6,17 @@
                 <img :src="imgSource" @click="openFileSelector" id="PP" alt="">
                 <input @change="updateProfilePicture" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" style="display: none;">
                 <h1>{{name}}</h1>
-                <p>Some text</p>
+                <p>Combined karma: {{karma}}</p>
             </div>
             <div id="user-stats">
-                <div id="suggestions-container">
-                    <div v-if="loaded">
-                        <div v-for="i in this.suggestionsByUser" :key="i" id="suggestions">
-                            <Suggestion class="sugg"
-                                :id="i"
-                            />
-                        </div>
+                <div id="suggestions-container" v-if="loaded">
+                    <div v-for="i in this.suggestionsByUser" :key="i" id="suggestions">
+                        <Suggestion class="sugg"
+                            :id="i"
+                        />
                     </div>
                 </div>
                 <div id="karma-container">
-
                 </div>
             </div>
         </div>
@@ -43,6 +40,7 @@ export default {
             imgSource: "https://us.123rf.com/450wm/happyvector071/happyvector0711904/happyvector071190414500/120957417-creative-illustration-of-default-avatar-profile-placeholder-isolated-on-background-art-design-grey-p.jpg?ver=6",
             name: "",
             text: "Some text",
+            karma: "",
             suggestionsByUser: [],
             loaded: false,
         }
@@ -52,12 +50,15 @@ export default {
         this.imgSource = me.profile_picture
         this.name = me.username;
 
+        const wts = me.wts_karma
+        const seen = me.seen_karma
+        this.karma = wts + seen
+
         const suggestion = await apiGetSuggestionsBy(me.userid)
         const suggs = suggestion.data; 
         for (var i = 0; i<suggs.length; i++){
             this.suggestionsByUser.push(suggs[i]._id)
         }
-
         this.loaded = true;
     },
     methods: {
@@ -114,8 +115,18 @@ export default {
 #user-stats{
     width: 70%;
 }
+#suggestions-container{
+    display: flex;
+    justify-content: space-evenly;
+    flex-flow: row;    
+    margin-top: 35px;
+    margin-left: 70px;
+}
+#suggestions-container div {
+    margin: 5px;
+}
 #PP{
-    border: 3px solid rgb(70, 69, 69);
+    border: 1px solid rgb(59, 57, 57);
     border-radius: 20em;
     height: 100px; 
     width: 100px; 
