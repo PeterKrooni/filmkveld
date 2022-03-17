@@ -156,7 +156,7 @@ export default {
     flex-flow: row;
     justify-content: space-between;
     align-items: center;
-    box-shadow: rgba(104, 104, 104, 0.719) 0px 48px 100px 0px;
+    box-shadow: rgba(104, 104, 104, 0.548) 0px 48px 100px 0px;
 }
 
 #title{

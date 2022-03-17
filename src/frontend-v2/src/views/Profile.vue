@@ -6,7 +6,7 @@
                 <img :src="imgSource" @click="openFileSelector" id="PP" alt="">
                 <input @change="updateProfilePicture" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" style="display: none;">
                 <h1>{{name}}</h1>
-                <p>Combined karma: {{karma}}</p>
+                <p>Karma: <b>{{karma}}</b></p>
             </div>
             <div id="user-stats">
                 <div id="suggestions-container" v-if="loaded">
@@ -98,12 +98,14 @@ export default {
     color: rgb(221, 217, 217); 
 }
 #page-container{
-    width: 80%;
+    width: 50%;
     display: flex;
-    flex-flow: row;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
 }
 #profile-info{
-    width: 30%;
+    width: 200px;
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -112,6 +114,7 @@ export default {
     padding: 10px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
     border-radius: 1em;
+    font-size: 12px;
 }
 #user-stats{
     width: 70%;
@@ -121,7 +124,6 @@ export default {
     justify-content: space-evenly;
     flex-flow: row;    
     margin-top: 35px;
-    margin-left: 70px;
 }
 #suggestions-container div {
     margin: 5px;
