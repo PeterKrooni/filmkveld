@@ -13,6 +13,7 @@
                     <div v-for="i in this.suggestionsByUser" :key="i" id="suggestions">
                         <Suggestion class="sugg"
                             :id="i"
+                            :compact="true"
                         />
                     </div>
                 </div>
