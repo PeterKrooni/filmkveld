@@ -1,8 +1,8 @@
 <template>
-    <div id="container">
+    <div v-if="loaded" id="container" :style="compact ? compact_container : container-full">
         <div id="header">
             <div id="title"><p>{{this.title}}</p></div>
-            <div id="rating"><p>{{this.external_rating}} <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/575px-IMDB_Logo_2016.svg.png?20200406194337" style="width: 20px; height: 10px;" alt=""></p></div>
+            <div v-if="!compact" id="rating"><p>{{this.external_rating}} <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/575px-IMDB_Logo_2016.svg.png?20200406194337" style="width: 20px; height: 10px;" alt=""></p></div>
         </div>
         <div id="body">
             <div id="information">
@@ -16,11 +16,11 @@
                     {{this.suggestor_username}}
                 </div>
             </div>
-            <div id="poster">
+            <div id="poster" v-if="!compact">
                 <img :src="this.poster" id="poster-img" alt="">
             </div>
         </div>
-        <div id="footer">
+        <div id="footer" v-if="!compact">
             <div id="rating-text">Want to see it?</div>
             <div v-if="rating_loaded" id="rating-stars"><Rating @rated="this.WTS_rateChange" :WTS_rated="this.WTSeen_rated" /></div>
         </div>
@@ -51,12 +51,17 @@ export default {
             suggestor_username: "None",
             suggestor_profile_picture: "",            
             poster: "https://s.studiobinder.com/wp-content/uploads/2017/12/Movie-Poster-Template-Dark-with-Image.jpg?x81279",
+            loaded: false,
         }   
     }, 
     props: {
         id: {
             type: String,
             default: "none"
+        },
+        compact: {
+            type: Boolean, 
+            default: false
         }
     },
     data() {
@@ -65,6 +70,10 @@ export default {
             WTSeen_rated: 0,
             Seen_rated: 0,
             loaded: false,
+            compact_container: {
+                width: '150px',
+                height: '200px',    
+            }
         }
     },
     methods: {
@@ -99,6 +108,7 @@ export default {
                 this.Seen_rated = 0; 
                 this.rating_loaded = true;
         })
+        this.loaded = true
     }
 }
 </script>
@@ -115,6 +125,13 @@ export default {
     transition-duration: 100ms;
     transition-timing-function: ease-out;
     box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+.container-compact{
+    width: 100px;
+}
+.container-full{
+    width: 250px;
+    height: 255px;
 }
 #seen-container{
     border: 0.1px solid rgba(87, 87, 87, 0.15);
