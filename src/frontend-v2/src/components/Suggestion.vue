@@ -124,7 +124,6 @@ export default {
 
     transition-duration: 100ms;
     transition-timing-function: ease-out;
-    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 }
 .container-compact{
     width: 100px;
@@ -132,6 +131,7 @@ export default {
 .container-full{
     width: 250px;
     height: 255px;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 }
 #seen-container{
     border: 0.1px solid rgba(87, 87, 87, 0.15);
