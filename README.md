@@ -1,6 +1,6 @@
 # Filmkveld
 
-A web application for organsisation of movie nights
+A web application for organization of movie nights
 
 
 
