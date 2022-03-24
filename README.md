@@ -32,7 +32,7 @@ We have choosen to use the [MERN](https://www.mongodb.com/mern-stack) tech stack
 
 ### Frontend:
 1. open your terminal
-2. navigete to filmkveld\src\frontend-test
+2. navigete to filmkveld\src\frontend-v2
 3. install node dependecies by running `npm install`
 4. run the front-end by using  `npm run serve`
 
