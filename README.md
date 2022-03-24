@@ -28,7 +28,7 @@ We have choosen to use the [MERN](https://www.mongodb.com/mern-stack) tech stack
 1. open a terminal
 2. navigate to filmkveld\src\backend
 3. install node dependecies by running `npm install`
-4. run the backend by using `npm run serve`
+4. run the backend by using `npm run server`
 
 ### Frontend:
 1. open your terminal
