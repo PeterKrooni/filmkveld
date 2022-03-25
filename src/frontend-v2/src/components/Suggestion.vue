@@ -1,8 +1,8 @@
 <template>
-    <div v-if="loaded" id="container" :style="compact ? compact_container : container-full">
+    <div v-if="loaded" id="container">
         <div id="header">
             <div id="title"><p>{{this.title}}</p></div>
-            <div v-if="!compact" id="rating"><p>{{this.external_rating}} <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/575px-IMDB_Logo_2016.svg.png?20200406194337" style="width: 20px; height: 10px;" alt=""></p></div>
+            <div v-if="!compact" id="rating"><p>{{this.external_rating}} <img style="width: 22px; height: 15px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/575px-IMDB_Logo_2016.svg.png?20200406194337" alt=""></p></div>
         </div>
         <div id="body">
             <div id="information">
@@ -115,23 +115,16 @@ export default {
 
 <style scoped>
 #container{
-    width: 250px;
-    height: 255px;
+    width: 310px;
+    height: 310px;
     border: 0.1px solid rgba(87, 87, 87, 0.15);
     border-radius: 0.25em;
     background-color: #373b40;
     color: rgb(221, 217, 217);
+    box-shadow: rgba(12, 11, 11, 0.4) 0px 5px 10px;
 
     transition-duration: 100ms;
     transition-timing-function: ease-out;
-}
-.container-compact{
-    width: 100px;
-}
-.container-full{
-    width: 250px;
-    height: 255px;
-    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 }
 #seen-container{
     border: 0.1px solid rgba(87, 87, 87, 0.15);
@@ -146,23 +139,21 @@ export default {
 #container:hover{
     transition-duration: 100ms;
     transition-timing-function: ease-out;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
 }
 #header{
-    height: 40px;
+    height: 55px;
     width: 100%;
     border-bottom: 1px solid #2C2F33;
     display: flex;
     flex-flow: row;
     justify-content: space-between;
     align-items: center;
-    box-shadow: rgba(104, 104, 104, 0.548) 0px 48px 100px 0px;
 }
 
 #title{
-    height: 40px;
+    height: 70px;
     width: 75%;
-    font-size: 15px;
+    font-size: 20px;
 }
 #title p{
     font-weight: bolder;
@@ -170,8 +161,8 @@ export default {
 }
 #rating{
     color: rgba(255, 217, 0, 0.863);
-    height: 40px;
-    font-size: 15px;
+    height: 70px;
+    font-size: 20px;
     width: 25%;
     font-style: italic;
 }
@@ -181,19 +172,21 @@ export default {
     flex-flow: row;
     justify-content: center;
     width: 100%;
-    height: 155px;
+    height: 185px; 
+    background: rgb(55,59,64);
+    background: linear-gradient(0deg, rgba(55,59,64,1) 0%, rgb(67, 70, 75) 100%, rgba(55,59,64,1) 100%); 
 }
 #information{
-    font-size: 10px;
+    font-size: 13.5px;
     display: flex;
     flex-flow: column;
     justify-content: center;
     align-items: left;
     height: 100%;
-    width: 145px; 
+    width: 175px; 
 }
 #information p {
-    margin-left: 10%;
+    margin-left: 2%;
 }
 #information a{
     color: rgb(221, 217, 217);
@@ -203,10 +196,12 @@ export default {
     flex-flow: row;
     justify-content: left;
     align-items: center;
-    font-size: 12px;
-    margin: 8%;
-    padding: 4px;
-    width: 75%;
+    font-size: 14px;
+    margin-left: 5px;
+    margin-top: 10px;
+    margin-bottom: 7px;
+    padding: 6px;
+    width: 65%;
     border-radius: 0.5em;
     box-shadow: rgba(23, 23, 126, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
@@ -215,21 +210,21 @@ export default {
 }
 #poster{
     height: 100%;
-    width: 105px;
+    width: 100px;
     display: flex;
     align-items: center;
 }
 #poster-img{
-    width: 80px;
-    height: 120px;
+    width: 100px;
+    height: 140px;
     transform: rotate3d(-90, 40, 20, 2deg);
     filter: drop-shadow(0.1rem 0.2rem 0.75rem rgb(88, 81, 76));
 }
 
 #footer{
-    font-size: 12px;
+    font-size: 14px;
     width: 100%;
-    height: 70px;
+    height: 110px;
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -238,13 +233,12 @@ export default {
 }
 #footer:hover{
     transition-duration: 150ms;
-    box-shadow: rgba(133, 133, 133, 0.1) 0px 10px 50px;
 }
 #rating-text{
     text-align: center;
     margin-bottom: 1%;
 }
 #rating-stars{
-    margin-left: 10%;
+    margin-left: 50px;
 }
 </style>
