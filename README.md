@@ -21,6 +21,21 @@ The goal of the prioject is to get well aquinted and familiar with production of
 We have choosen to use the [MERN](https://www.mongodb.com/mern-stack) tech stack for this project. We also aim to use Typescript for type safety as well as TailwindCSS for CSS utility.
 
 
+## How to run
+
+
+### Backend:
+1. open a terminal
+2. navigate to filmkveld\src\backend
+3. install node dependecies by running `npm install`
+4. run the backend by using `npm run server`
+
+### Frontend:
+1. open your terminal
+2. navigete to filmkveld\src\frontend-v2
+3. install node dependecies by running `npm install`
+4. run the front-end by using  `npm run serve`
+
 ## TODO
 
 Add addtional info to:
