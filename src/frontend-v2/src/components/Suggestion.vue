@@ -8,7 +8,7 @@
             <div id="information">
                 <div id="info-bulletpoints">
                     <p>⌛ {{this.runtime}}</p>
-                    <p>🔗 <a :href='source' target="_blank">Source</a></p>
+                    <p>🔗 <a :href='this.source' target="_blank" style="text-decoration:underline">Source</a></p>
                     <p>🎬 {{this.director}}</p>
                 </div>
                 <div id="profile-frame">
@@ -84,15 +84,15 @@ export default {
             const suggestion = await apiGetSuggestionById(this.id)
             const movie = await apiGetMovie(suggestion.data.movie_id)
             const user = await apiGetUser(suggestion.data.suggested_by, true)
-
+            console.log(movie)
             this.title = movie.data.title
-            this.external_rating = movie.data.rating
+            this.external_rating = movie.data.imdbRating
             this.runtime = movie.data.runtime
             this.source = movie.data.source
             this.director = movie.data.director
             this.suggestor_username = user.username
             this.suggestor_profile_picture = user.profile_picture ? user.profile_picture : /* need some default image handling*/ "https://cdn.britannica.com/84/206384-050-00698723/Javan-gliding-tree-frog.jpg";
-            this.poster = "https://s.studiobinder.com/wp-content/uploads/2017/12/Movie-Poster-Template-Dark-with-Image.jpg?x81279"; 
+            this.poster = movie.data.poster; 
         }
     },
     async mounted() {
