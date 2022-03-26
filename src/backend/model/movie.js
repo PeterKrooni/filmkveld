@@ -6,15 +6,24 @@ const movieSchema = mongoose.Schema({
         required: [true, "Movie title required"]
     },
     source: String,
-    runtime: {
-        type: Date,
-        validate: {
-            validator: v => (new Date(v) !== "Invalid Date") && !isNaN(new Date(v)),
-            message: props => `${props.value} is not a valid date`
-        },
-    },
+    runtime: String,
     director: String,
     rating: Number,
+    
+    // these additional values are also present in OMDB responses
+    year: String,
+    released: String,
+    actors: String,
+    plot: String,
+    language: String,
+    country: String,
+    poster: String,
+    ratings: Object,
+    metascore: String,
+    imdbRating: String,
+    imdbVotes: String,
+    imdbID: String,
+    DVDRelease: String,
 })
 
 module.exports = mongoose.model("Movie", movieSchema)
