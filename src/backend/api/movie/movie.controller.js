@@ -38,6 +38,10 @@ const apiGetMovieWithTitle = asyncHandler(async(req, res, next)=>{
 // @route   POST /api/v1/movie/
 // @access  Private
 const apiAddMovie = asyncHandler(async(req, res, next)=>{
+    if (!req.body){
+        res.status(400)
+        throw new Error("Request body required to add movie to db")
+    }
     if (!req.body.title){
         res.status(400)
         throw new Error("Title required to add movie")
@@ -47,7 +51,20 @@ const apiAddMovie = asyncHandler(async(req, res, next)=>{
         source: req.body.source ? req.body.source : "manually added",
         runtime: req.body.runtime,
         director: req.body.director,
-        rating: req.body.rating
+        rating: req.body.rating,
+        year: req.body.year,
+        released: req.body.released,
+        actors: req.body.actors,
+        plot: req.body.plot,
+        language: req.body.language,
+        country: req.body.country,
+        poster: req.body.poster,
+        ratings: req.body.ratings,
+        metascore: req.body.metascore,
+        imdbRating: req.body.imdbRating,
+        imdbVotes: req.body.imdbVotes,
+        imdbID: req.body.imdbID
+
     })
     res.status(200).json(movie)
 })
