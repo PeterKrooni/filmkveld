@@ -115,21 +115,28 @@ export default {
 
 <style scoped>
 #container{
+    margin: 12.5px;
     width: 310px;
     height: 310px;
     border: 0.1px solid rgba(87, 87, 87, 0.15);
     border-radius: 0.25em;
-    background-color: #373b40;
+    background-color: #3A4750;
+    /*
+    background: rgb(55,59,64);
+    background: linear-gradient(0deg, rgba(55,59,64,1) 0%, rgba(130,112,49,1) 100%, rgba(55,59,64,1) 100%); 
+    */
     color: rgb(221, 217, 217);
     box-shadow: rgba(12, 11, 11, 0.4) 0px 5px 10px;
 
     transition-duration: 100ms;
     transition-timing-function: ease-out;
+
+    border-bottom-right-radius: 1em;
 }
 #seen-container{
     border: 0.1px solid rgba(87, 87, 87, 0.15);
     border-radius: 0.25em;
-    background-color: #373b40;
+    background-color: #3A4750;
     color: rgb(221, 217, 217);
 
     transition-duration: 100ms;
@@ -143,7 +150,6 @@ export default {
 #header{
     height: 55px;
     width: 100%;
-    border-bottom: 1px solid #2C2F33;
     display: flex;
     flex-flow: row;
     justify-content: space-between;
@@ -170,11 +176,11 @@ export default {
 #body{
     display: flex;
     flex-flow: row;
-    justify-content: center;
-    width: 100%;
+    padding-left: 13.5px;
+    border-top-right-radius: 1em;
     height: 185px; 
-    background: rgb(55,59,64);
-    background: linear-gradient(0deg, rgba(55,59,64,1) 0%, rgb(67, 70, 75) 100%, rgba(55,59,64,1) 100%); 
+    background: #FF9A3C;
+    background: linear-gradient(0deg, #3A4750 0%, #646a70 100%, rgba(55,59,64,1) 100%); 
 }
 #information{
     font-size: 13.5px;
@@ -228,7 +234,6 @@ export default {
     display: flex;
     flex-flow: column;
     justify-content: center;
-    border-top: 1px solid #2C2F33;
     transition-duration: 150ms;
 }
 #footer:hover{
