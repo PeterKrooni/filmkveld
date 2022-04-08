@@ -11,6 +11,25 @@ const apiGetSuggestions = asyncHandler(async(req, res, next) => {
     return res.status(200).json(suggestions)
 })
 
+// @desc    Get all suggestions with movie data from movieID in suggestion, replaces movie_id with actual movie data
+// @route   GET /api/v1/suggestion/allmovies
+// @access  Public
+const apiGetSuggestionsWithMovieData = asyncHandler(async(req, res, next) => {
+    let suggestions = await Suggestion.find()
+    const movies = await Movie.find({_id: {$in: suggestions.map(s => s.movie_id)}})
+    for (var i = 0; i < suggestions.length; i++){
+        var index = 0
+        for (var j = 0; j < movies.length; j++){
+            if (movies[j]._id === suggestions[i].movie_id){
+                index = j
+            }
+        }
+        suggestions[i].movie_id = movies[index]
+    }
+    console.log(suggestions)
+    return res.status(200).json({suggestions})
+})
+
 // @desc    Get suggestions by user
 // @route   GET /api/v1/suggestion/:userid
 // @access  Public
@@ -79,4 +98,5 @@ module.exports = {
     apiGetSuggestion,
     apiDeleteSuggestion,
     apiGetSuggestionById,
+    apiGetSuggestionsWithMovieData,
 }
