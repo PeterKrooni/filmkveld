@@ -26,7 +26,6 @@ const apiGetSuggestionsWithMovieData = asyncHandler(async(req, res, next) => {
         }
         suggestions[i].movie_id = movies[index]
     }
-    console.log(suggestions)
     return res.status(200).json({suggestions})
 })
 
