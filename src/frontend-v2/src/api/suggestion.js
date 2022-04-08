@@ -4,6 +4,10 @@ export async function apiGetAllSuggestions(){
     return axios.get("http://localhost:5000/api/v1/suggestion/")
 }
 
+export async function apiGetAllSuggestionsWithMovieData(){
+    return axios.get("http://localhost:5000/api/v1/suggestion/allmovies/")
+}
+
 export async function apiAddSuggestion(movieid){
     const movieID = {movieid: movieid}
     return axios.post("http://localhost:5000/api/v1/suggestion/", movieID)
