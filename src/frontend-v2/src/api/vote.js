@@ -41,7 +41,7 @@ export async function apiVoteWTS(vote_suggID, want_see_rating){
         })
         .catch(() => {
             if (want_see_rating > 0){
-                console.log("new vote.")
+                console.log("new vote.", vote_suggID)
                 return apiAddVote(vote_suggID, want_see_rating)
             }
         })

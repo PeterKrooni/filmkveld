@@ -112,7 +112,7 @@ const apiGetVote = asyncHandler(async(req, res, next) => {
     }
     
     const vote = await Vote.findOne({suggestion: suggestionID, voted_by: userID})
-    return res.status(200).json(vote)
+    return res.status(vote ? 200 : 404).json(vote)
 })
 
 const apiUpdateKarma = asyncHandler(async(userid) => {
