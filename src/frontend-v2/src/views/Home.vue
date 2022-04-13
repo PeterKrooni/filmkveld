@@ -12,14 +12,16 @@
       <div class="suggestions-container">
         <div v-for="i in this.suggestions_l" :key="i" class="suggestions">
             <Suggestion class="sugg"
-              :id="i"
+              :preloaded="true"
+              :preloadedData="i"
             />
         </div>
       </div>
       <div class="suggestions-container">
         <div v-for="i in this.suggestions_r" :key="i" class="suggestions">
             <Suggestion class="sugg"
-              :id="i"
+              :preloaded="true"
+              :preloadedData="i"
             />
         </div>
       </div>
@@ -37,7 +39,7 @@
 <script>
 import Suggestion from '../components/Suggestion.vue'
 import NavMenu from '../components/NavMenu.vue'
-import { apiGetAllSuggestions } from '../api/suggestion'
+import { apiGetSuggestions } from '../api/rest/suggestions'
 
 export default {
   name: 'Home',
@@ -55,16 +57,15 @@ export default {
   methods: {
   },
   async mounted(){
-    const suggestionsRequest = await apiGetAllSuggestions();
-    const suggs = suggestionsRequest.data; 
+    const allWithMovie = await apiGetSuggestions(true, true)
+    const suggs = allWithMovie.data;
     for (var i = 0; i<suggs.length; i++){
-      console.log(suggs[i])
       if (i%2==0){
-        this.suggestions_l.push(suggs[i]._id)
+        this.suggestions_l.push(suggs[i])
       }else{
-        this.suggestions_r.push(suggs[i]._id)
+        this.suggestions_r.push(suggs[i])
       }
-    }
+    }      
     this.loaded = true;
   }
 }

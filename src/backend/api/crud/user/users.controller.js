@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-const User = require('../../model/user')
+const User = require('../../../model/user')
 
 // @desc    Authenticate user login
 // @route   POST /api/v1/user/login

@@ -4,7 +4,7 @@ import { apiLogin } from './login'
 
 export async function apiRegister(name, email, password){
     const details = {name: name, email: email, password: password}
-    axios.post('http://localhost:5000/api/v1/user/', details)
+    axios.post('http://localhost:5000/crud/api/user/', details)
     .then((res)=>{
         setJWT(res.data.token)
         return true;

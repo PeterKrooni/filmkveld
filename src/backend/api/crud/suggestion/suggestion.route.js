@@ -1,18 +1,15 @@
 const express = require('express')
 
 const {
-    apiGetSuggestions, apiAddSuggestion, apiGetSuggestion, apiDeleteSuggestion, apiGetSuggestionById, apiGetSuggestionsWithMovieData
+    apiGetSuggestions, apiAddSuggestion, apiGetSuggestion, apiDeleteSuggestion, apiGetSuggestionById
 } = require('./suggestion.controller')
 
 const router = express.Router()
-const protect = require('../../middleware/authMiddleware')
+const protect = require('../../../middleware/authMiddleware')
 
 router.route("/")
     .get(apiGetSuggestions)
     .post(protect, apiAddSuggestion)
-
-router.route("/allmovies")
-    .get(apiGetSuggestionsWithMovieData)
 
 router.route("/:id")
     .get(apiGetSuggestion)

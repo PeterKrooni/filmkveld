@@ -1,8 +1,8 @@
 const asyncHandler = require('express-async-handler')
 
-const User = require('../../model/user')
-const Suggestion = require('../../model/suggestion')
-const Vote = require('../../model/vote') 
+const User = require('../../../model/user')
+const Suggestion = require('../../../model/suggestion')
+const Vote = require('../../../model/vote') 
 
 /**
  * Gets all votes on every suggestion made by user

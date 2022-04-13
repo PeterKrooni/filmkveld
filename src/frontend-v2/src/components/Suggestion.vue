@@ -59,6 +59,13 @@ export default {
             type: String,
             default: "none"
         },
+        preloaded: {
+            type: Boolean,
+            default: false,
+        },
+        preloadedData: {
+            type: Object
+        },
         compact: {
             type: Boolean, 
             default: false
@@ -80,11 +87,11 @@ export default {
         async WTS_rateChange({rating}){
             await apiVoteWTS(this.id, rating)
         },
+        // fetches data from id
         async fetchDisplayData(){
             const suggestion = await apiGetSuggestionById(this.id)
             const movie = await apiGetMovie(suggestion.data.movie_id)
             const user = await apiGetUser(suggestion.data.suggested_by, true)
-            console.log(movie)
             this.title = movie.data.title
             this.external_rating = movie.data.imdbRating
             this.runtime = movie.data.runtime
@@ -93,11 +100,33 @@ export default {
             this.suggestor_username = user.username
             this.suggestor_profile_picture = user.profile_picture ? user.profile_picture : /* need some default image handling*/ "https://cdn.britannica.com/84/206384-050-00698723/Javan-gliding-tree-frog.jpg";
             this.poster = movie.data.poster; 
+        },
+        // uses preloaded data instead of fetching it
+        async loadDisplayData(){
+            const suggestion = this.preloadedData
+            const movie = this.preloadedData.movie_id
+            const user = this.preloadedData.suggested_by
+            this.title = movie.title
+            this.external_rating = movie.imdbRating
+            this.runtime = movie.runtime
+            this.source = movie.source
+            this.director = movie.director
+            this.suggestor_username = user.name
+            this.suggestor_profile_picture = user.profile_picture ? user.profile_picture : /* need some default image handling*/ "https://cdn.britannica.com/84/206384-050-00698723/Javan-gliding-tree-frog.jpg";
+            this.poster = movie.poster; 
         }
     },
     async mounted() {
-        await this.fetchDisplayData();
-        await apiGetVote(this.id)
+        let id_for_getvote
+        if (this.preloaded){
+            await this.loadDisplayData();
+            id_for_getvote = this.preloadedData._id
+        } else {
+            id_for_getvote = this.id
+            await this.fetchDisplayData();
+        }
+
+        await apiGetVote(id_for_getvote)
         .then((res)=>{
                 this.WTSeen_rated = res.data.want_to_see_rating; 
                 this.Seen_rated = res.data.seen_rating; 

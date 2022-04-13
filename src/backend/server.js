@@ -1,15 +1,21 @@
-const express = require('express')
-const cors = require('cors')
-const colors = require('colors')
-const connectDB = require('./config/db')
-const dotenv = require('dotenv')
-const {errorHandler} = require('./middleware/errorMiddleware')
-const users = require('./api/user/users.route')
-const movie = require('./api/movie/movie.route')
-const suggestion = require('./api/suggestion/suggestion.route')
-const vote = require('./api/vote/vote.route')
-const authentication = require('./api/authentication/auth.route')
-const omdbIntegration = require('./api/integration/omdb.route')
+const express =         require('express')
+const cors =            require('cors')
+const colors =          require('colors')
+const connectDB =       require('./config/db')
+const dotenv =          require('dotenv')
+const {errorHandler} =  require('./middleware/errorMiddleware')
+
+// crud api
+const users =           require('./api/crud/user/users.route')
+const movie =           require('./api/crud/movie/movie.route')
+const suggestion =      require('./api/crud/suggestion/suggestion.route')
+const vote =            require('./api/crud/vote/vote.route')
+const authentication =  require('./api/crud/authentication/auth.route')
+
+// rest api
+const omdbIntegration = require('./api/rest/integration/rest.omdb.route')
+const suggestions =     require('./api/rest/suggestions/rest.suggestion.route')
+
 const app = express();
 
 dotenv.config()
@@ -22,12 +28,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
 app.use(errorHandler)
 
-app.use("/api/v1/user", users);
-app.use("/api/v1/movie", movie);
-app.use("/api/v1/suggestion", suggestion)
-app.use("/api/v1/vote", vote)
-app.use("/api/v1/auth/", authentication)
-app.use("/api/v1/integration/", omdbIntegration)
+const crudPath = "/crud/api/"
+app.use(crudPath + "user/", users);
+app.use(crudPath + "movie/", movie);
+app.use(crudPath + "suggestion/", suggestion)
+app.use(crudPath + "vote/", vote)
+app.use(crudPath + "auth/", authentication)
+
+const restPath = "/rest/api/"
+app.use(restPath + "integration/", omdbIntegration)
+app.use(restPath + "suggestions/", suggestions)
 
 app.listen(port, () => console.log(`Server listening on port ${port}`))
 

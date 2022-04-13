@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler')
-const Suggestion = require('../../model/suggestion')
-const Vote = require('../../model/vote')
-const Movie = require('../../model/movie')
+const Suggestion = require('../../../model/suggestion')
+const Vote = require('../../../model/vote')
+const Movie = require('../../../model/movie')
 
 // @desc    Get all suggestions
 // @route   GET /api/v1/suggestion/
@@ -9,24 +9,6 @@ const Movie = require('../../model/movie')
 const apiGetSuggestions = asyncHandler(async(req, res, next) => {
     const suggestions = await Suggestion.find()
     return res.status(200).json(suggestions)
-})
-
-// @desc    Get all suggestions with movie data from movieID in suggestion, replaces movie_id with actual movie data
-// @route   GET /api/v1/suggestion/allmovies
-// @access  Public
-const apiGetSuggestionsWithMovieData = asyncHandler(async(req, res, next) => {
-    let suggestions = await Suggestion.find()
-    const movies = await Movie.find({_id: {$in: suggestions.map(s => s.movie_id)}})
-    for (var i = 0; i < suggestions.length; i++){
-        var index = 0
-        for (var j = 0; j < movies.length; j++){
-            if (movies[j]._id === suggestions[i].movie_id){
-                index = j
-            }
-        }
-        suggestions[i].movie_id = movies[index]
-    }
-    return res.status(200).json({suggestions})
 })
 
 // @desc    Get suggestions by user
@@ -97,5 +79,4 @@ module.exports = {
     apiGetSuggestion,
     apiDeleteSuggestion,
     apiGetSuggestionById,
-    apiGetSuggestionsWithMovieData,
 }

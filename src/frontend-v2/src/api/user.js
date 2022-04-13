@@ -1,9 +1,9 @@
 import axios from 'axios'
 
 export async function apiGetUser(userid, profile_picture=false){
-    const user = await axios.get("http://localhost:5000/api/v1/user/"+userid)
+    const user = await axios.get("http://localhost:5000/crud/api/user/"+userid)
     if (profile_picture){
-        const avatar = await axios.get("http://localhost:5000/api/v1/user/"+userid+"/avatar")
+        const avatar = await axios.get("http://localhost:5000/crud/api/user/"+userid+"/avatar")
         return {
             username: user.data.username, 
             userid: user.data.userid, 
@@ -22,7 +22,7 @@ export async function apiGetUser(userid, profile_picture=false){
 }
 
 export async function getMe(){
-    const user = await axios.get("http://localhost:5000/api/v1/user/me")
+    const user = await axios.get("http://localhost:5000/crud/api/user/me")
     console.log(user)
     return { 
         username: user.data.name, 
@@ -34,6 +34,6 @@ export async function getMe(){
 }
 
 export async function apiUpdateProfilePicture(userid, base64_img){
-    const user = await axios.put("http://localhost:5000/api/v1/user/" + userid, {profile_picture: base64_img})
+    const user = await axios.put("http://localhost:5000/crud/api/user/" + userid, {profile_picture: base64_img})
     return {username: user.data.name, userid: user.data.id, profile_picture: user.data.profile_picture}
 }

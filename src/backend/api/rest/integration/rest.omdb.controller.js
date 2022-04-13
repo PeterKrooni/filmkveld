@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler')
-const Movie = require('../../model/movie')
-const Suggestion = require('../../model/suggestion')
+const Movie = require('../../../model/movie')
+const Suggestion = require('../../../model/suggestion')
 const axios = require('axios')
 const dotenv = require('dotenv')
 

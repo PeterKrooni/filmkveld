@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler')
-const Vote = require('../../model/vote')
-const Suggestion = require('../../model/suggestion')
+const Vote = require('../../../model/vote')
+const Suggestion = require('../../../model/suggestion')
 const { updateKarma } = require('../vote/voteCounter')
 
 // @desc    Vote on suggestion

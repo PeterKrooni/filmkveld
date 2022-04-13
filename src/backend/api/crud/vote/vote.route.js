@@ -8,7 +8,7 @@ const {
 } = require ('./vote.controller')
 
 const router = express.Router()
-const protect = require('../../middleware/authMiddleware')
+const protect = require('../../../middleware/authMiddleware')
 
 router.route("/:suggestion")
     .get(protect, apiGetVote)
