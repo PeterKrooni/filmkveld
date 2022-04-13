@@ -85,7 +85,8 @@ export default {
     },
     methods: {
         async WTS_rateChange({rating}){
-            await apiVoteWTS(this.id, rating)
+            let id = this.preloaded ? this.preloadedData._id : this.id
+            await apiVoteWTS(id, rating)
         },
         // fetches data from id
         async fetchDisplayData(){
