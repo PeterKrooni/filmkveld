@@ -42,6 +42,16 @@ const getSuggestions = asyncHandler(async(req, res, next) => {
     return res.status(200).json(suggestions)
 })
 
+// @desc    Get most "want to see" voted suggestion
+// @route   GET /mostwanted
+// @access  Public
+const getMostWanted = asyncHandler(async(req, res, next) => {
+    const s = await Suggestion.findOne();
+    console.log("TODO implement getMostWanted in rest.suggestion.controller")
+    return res.status(200).json(s)
+})
+
 module.exports = {
-    getSuggestions
+    getSuggestions,
+    getMostWanted
 }
