@@ -11,10 +11,11 @@
                     <p>🔗 <a :href='this.source' target="_blank" style="text-decoration:underline">Source</a></p>
                     <p>🎬 {{this.director}}</p>
                 </div>
-                <div id="profile-frame">
-                    <img style="width: 19px; height: 19px; border-radius: 20em;" :src="this.suggestor_profile_picture" alt=""> 
-                    {{this.suggestor_username}}
-                </div>
+                <ProfileFrame 
+                    :preloaded="true"
+                    :pl_profile_picture="this.suggestor_profile_picture"
+                    :pl_username="this.suggestor_username"
+                />
             </div>
             <div id="poster" v-if="!compact">
                 <img :src="this.poster" id="poster-img" alt="">
@@ -30,6 +31,7 @@
 <script>
 import Rating from './Rating.vue'
 import Button from './Button.vue'
+import ProfileFrame from './ProfileFrame.vue'
 import { apiGetMovie } from '../api/movie'
 import { apiGetUser } from '../api/user'
 import { apiVoteWTS, apiGetVote } from '../api/vote'
@@ -40,6 +42,7 @@ export default {
     components: {
         Rating,
         Button,
+        ProfileFrame,
     },
     data() {
         return {
@@ -226,23 +229,6 @@ export default {
 }
 #information a{
     color: rgb(221, 217, 217);
-}
-#profile-frame{
-    display: flex;
-    flex-flow: row;
-    justify-content: left;
-    align-items: center;
-    font-size: 14px;
-    margin-left: 5px;
-    margin-top: 10px;
-    margin-bottom: 7px;
-    padding: 6px;
-    width: 65%;
-    border-radius: 0.5em;
-    box-shadow: rgba(23, 23, 126, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
-}
-#profile-frame img{
-    margin-right: 7px;
 }
 #poster{
     height: 100%;
