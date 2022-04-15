@@ -30,7 +30,7 @@ export function apiIsLoggedIn(){
     if (cookie == undefined){
         return false
     } else {
-        return axios.post("http://localhost:5000/api/v1/auth/", {token: cookie})
+        return axios.post("http://localhost:5000/crud/api/auth/", {token: cookie})
     }
 }
 
