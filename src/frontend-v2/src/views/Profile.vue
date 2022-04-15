@@ -97,7 +97,7 @@ export default {
     color: rgb(221, 217, 217); 
 }
 #page-container{
-    width: 50%;
+    width: 90%;
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -122,6 +122,10 @@ export default {
     display: flex;
     justify-content: space-evenly;
     flex-flow: row;    
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: 30vh;
+    width: 100%;
     margin-top: 35px;
 }
 #suggestions-container div {
