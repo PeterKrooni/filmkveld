@@ -23,7 +23,6 @@ export async function apiGetUser(userid, profile_picture=false){
 
 export async function getMe(){
     const user = await axios.get("http://localhost:5000/crud/api/user/me")
-    console.log(user)
     return { 
         username: user.data.name, 
         userid: user.data.id, 
