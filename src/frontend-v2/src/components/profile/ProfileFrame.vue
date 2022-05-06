@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { apiGetUser } from '../api/user'
+import { apiGetUser } from '../../api/user'
 
 export default {
     data() {

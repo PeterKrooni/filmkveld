@@ -29,7 +29,7 @@
 import { apiGetSuggestionById } from '../../api/suggestion'
 import { apiGetMovie } from '../../api/movie'
 import { apiGetUser } from '../../api/user'
-import ProfileFrame from '../ProfileFrame.vue'
+import ProfileFrame from '../profile/ProfileFrame.vue'
 
 export default {
     components: {
@@ -78,7 +78,7 @@ export default {
 #background > img{
     border-top-left-radius: 0.5em;
     border-top-right-radius: 0.5em;
-    width: 50%;
+    width: 150px;
     height: auto;
     filter: blur(2px) brightness(40%);
 }

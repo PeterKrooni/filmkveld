@@ -1,36 +1,47 @@
 <template>
   <div id="home">
-    <NavMenu />
-    <div id="stats-section">
-      <h1 id="stats-header" class="profile-header" style="font-size: 55px;">Statistics</h1>
 
-      <h1 class="profile-header" style="color: white;font-size: 30px; margin: -50px;">Your profile</h1>
-      <div class="separator">You're stuff!</div>
+    <!-- Spinner -->
+    <div id="loader-container" style="height: 75vh; display: flex; align-items: center; flex-flow: column; justify-content: space-evenly;" v-if="!loaded">
+
+      <SmallHeader style="margin-bottom: -200px;" :toptext="'Filmkveld'" :bottomtext="'Sponsored by coffee!'" id="load-header" />
+      <div class="loader" v-if="!loaded"></div>
+    </div>
+    <NavMenu v-if="loaded" />
+
+    <!-- Side view -->
+    <div id="side-view" v-if="loaded">
+      <div>
+        <BigHeader :text="'Filmkveld'" />
+      </div>
       
-      <div id="profile-container" style="margin-top: -50px;">
-        <div id="profile-info">
-          <img :src="imgSource" @click="openFileSelector" id="PP" alt="">
-          <input @change="updateProfilePicture" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" style="display: none;">
-          <h1 class="profile-header">{{name}}</h1>
-        </div>
-        <div id="profile-stats" style="text-align: left;">
-          <h2 class="profile-header">Karma: <b>{{karma}}</b></h2>
-          <h2 class="profile-header">Suggestions: <b>12</b></h2>
-        </div>
+      <div>
+        <SmallHeader :toptext="'Your profile!'" :bottomtext="'You are stuff!'" />
+        <ProfileCard style="margin-top: 85px;" />
+      </div>
+      
+      <div style="margin-top: 100px">
+        <SmallHeader :toptext="'Add a movie'" :bottomtext="'Wooo!'" />
+        <AddMovie style="margin-top: 20px;" />
       </div>
 
-      <h1 class="profile-header" style="color: white;font-size: 30px; margin: -50px;">Top suggestions</h1>
-      <div class="separator">Yes! I love stats! - you</div>
-      
-      <div id="top-suggestions-container" style="margin-top: -50px;">
-        <StatsMostWanted style="margin-bottom: 30px;" />
-        <StatsMostLoved style="margin-bottom: 30px;" />
+      <div>
       </div>
     </div>
 
+
+    <!-- Suggestions view -->
     <div id="suggestions-section" v-if="loaded">
       <div class="suggestions-container">
         <div v-for="i in this.suggestions_l" :key="i" class="suggestions">
+            <Suggestion class="sugg"
+              :preloaded="true"
+              :preloadedData="i"
+            />
+        </div>
+      </div>
+      <div class="suggestions-container">
+        <div v-for="i in this.suggestions_m" :key="i" class="suggestions">
             <Suggestion class="sugg"
               :preloaded="true"
               :preloadedData="i"
@@ -46,43 +57,34 @@
         </div>
       </div>
     </div>
-
-    <div id="interactions-section">
-      <h1 id="stats-header" class="profile-header" style="font-size: 55px;">I'm stuff!</h1>
-
-      <p>Interactions go here, stuff like 
-        creating movie nights, interactible things, marking movies as seen?
-      </p> 
-      <button> Add movie from IMDB</button>
-    </div>
   </div>
 </template>
 
 <script>
 import Suggestion from '../components/Suggestion.vue'
-import StatsMostWanted from '../components/stats/StatsMostWanted.vue'
-import StatsMostLoved from '../components/stats/StatsMostLoved.vue'
+import AddMovie from '../components/AddMovie.vue'
+import BigHeader from '../components/BigHeader.vue'
+import SmallHeader from '../components/SmallHeader.vue'
+import ProfileCard from '../components/profile/ProfileCard.vue'
 import NavMenu from '../components/NavMenu.vue'
 import { apiGetSuggestions } from '../api/rest/suggestions'
-import { getMe} from '../api/user'
 
 export default {
   name: 'Home',
   components: {
     Suggestion,
-    StatsMostWanted,
-    StatsMostLoved,
+    AddMovie,
+    BigHeader,
+    SmallHeader,
+    ProfileCard,
     NavMenu
   },
   data() {
     return {
       suggestions_l: [],
+      suggestions_m: [],
       suggestions_r: [],
       loaded: false,
-      /* profile frame */
-      imgSource: "https://us.123rf.com/450wm/happyvector071/happyvector0711904/happyvector071190414500/120957417-creative-illustration-of-default-avatar-profile-placeholder-isolated-on-background-art-design-grey-p.jpg?ver=6",
-      name: "",
-      karma: "",
     }
   },
   methods: {
@@ -90,23 +92,25 @@ export default {
   async mounted(){
     const allWithMovie = await apiGetSuggestions(true, true)
     const suggs = allWithMovie.data;
+    var side = 0;
     for (var i = 0; i<suggs.length; i++){
-      if (i%2==0){
+      if (side == 0){
         this.suggestions_l.push(suggs[i])
-      }else{
-        this.suggestions_r.push(suggs[i])
+        side ++
       }
-    }      
-    // load users profile
-    const me = await getMe()
-    this.imgSource = me.profile_picture
-    this.name = me.username;
-
-    const wts = me.wts_karma
-    const seen = me.seen_karma
-    this.karma = wts + seen
-
-    this.loaded = true;
+      else if (side == 1){
+        this.suggestions_m.push(suggs[i])
+        side ++
+      }
+      else if (side == 2){
+        this.suggestions_r.push(suggs[i])
+        side ++
+      }
+      else{
+        side = 0
+      }
+    }
+    this.loaded = true      
   }
 }
 </script>
@@ -129,7 +133,12 @@ export default {
   margin-bottom: -60px;
   font-size: 20px;
 }
-
+#side-view{
+  height: 95vh;
+  display: flex;
+  justify-content: space-evenly;
+  flex-flow: column;
+}
 #stats-header{  
   box-shadow: rgb(26, 112, 173) 0px 0px 0px 2px inset, #303841 10px -10px 0px -3px, rgb(18, 104, 17) 10px -10px, #303841 20px -20px 0px -3px, rgb(234, 195, 5) 20px -20px, #303841 30px -30px 0px -3px, rgb(85, 221, 255) 30px -30px, #303841 40px -40px 0px -3px, rgb(18, 150, 47) 40px -40px; padding: 5px;
   padding-left: 40px;
@@ -264,5 +273,85 @@ export default {
   justify-content: center;
   color: rgb(113, 132, 141);
   font-size: 12px;
+}
+
+#load-header{
+  animation: fadeIn linear 0.5s;
+  -webkit-animation: fadeIn linear 0.5s;
+  -moz-animation: fadeIn linear 0.5s;
+  -o-animation: fadeIn linear 0.5s;
+  -ms-animation: fadeIn linear 0.5s;
+}
+
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+/*
+ provided by Luke Haas from https://projects.lukehaas.me/css-loaders/
+*/
+.loader {
+  font-size: 10px;
+  margin: 50px auto;
+  text-indent: -9999em;
+  width: 11em;
+  height: 11em;
+  border-radius: 50%;
+  background: #ffffff;
+  background: -moz-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  background: -webkit-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  background: -o-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  background: -ms-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  background: linear-gradient(to right, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  position: relative;
+  -webkit-animation: load3 1.4s infinite linear;
+  animation: load3 1.4s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.loader:before {
+  width: 50%;
+  height: 50%;
+  background: #ffffff;
+  border-radius: 100% 0 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+}
+.loader:after {
+  background: #303841;
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  content: '';
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+@-webkit-keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 </style>

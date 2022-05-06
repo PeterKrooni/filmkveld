@@ -31,7 +31,7 @@
 <script>
 import Rating from './Rating.vue'
 import Button from './Button.vue'
-import ProfileFrame from './ProfileFrame.vue'
+import ProfileFrame from './profile/ProfileFrame.vue'
 import { apiGetMovie } from '../api/movie'
 import { apiGetUser } from '../api/user'
 import { apiVoteWTS, apiGetVote } from '../api/vote'
