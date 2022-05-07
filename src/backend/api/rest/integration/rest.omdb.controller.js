@@ -12,7 +12,7 @@ const OMDB_KEY = process.env.OMDB_API_KEY || ""
 // @access  Public
 const apiAddMovieFromOMDB = asyncHandler(async(req, res, next)=>{
     if (!req.body.link){
-        res.status(400)
+        return res.status(400)
         throw new Error("Adding movie from OMDB failed: no imdb link")
     }
     var link_arr = req.body.link.split("/")
@@ -20,17 +20,15 @@ const apiAddMovieFromOMDB = asyncHandler(async(req, res, next)=>{
     for (var i = 0; i<link_arr.length; i++){
         if (link_arr[i] === 'title'){
             if (i+1 >= link_arr.length){
-                throw new Error(`Invalid IMDB link: ${req.body.link}`)
+                return res.status(400).json({response: `Invalid IMDB link: ${req.body.link}`})
             } else {
                 imdb_id = link_arr[i+1]
             }
         } 
     }
-
     let existing = await Movie.exists({imdbID: imdb_id})
     if (existing){
-        res.status(409)
-        throw new Error(`Movie with imdb ID ${imdb_id} already exists.`)
+        return res.status(409).json({response: `Movie with imdb ID ${imdb_id} already exists.`})
     }
 
     var omdb_request_link =
@@ -39,9 +37,8 @@ const apiAddMovieFromOMDB = asyncHandler(async(req, res, next)=>{
     "&apikey=" + OMDB_KEY
     
     const omdb_response = await axios.get(omdb_request_link)
-    if (!omdb_response){
-        res.status(400)
-        throw new Error(`OMDB returned nothing on IMDB id ${imdb_id}`)
+    if (omdb_response.data.Response === 'False'){
+        return res.status(400).json({response: `OMDB returned nothing on IMDB id ${imdb_id}`})
     }
 
     // TODO: code below shouldn't be done here, this functionality already exists

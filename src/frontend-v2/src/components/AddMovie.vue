@@ -27,7 +27,6 @@ export default{
     methods: {
         async addMovie(){
             var imdb_link = document.getElementById("imdb_input").value
-            console.log(imdb_link)  
             if (imdb_link === ""){
                 this.modalText = "IMDB link cannot be empty."
                 this.modalType = "Warning"
@@ -40,17 +39,18 @@ export default{
                 this.openModal = true
                 return
             }
-            const result = await apiAddMovieFromOMDB(imdb_link)
-            if (result){
-                console.log(result)
-                this.modalText="Movie " + result.data.movie.title + " added."
+            await apiAddMovieFromOMDB(imdb_link)
+            .then((res) => {
+                this.modalText= res.data.movie.title + " added."
                 this.modalType="Confirmation"
-            }else{
-                this.modalText = "Failed to add movie with link " + imdb_link
+                this.openModal = true
+             })
+            .catch((res) => {
+                console.log(res.response)
+                this.modalText = res.response.data.response
                 this.modalType = "Error"
-            }
-            this.openModal = true
-            return
+                this.openModal = true
+            })
         }
     }
 }
