@@ -3,29 +3,54 @@
         <NavMenu />
         <input id="imdb_input" type="text" placeholder="Paste IMDB link...">
         <button @click="addMovie" id="add-btn">Add movie!</button>
+        <FeedbackModal @modalClosed="openModal = false" :open="openModal" :content="modalText" :type="modalType" />
     </div>
 </template>
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
+import FeedbackModal from '../components/FeedbackModal.vue'
 import { apiAddMovieFromOMDB } from '../api/omdb'
 
 export default{
     components: {
-        NavMenu
+        NavMenu,
+        FeedbackModal
+    },
+    data() {
+        return{
+            openModal: false,
+            modalText: '',
+            modalType: 'Confirmation'
+        }
     },
     methods: {
         async addMovie(){
             var imdb_link = document.getElementById("imdb_input").value
-            if (!imdb_link.startsWith("https://www.imdb.com/")){
-                console.error("Invalid link or not an IMDB link: ", imdb_link)
+            console.log(imdb_link)  
+            if (imdb_link === ""){
+                this.modalText = "IMDB link cannot be empty."
+                this.modalType = "Warning"
+                this.openModal = true
                 return
             }
-            if (imdb_link === ""){
-                console.error("IMDB link cannot be empty.")
-                return 
+            if (!imdb_link.startsWith("https://www.imdb.com/")){
+                this.modalText = "Invalid link or not an IMDB link: " + imdb_link
+                this.modalType = "Error"
+                this.openModal = true
+                return
             }
-            await apiAddMovieFromOMDB(imdb_link)
+            const result = await apiAddMovieFromOMDB(imdb_link)
+            if (result){
+                console.log(result)
+                this.modalText="Movie " + result.data.movie.title + " added."
+                this.modalType="Confirmation"
+            }else{
+                this.modalText = "Failed to add movie with link " + imdb_link
+                this.modalType = "Error"
+            }
+            this.openModal = true
+            return
         }
     }
 }
