@@ -11,11 +11,11 @@ const voteSchema = mongoose.Schema({
         required: [true, 'Suggestion ID required to vote'],
         ref: 'Suggestion',
     },
-    want_to_see_rating: {
-        default: 0,
-        type: Number,
+    seen: {
+        default: false,
+        type: Boolean,
     },
-    seen_rating: {
+    rating: {
         default: 0,
         type: Number,
     }

@@ -1,18 +1,18 @@
 <template>
     <div id="rating">
-        <div v-for="i in numstars" :key="i" id="stars">
-            <div v-if="i<=rating" @click="vote(i)">
-                <svg height="21" width="20">
-                    <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"
-                    style="fill:gold;fill-rule:nonzero;" />
-                </svg>
-            </div>
-            <div v-else @click="vote(i)">
-                <svg height="21" width="20">
-                    <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"
-                    style="fill:grey;fill-rule:nonzero;" />
-                </svg>
-            </div>
+        <div v-if="this.seen">
+            {{this.rating}}
+            <button @click="upvote">
+                <p>Upvote</p>
+            </button>
+            <button @click="downvote">
+                <p>downvote</p>
+            </button>
+        </div>
+        <div v-else>
+            <button @click="this.$emit('seen')">
+                <p>seen</p>
+            </button>
         </div>
     </div>
 </template>
@@ -21,7 +21,8 @@
 export default {
     name: 'Rating',
     props: {
-        WTS_rated: 0
+        seen: false,
+        rating: 0
     },
     data(){
         return {
@@ -30,6 +31,12 @@ export default {
         }
     },
     methods:{
+        upvote: function() {
+            this.$emit("upvote")
+        },
+        downvote: function() {
+            this.$emit("downvote")
+        },
         vote: function(i){
             if (i==1 && this.rating == 1){
                 this.rating = 0;
@@ -41,7 +48,8 @@ export default {
     },
     mounted(){
         this.rating = this.WTS_rated
-    }
+    },
+    emits: ["upvote", "downvote"]
 }
 </script>
 

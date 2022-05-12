@@ -22,8 +22,13 @@
             </div>
         </div>
         <div id="footer" v-if="!compact">
-            <div id="rating-text">Want to see it?</div>
-            <div v-if="rating_loaded" id="rating-stars"><Rating @rated="this.WTS_rateChange" :WTS_rated="this.WTSeen_rated" /></div>
+            <div v-if="rating_loaded" id="rating-stars"><Rating 
+            @upvote="this.upvote" 
+            @downvote="this.downvote" 
+            @seen="this.seen" 
+            :seen="this.seenValue"
+            :rating="this.rating"
+            /></div>
         </div>
     </div>    
 </template>
@@ -77,8 +82,8 @@ export default {
     data() {
         return {
             rating_loaded: false,
-            WTSeen_rated: 0,
-            Seen_rated: 0,
+            rating: 0,
+            seenValue: false,
             loaded: false,
             compact_container: {
                 width: '150px',
@@ -87,9 +92,14 @@ export default {
         }
     },
     methods: {
-        async WTS_rateChange({rating}){
-            let id = this.preloaded ? this.preloadedData._id : this.id
-            await apiVoteWTS(id, rating)
+        seen () {
+            alert("seen")
+        },
+        upvote() {
+            alert("upvote")
+        },
+        downvote() {
+            alert("downvote")
         },
         // fetches data from id
         async fetchDisplayData(){
@@ -132,15 +142,10 @@ export default {
 
         await apiGetVote(id_for_getvote)
         .then((res)=>{
-                this.WTSeen_rated = res.data.want_to_see_rating; 
-                this.Seen_rated = res.data.seen_rating; 
+                this.rating = res.data.rating; 
+                this.seenValue = res.data.seen; 
                 this.rating_loaded = true;
             })
-        .catch((res)=>{
-                this.WTSeen_rated = 0; 
-                this.Seen_rated = 0; 
-                this.rating_loaded = true;
-        })
         this.loaded = true
     }
 }
