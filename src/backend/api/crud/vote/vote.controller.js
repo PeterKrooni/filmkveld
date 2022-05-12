@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler')
 const Vote = require('../../../model/vote')
 const Suggestion = require('../../../model/suggestion')
 const { updateKarma } = require('../vote/voteCounter')
-const vote = require('../../../model/vote')
+const suggestion = require('../../../model/suggestion')
 
 
 // @route POST /api/v1/vote/:suggetionId
@@ -10,12 +10,12 @@ const apiVoteSeen = asyncHandler(async(req, res, next) => {
     const vote = await Vote.findOne({voted_by: req.user.id, suggestion: req.params.suggestion})
     
     if (!vote) {
-        const vote = await vote.Create({voted_by: req.user.id, suggestion: req.params.suggestion, seen: req.body.seen})
-        res.status(200).json(vote)
+        const newVote = await Vote.Create({voted_by: req.user.id, suggestion: req.params.suggestion, seen: req.body.seen})
+        res.status(200).json(newVote)
     }
     else {
-        const vote = await vote.findByIdAndUpdate(vote._id, {seen: req.body.seen})
-        res.status(200).json(vote)
+        const updatedVote = await Vote.findByIdAndUpdate(vote._id, {seen: req.body.seen})
+        res.status(200).json(updatedVote)
     }
 
 })
@@ -26,15 +26,23 @@ const apiVoteRating = asyncHandler(async(req, res, next) => {
     const vote = await Vote.findOne({voted_by: req.user.id, suggestion: req.params.suggestion})
     
     if (!vote) {
-        const vote = await vote.Create({voted_by: req.user.id, suggestion: req.params.suggestion, rating: req.body.rating})
-        res.status(200).json(vote)
+        const newVote = await Vote.Create({voted_by: req.user.id, suggestion: req.params.suggestion, rating: req.body.rating})
+        
+        const suggestion = await Suggestion.findById({suggested_by: vote.suggestion})
+        const user = await User.findById(suggestion.suggested_by)
+        await User.findByIdAndUpdate(user._id, {karma: user.karma + req.body.rating})
+
+        res.status(200).json(newVote)
     }
     else {
-        const vote = await vote.findByIdAndUpdate(vote._id, {rating: req.body.rating})
-        res.status(200).json(vote)
+        const updateVote = await Vote.findByIdAndUpdate(vote._id, {rating: req.body.rating})
+        res.status(200).json(updateVote)
     }
 
 })
+
+
+
 
 
 // @desc    Remove vote on suggestion 
@@ -76,6 +84,7 @@ const apiUpdateKarma = asyncHandler(async(userid) => {
     const updated = await updateKarma(userid)
     return updated
 })
+
 
 module.exports = {
     apiRemoveVote,

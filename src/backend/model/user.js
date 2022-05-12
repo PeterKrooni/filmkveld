@@ -17,14 +17,10 @@ const userSchema = mongoose.Schema({
         type: String,
         default: "" // TODO find default profile picture
     },
-    want_to_see_karmascore: { 
+    karma: { 
         type: Number,
-        default: 10
+        default: 0
     },
-    seen_karmascore: {
-        type: Number,
-        default: 10
-    }
 }, {
     timestamps: true
 })

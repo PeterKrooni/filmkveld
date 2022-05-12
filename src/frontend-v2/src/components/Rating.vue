@@ -3,10 +3,10 @@
         <div v-if="this.seen">
             {{this.rating}}
             <button @click="upvote">
-                <p>Upvote</p>
+                <p>👍</p>
             </button>
             <button @click="downvote">
-                <p>downvote</p>
+                <p>👎</p>
             </button>
         </div>
         <div v-else>
@@ -24,12 +24,6 @@ export default {
         seen: false,
         rating: 0
     },
-    data(){
-        return {
-            numstars: 10,
-            rating: 0,
-        }
-    },
     methods:{
         upvote: function() {
             this.$emit("upvote")
@@ -45,9 +39,6 @@ export default {
             }
             this.$emit("rated", {rating: this.rating});
         }
-    },
-    mounted(){
-        this.rating = this.WTS_rated
     },
     emits: ["upvote", "downvote"]
 }

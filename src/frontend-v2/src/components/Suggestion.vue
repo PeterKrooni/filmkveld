@@ -22,7 +22,8 @@
             </div>
         </div>
         <div id="footer" v-if="!compact">
-            <div v-if="rating_loaded" id="rating-stars"><Rating 
+            <div v-if="rating_loaded" id="rating-stars">
+            <Rating 
             @upvote="this.upvote" 
             @downvote="this.downvote" 
             @seen="this.seen" 
@@ -39,7 +40,7 @@ import Button from './Button.vue'
 import ProfileFrame from './profile/ProfileFrame.vue'
 import { apiGetMovie } from '../api/movie'
 import { apiGetUser } from '../api/user'
-import { apiVoteWTS, apiGetVote } from '../api/vote'
+import { apiVoteSeen, apiVoteRating, apiGetVote } from '../api/vote'
 import { apiGetSuggestionById } from '../api/suggestion'
 
 export default {
@@ -92,14 +93,24 @@ export default {
         }
     },
     methods: {
-        seen () {
-            alert("seen")
+        async seen () {
+            const sid = this.preloaded ? this.preloadedData._id : this.id 
+            await apiVoteSeen(sid, true).then(res => {
+                this.seenValue = res.data.seen
+            })
         },
-        upvote() {
-            alert("upvote")
+        async upvote() {
+            const sid = this.preloaded ? this.preloadedData._id : this.id 
+            await apiVoteRating(sid, 1).then(res => {
+                 this.rating = res.data.rating
+                 console.log(res.data)
+            })
         },
-        downvote() {
-            alert("downvote")
+        async downvote() {
+            const sid = this.preloaded ? this.preloadedData._id : this.id 
+            await apiVoteRating(sid, -1).then(res => {
+                 this.rating = res.data.rating
+            })
         },
         // fetches data from id
         async fetchDisplayData(){

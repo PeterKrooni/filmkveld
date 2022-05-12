@@ -51,10 +51,10 @@ export function apiGetVote(suggID){
     return axios.get('http://localhost:5000/crud/api/vote/'+suggID)
 }
 
-export function apiVoteSeen(suggID, rating){
-    return axios.post('http://localhost:5000/crud/api/vote/'+suggID, {seen: rating})
+export function apiVoteSeen(suggID, newRating){
+    return axios.post('http://localhost:5000/crud/api/vote/'+suggID, {seen: newRating})
 }
 
-export function apiVoteRating(suggID, rating){
-    return axios.put('http://localhost:5000/crud/api/vote/'+suggID, {rating: rating})
+export function apiVoteRating(suggID, newRating){
+    return axios.put('http://localhost:5000/crud/api/vote/'+suggID, {rating: newRating})
 }
