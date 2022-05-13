@@ -9,7 +9,7 @@ export async function apiLogin(email, password){
         return true;
         })
     .catch((err)=>{
-        console.error(`Could not login: ${err}`)
+        alert(`Failed to validate login: ${err}`)
         return false
         })
 }
