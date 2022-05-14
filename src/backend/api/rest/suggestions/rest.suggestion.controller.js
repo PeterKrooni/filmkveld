@@ -23,7 +23,7 @@ const getSuggestions = asyncHandler(async(req, res, next) => {
                 suggestions[s].movie_id = await Movie.findById(suggestions[s].movie_id)
             }
             if (includeProfileData){
-                suggestions[s].suggested_by = await User.findById(suggestions[s].suggested_by).select(['-password', '-email', '-profile_picture']) 
+                suggestions[s].suggested_by = await User.findById(suggestions[s].suggested_by).select(['-password', '-email']) 
             }
         }
     }
