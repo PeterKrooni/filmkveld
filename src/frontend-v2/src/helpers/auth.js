@@ -13,7 +13,7 @@ export function setJWT(token){
     if (token != undefined){
         const cookie = Cookies.getItem("jwt")
         if (cookie == undefined){
-            Cookies.setItem("jwt", token, {httpOnly: true, sameSite: 'strict', expires: 30})
+            Cookies.setItem("jwt", token, {httpOnly: true, secure: true, sameSite: 'strict', expires: 30})
         }
         axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.getItem("jwt")}`    
     }else if (Cookies.getItem("jwt") != undefined){

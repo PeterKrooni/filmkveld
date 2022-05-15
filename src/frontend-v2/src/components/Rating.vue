@@ -1,19 +1,7 @@
 <template>
     <div id="rating">
-        <div v-if="this.seen">
-            {{this.rating}}
-            <button @click="upvote">
-                <p>👍</p>
-            </button>
-            <button @click="downvote">
-                <p>👎</p>
-            </button>
-        </div>
-        <div v-else>
-            <button @click="this.$emit('seen')">
-                <p>seen</p>
-            </button>
-        </div>
+        <i class="fa fa-thumbs-up" @click="upvote"></i>
+        <i class="fa fa-thumbs-down" @click="downvote"></i>
     </div>
 </template>
 
@@ -48,6 +36,21 @@ export default {
 #rating{
     display: flex;
     flex-flow: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+i{
+    font-size: 25px;
+}
+i:hover{
+    opacity: 0.5;
+}
+.fa-thumbs-up{
+    color: rgba(26, 146, 26, 0.744);
+}
+.fa-thumbs-down{
+    color: rgb(137, 29, 29);
+    margin-top: 10px;
 }
 #stars{
     opacity: 1;

@@ -138,6 +138,7 @@ export default {
   display: flex;
   justify-content: space-evenly;
   flex-flow: column;
+  margin-top: 50px;
 }
 #stats-header{  
   box-shadow: rgb(26, 112, 173) 0px 0px 0px 2px inset, #303841 10px -10px 0px -3px, rgb(18, 104, 17) 10px -10px, #303841 20px -20px 0px -3px, rgb(234, 195, 5) 20px -20px, #303841 30px -30px 0px -3px, rgb(85, 221, 255) 30px -30px, #303841 40px -40px 0px -3px, rgb(18, 150, 47) 40px -40px; padding: 5px;
@@ -154,7 +155,8 @@ export default {
   align-items: center;
   color: white;
   width: 23%;
-  height: 96.5vh;
+  height: 84vh;
+  margin: auto;
 }
 #top-suggestions-container{
   display: flex;
@@ -164,22 +166,6 @@ export default {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 12px 12.5px, rgba(0, 0, 0, 0.12) 0px -2px 6px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 2px 3px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
  
 }
-@media screen and (max-width: 1400px) {
-  #stats-section {
-    width: 28%;
-    flex-flow: column;
-  }
-  #top-suggestions-container{
-    flex-flow: column;
-  }
-}
-@media screen and (max-width: 1000px) {
-  #stats-section {
-    width: 67%;
-    flex-flow: column;
-  }
-}
-
 #suggestions-section {
   scrollbar-color: #646a70 #3A4750; 
   scrollbar-width: thin;
@@ -190,6 +176,7 @@ export default {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   
   height: 84vh;
+  width: 1020px;
   overflow: hidden;
   margin-top: 5vh;
   margin-bottom: 5vh;  
@@ -197,11 +184,6 @@ export default {
   padding: 2vh;
   padding-left: 2vh;
   padding-right: 2vh;
-}
-@media screen and (max-width: 1400px) {
-  #suggestions-section {
-  flex-flow: column;
-  }
 }
 .suggestions-container {
   display: flex;
@@ -211,6 +193,11 @@ export default {
   display: flex; 
   justify-content: space-evenly;
   flex-flow: row;
+  animation: fadeIn ease-out 1.25s;
+  -webkit-animation: fadeIn ease-out 1.25s;
+  -moz-animation: fadeIn ease-out 1.25s;
+  -o-animation: fadeIn ease-out 1.25s;
+  -ms-animation: fadeIn ease-out 1.25s;
 }
 .sugg{
   margin: 40px;
@@ -220,13 +207,41 @@ export default {
   width: 23%;
   height: 88vh;
 }
-@media screen and (max-width: 1400px) {
+@media screen and (min-width: 1400px){
+  #suggestions-section{
+    
+    animation: expandSuggestionsContainer cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+    -webkit-animation: expandSuggestionsContainer cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+    -moz-animation: expandSuggestionsContainer cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+    -o-animation: expandSuggestionsContainer cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+    -ms-animation: expandSuggestionsContainer cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+  }
+}
+@media screen and (max-width: 1500px) {
+  #stats-section {
+    width: 28%;
+    flex-flow: column;
+  }
+  #top-suggestions-container{
+    flex-flow: column;
+  }
+  #suggestions-section {
+  flex-flow: column;
+    width: auto;
+  }
   #interactions-section {
     width: 28%;
     flex-flow: column;
   }
+  #suggestions-section{
+    width: auto;
+  }
 }
 @media screen and (max-width: 1000px) {
+  #stats-section {
+    width: 67%;
+    flex-flow: column;
+  }
   #interactions-section {
     width: 67%;
     flex-flow: column;
@@ -287,7 +302,47 @@ export default {
   0% {opacity:0;}
   100% {opacity:1;}
 }
+@-moz-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
 
+@-webkit-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-o-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-ms-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@keyframes expandSuggestionsContainer {
+  0% {width: 25px; height: 5vh;}
+  50% {height: 15vh;}
+  100% {width: 1020px; height: 84vh;}
+}
+@-moz-keyframes expandSuggestionsContainer {
+  0% {width: 25px;}
+  100% {width: 1020px;}
+}
+@-webkit-keyframes expandSuggestionsContainer {
+  0% {width: 25px;}
+  100% {width: 1020px;}
+}
+@-o-keyframes expandSuggestionsContainer {
+  0% {width: 25px;}
+  100% {width: 1020px;}
+}
+@-ms-keyframes expandSuggestionsContainer {
+  0% {width: 25px;}
+  100% {width: 1020px;}
+}
 /*
  provided by Luke Haas from https://projects.lukehaas.me/css-loaders/
 */

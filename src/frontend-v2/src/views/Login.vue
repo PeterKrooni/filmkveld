@@ -30,6 +30,7 @@
 <script>
 import { apiLogin } from '../api/login'
 import { apiRegister } from '../api/register'
+import { setJWT } from '../helpers/auth.js'
 
 export default {
   methods: {
@@ -39,15 +40,17 @@ export default {
     },
     async submit(){
       if (this.register){
-        const success = await apiRegister(this.username, this.email, this.password)
-        if (success){
-          this.$router.push('/')
-        } else {
-          alert("Error creating account.")
-        }
+        await apiRegister(this.username, this.email, this.password)
+        .then((res) => {
+          if (res){
+            this.$router.push('/')
+          } else {
+            alert("Account creation failed.")
+          }
+        })
       }else{
         await apiLogin(this.email, this.password)
-        this.$router.push('/')
+        this.$router.push('/') 
       }
     }
   },

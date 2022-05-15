@@ -1,7 +1,7 @@
 <template>
     <div v-if="loaded" id="container">
         <div id="header">
-            <div id="title"><p>{{this.title}}</p></div>
+            <div id="title"><p>{{trimtext(this.title)}}</p></div>
             <div v-if="!compact" id="rating"><p>{{this.external_rating}} <img style="width: 22px; height: 15px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/575px-IMDB_Logo_2016.svg.png?20200406194337" alt=""></p></div>
         </div>
         <div id="body">
@@ -111,6 +111,22 @@ export default {
             await apiVoteRating(sid, -1).then(res => {
                  this.rating = res.data.rating
             })
+        },
+        trimtext(title){
+            return title.length < 18 ? title : title.substring(0, 18) + "..." 
+            // TODO rework this when not tired
+            var sizeAllowance = 20
+            var penalties = title.split('').filter(i => (i === i.toUpperCase() 
+                    && i !== ' ' 
+                    && i !== '.' 
+                    && i !== ',' 
+                    && i !== ':' 
+                    && i !== '"') || i === '&').length
+            return title.length - penalties < sizeAllowance ? title.substring(0, title.length - penalties) + "..." : title
+        },
+        async WTS_rateChange({rating}){
+            let id = this.preloaded ? this.preloadedData._id : this.id
+            await apiVoteWTS(id, rating)
         },
         // fetches data from id
         async fetchDisplayData(){
@@ -260,12 +276,13 @@ export default {
 }
 
 #footer{
-    font-size: 14px;
+    font-size: 16px;
     width: 100%;
-    height: 110px;
+    height: 60px;
     display: flex;
     flex-flow: column;
     justify-content: center;
+    align-items: center;
     transition-duration: 150ms;
 }
 #footer:hover{
@@ -274,8 +291,5 @@ export default {
 #rating-text{
     text-align: center;
     margin-bottom: 1%;
-}
-#rating-stars{
-    margin-left: 50px;
 }
 </style>

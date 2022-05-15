@@ -2,7 +2,7 @@
     <div class="profile-card-container" v-if="loaded">
         <div id="profile-container" style="margin-top: -50px;">
             <div id="profile-info">
-                <img :src="imgSource" @click="openFileSelector" id="PP" alt="">
+                <img :src="imgSource" id="PP" alt="">
                 <input @change="updateProfilePicture" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" style="display: none;">
                 <h1 class="profile-header">{{name}}</h1>
             </div>
@@ -51,8 +51,11 @@ export default {
   width: 350px;
   padding-top: 10px;
   padding-right: 20px;
-  box-shadow: rgba(0, 0, 0, 0.133) 0px 12px 12.5px, rgba(0, 0, 0, 0.12) 0px -2px 6px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 2px 3px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-  
+  box-shadow: rgba(0, 0, 0, 0.133) 0px 12px 12.5px, rgba(0, 0, 0, 0.12) 0px -2px 6px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 2px 3px, rgba(0, 0, 0, 0.09) 0px -3px 5px; 
+}
+#profile-conatiner:hover{
+    width: 400px;
+    box-shadow: 0px 12px 30px 4px rgb(255, 255, 255);
 }
 #profile-info{
   width: 200px;
