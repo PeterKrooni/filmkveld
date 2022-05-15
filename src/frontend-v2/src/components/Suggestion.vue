@@ -22,8 +22,7 @@
             </div>
         </div>
         <div id="footer" v-if="!compact">
-            <div v-if="!this.seenValue" id="rating-text">Want to see it?</div>
-            <div v-else>Rate it!</div>
+            <div>Rate it!</div>
             <Rating 
                 :suggestionID="this.preloaded ? this.preloadedData._id : this.id"
                 :seenProp="this.seenValue"

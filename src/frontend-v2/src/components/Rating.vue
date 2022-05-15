@@ -1,11 +1,14 @@
 <template>
     <div id="rating">
-        <div v-if="!this.seen" @click="want_to_see(true)"><i class="fa fa-thumbs-up"></i></div>
-        <div v-if="!this.seen" @click="hidden()"><i class="fa fa-thumbs-down"></i></div>
-        <div v-if="this.seen" id="vote-container">
+        <div id="vote-container">
             <i :style="this.vote === 1 ? 'color: orange' : ''" @click="upvote()" class="fa fa-arrow-up"></i>
             <i :style="this.vote === -1 ? 'color: lightblue' : ''" @click="downvote()" class="fa fa-arrow-down"></i>
-            <div>Seen <i :style="'color: green;'" class="fa fa-check" @click="want_to_see(false); resetVote()"></i></div>
+            <div v-if="this.seen">Seen 
+                <i :style="'color: green;'" class="fa fa-check" @click="this.voteSeen(false); resetVote()"></i>
+            </div>
+            <div v-else>Seen 
+                <i :style="'color: red; font-weight: light;'" class="fa fa-times" @click="this.voteSeen(true); resetVote()"></i>
+            </div>
         </div>
     </div>
 </template>
@@ -28,12 +31,18 @@ export default {
     },
     methods:{
         async upvote() {
+            if (!this.seen){
+                await this.voteSeen(true)
+            }
             await apiVoteRating(this.suggestionID, 1).then(res => {
                 this.vote = 1
             })
             .catch(()=>{console.err("Upvote failed")})
         },
         async downvote() {
+            if (!this.seen){
+                await this.voteSeen(true)
+            }
             await apiVoteRating(this.suggestionID, -1).then(res => {
                 this.vote = -1
             })
@@ -45,7 +54,7 @@ export default {
             })
             .catch(()=>{console.err("Reset vote failed")})
         },
-        async want_to_see(vote){
+        async voteSeen(vote){
             await apiVoteSeen(this.suggestionID, vote).then((res) => {
                 this.$emit("wts")
                 this.seen = vote
@@ -107,6 +116,11 @@ i:hover{
     flex-flow: row;
 }
 .fa-check {
+    width: 20px;
+    margin-top: 2px;
+}
+.fa-times {
+    width: 20px;
     margin-top: 2px;
 }
 
