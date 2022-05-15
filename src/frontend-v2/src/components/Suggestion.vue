@@ -25,11 +25,10 @@
             <div v-if="!this.seenValue" id="rating-text">Want to see it?</div>
             <div v-else>Rate it!</div>
             <Rating 
-                @upvote="this.upvote" 
-                @downvote="this.downvote" 
-                @rated="this.rate"
-                :seen="this.seenValue"
-                :star="this.rating"
+                :suggestionID="this.preloaded ? this.preloadedData._id : this.id"
+                :seenProp="this.seenValue"
+                :voteProp="this.voteValue"
+                @wts="this.seenValue = !this.seenValue"
             /></div>
     </div>    
 </template>
@@ -40,7 +39,7 @@ import Button from './Button.vue'
 import ProfileFrame from './profile/ProfileFrame.vue'
 import { apiGetMovie } from '../api/movie'
 import { apiGetUser } from '../api/user'
-import { apiVoteSeen, apiVoteRating, apiGetVote } from '../api/vote'
+import { apiGetVote } from '../api/vote'
 import { apiGetSuggestionById } from '../api/suggestion'
 
 export default {
@@ -83,7 +82,7 @@ export default {
     data() {
         return {
             rating_loaded: false,
-            rating: 0,
+            voteValue: 0,
             seenValue: false,
             loaded: false,
             compact_container: {
@@ -93,27 +92,6 @@ export default {
         }
     },
     methods: {
-        async upvote() {
-            const sid = this.preloaded ? this.preloadedData._id : this.id 
-            await apiVoteSeen(sid, true).then(res => {
-                this.seenValue = res.data.seen
-            })
-            .catch(()=>{console.err("Upvote failed")})
-        },
-        async downvote() {
-            const sid = this.preloaded ? this.preloadedData._id : this.id 
-            await apiVoteSeen(sid, false).then(res => {
-                this.seenValue = res.data.seen
-            })
-            .catch(()=>{console.err("Upvote failed")})
-        },
-        async rate({rating}){
-            const sid = this.preloaded ? this.preloadedData._id : this.id 
-            await apiVoteRating(sid, rating).then(res => {
-                 this.rating = res.data.rating
-            })
-            .catch(()=>{console.err("Rating failed")})
-        },
         trimtext(title){
             return title.length < 18 ? title : title.substring(0, 18) + "..." 
             // TODO rework this when not tired
@@ -167,12 +145,12 @@ export default {
 
         await apiGetVote(id_for_getvote)
         .then((res)=>{
-                this.rating = res.data.rating; 
+                this.voteValue = res.data.rating; 
                 this.seenValue = res.data.seen; 
                 this.rating_loaded = true;
             })
         .catch(() => {
-                this.rating = 0;
+                this.voteValue = 0;
                 this.seenValue = false;
                 this.rating_loaded = true;
         })

@@ -1,51 +1,65 @@
 <template>
     <div id="rating">
-        <div v-if="!this.seen" @click="upvote"><i class="fa fa-thumbs-up"></i></div>
-        <div v-if="!this.seen" @click="downvote"><i class="fa fa-thumbs-down"></i></div>
-        <div v-if="this.seen" id="stars-container">
-            <div v-for="i in 5" :key="i" id="stars">
-                <div v-if="i <= this.star" @click="vote(i)">
-                    <svg height="21" width="20">
-                        <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"
-                        style="fill:gold;fill-rule:nonzero;" />
-                    </svg>
-                </div>
-                <div v-else @click="vote(i)">
-                    <svg height="21" width="20">
-                        <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"
-                        style="fill:grey;fill-rule:nonzero;" />
-                    </svg>
-                </div>
-            </div>
+        <div v-if="!this.seen" @click="want_to_see(true)"><i class="fa fa-thumbs-up"></i></div>
+        <div v-if="!this.seen" @click="hidden()"><i class="fa fa-thumbs-down"></i></div>
+        <div v-if="this.seen" id="vote-container">
+            <i :style="this.vote === 1 ? 'color: orange' : ''" @click="upvote()" class="fa fa-arrow-up"></i>
+            <i :style="this.vote === -1 ? 'color: lightblue' : ''" @click="downvote()" class="fa fa-arrow-down"></i>
+            <div>Seen <i :style="'color: green;'" class="fa fa-check" @click="want_to_see(false); resetVote()"></i></div>
         </div>
     </div>
 </template>
 
 <script>
+import { apiVoteSeen, apiVoteRating } from '../api/vote'
+
 export default {
     name: 'Rating',
     props: {
-        seen: false,
-        star: 0,
+        seenProp: false,
+        voteProp: 0,
+        suggestionID: "",
     },
-    methods:{
-        upvote: function() {
-            this.$emit("upvote")
-        },
-        downvote: function() {
-            this.$emit("downvote")
-        },
-        vote: function(i){
-            if (i==1 && this.rating == 1){
-                this.rating = 0;
-            } else {
-                this.rating = i;
-            }
-            this.$emit("rated", {rating: this.rating});
-            this.star = this.rating
+    data() {
+        return{
+            seen: false,
+            vote: 0,
         }
     },
-    emits: ["upvote", "downvote", "rated"]
+    methods:{
+        async upvote() {
+            await apiVoteRating(this.suggestionID, 1).then(res => {
+                this.vote = 1
+            })
+            .catch(()=>{console.err("Upvote failed")})
+        },
+        async downvote() {
+            await apiVoteRating(this.suggestionID, -1).then(res => {
+                this.vote = -1
+            })
+            .catch(()=>{console.err("Upvote failed")})
+        },
+        async resetVote(){
+            await apiVoteRating(this.suggestionID, 0).then(res => {
+                this.vote = 0
+            })
+            .catch(()=>{console.err("Reset vote failed")})
+        },
+        async want_to_see(vote){
+            await apiVoteSeen(this.suggestionID, vote).then((res) => {
+                this.$emit("wts")
+                this.seen = vote
+            })
+            .catch(()=>{console.err("Vote want to see failed")})
+        },
+        async hidden(){
+            alert("Suggestion hiding is a work in progress.")
+        }
+    },
+    mounted() {
+        this.seen = this.seenProp
+        this.vote = this.voteProp
+    }
 }
 </script>
 
@@ -57,27 +71,47 @@ export default {
     align-items: center;
 }
 i{
-    font-size: 25px;
+    font-size: 22px;
 }
 i:hover{
     opacity: 0.5;
 }
 .fa-thumbs-up{
-    color: rgba(26, 146, 26, 0.744);
+    color: rgba(14, 133, 14, 0.746);
 }
 .fa-thumbs-down{
-    color: rgb(137, 29, 29);
+    color: rgba(114, 17, 17, 0.889);
     margin-top: 10px;
 }
-#stars{
-    opacity: 1;
-    transition-duration: 100ms;
-}#stars:hover{
-    opacity: 0.5;
-    transition-duration: 100ms;
+#vote-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 120px;
 }
-#stars-container{
+#vote-container i {
+    color: rgb(138, 138, 138);
+    font-size: 22px;
+    font-weight: light;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+#vote-container div{
+    margin-left: 55px;
+    font-size: 16px;
+    color: white;
+    font-weight: lighter;
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
+    flex-flow: row;
+}
+.fa-check {
+    margin-top: 2px;
+}
+
+@keyframes fadein {
+    0% {opacity: 0}
+    100% {opacity: 1}
 }
 </style>
