@@ -98,23 +98,22 @@ export default {
     const allWithMovie = await apiGetSuggestions(true, true)
     const suggs = allWithMovie.data;
     var side = 0;
+
     for (var i = 0; i<suggs.length; i++){
-      if (side == 0){
+      if (side === 0){
         this.suggestions_l.push(suggs[i])
         side ++
       }
-      else if (side == 1){
+      else if (side === 1){
         this.suggestions_m.push(suggs[i])
         side ++
       }
-      else if (side == 2){
+      else if (side === 2){
         this.suggestions_r.push(suggs[i])
-        side ++
-      }
-      else{
         side = 0
       }
     }
+    //-this.suggestions_l = suggs
     this.loaded = true      
   }
 }
