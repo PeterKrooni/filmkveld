@@ -1,7 +1,7 @@
 <template>
     <div id="rating">
-        <i class="fa fa-thumbs-up"></i>
-        <i class="fa fa-thumbs-down"></i>
+        <i class="fa fa-thumbs-up" @click="upvote"></i>
+        <i class="fa fa-thumbs-down" @click="downvote"></i>
     </div>
 </template>
 
@@ -9,15 +9,16 @@
 export default {
     name: 'Rating',
     props: {
-        WTS_rated: 0
-    },
-    data(){
-        return {
-            numstars: 10,
-            rating: 0,
-        }
+        seen: false,
+        rating: 0
     },
     methods:{
+        upvote: function() {
+            this.$emit("upvote")
+        },
+        downvote: function() {
+            this.$emit("downvote")
+        },
         vote: function(i){
             if (i==1 && this.rating == 1){
                 this.rating = 0;
@@ -27,9 +28,7 @@ export default {
             this.$emit("rated", {rating: this.rating});
         }
     },
-    mounted(){
-        this.rating = this.WTS_rated
-    }
+    emits: ["upvote", "downvote"]
 }
 </script>
 

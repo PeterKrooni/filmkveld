@@ -17,6 +17,20 @@ const getVotesForUser = asyncHandler(async(userid) => {
     return votes;
 })
 
+
+const getKarma = asyncHandler(async(userid)=>{
+    const user = await User.findById(userid)
+
+    if (!user){
+        res.status(400)
+        throw new Error(`User with id ${userid} not found.`)
+    }
+
+    const karma = user.karma
+    res.status(200).json({karma: karma})
+})
+
+
 const updateKarma = asyncHandler(async(userid)=>{
     const votes = await getVotesForUser(userid) 
     const user = await User.findById(userid)
@@ -39,5 +53,6 @@ const updateKarma = asyncHandler(async(userid)=>{
 })
 
 module.exports = {
-    updateKarma
+    updateKarma,
+    getKarma
 }

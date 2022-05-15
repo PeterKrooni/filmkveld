@@ -22,8 +22,14 @@
             </div>
         </div>
         <div id="footer" v-if="!compact">
-            <div id="rating-text">Want to see it?</div>
-            <Rating @rated="this.WTS_rateChange" :WTS_rated="this.WTSeen_rated" />
+            <div v-if="rating_loaded" id="rating-stars">
+            <Rating 
+            @upvote="this.upvote" 
+            @downvote="this.downvote" 
+            @seen="this.seen" 
+            :seen="this.seenValue"
+            :rating="this.rating"
+            /></div>
         </div>
     </div>    
 </template>
@@ -34,7 +40,7 @@ import Button from './Button.vue'
 import ProfileFrame from './profile/ProfileFrame.vue'
 import { apiGetMovie } from '../api/movie'
 import { apiGetUser } from '../api/user'
-import { apiVoteWTS, apiGetVote } from '../api/vote'
+import { apiVoteSeen, apiVoteRating, apiGetVote } from '../api/vote'
 import { apiGetSuggestionById } from '../api/suggestion'
 
 export default {
@@ -77,8 +83,8 @@ export default {
     data() {
         return {
             rating_loaded: false,
-            WTSeen_rated: 0,
-            Seen_rated: 0,
+            rating: 0,
+            seenValue: false,
             loaded: false,
             compact_container: {
                 width: '150px',
@@ -87,6 +93,25 @@ export default {
         }
     },
     methods: {
+        async seen () {
+            const sid = this.preloaded ? this.preloadedData._id : this.id 
+            await apiVoteSeen(sid, true).then(res => {
+                this.seenValue = res.data.seen
+            })
+        },
+        async upvote() {
+            const sid = this.preloaded ? this.preloadedData._id : this.id 
+            await apiVoteRating(sid, 1).then(res => {
+                 this.rating = res.data.rating
+                 console.log(res.data)
+            })
+        },
+        async downvote() {
+            const sid = this.preloaded ? this.preloadedData._id : this.id 
+            await apiVoteRating(sid, -1).then(res => {
+                 this.rating = res.data.rating
+            })
+        },
         trimtext(title){
             return title.length < 18 ? title : title.substring(0, 18) + "..." 
             // TODO rework this when not tired
@@ -144,15 +169,10 @@ export default {
 
         await apiGetVote(id_for_getvote)
         .then((res)=>{
-                this.WTSeen_rated = res.data.want_to_see_rating; 
-                this.Seen_rated = res.data.seen_rating; 
+                this.rating = res.data.rating; 
+                this.seenValue = res.data.seen; 
                 this.rating_loaded = true;
             })
-        .catch((res)=>{
-                this.WTSeen_rated = 0; 
-                this.Seen_rated = 0; 
-                this.rating_loaded = true;
-        })
         this.loaded = true
     }
 }

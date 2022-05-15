@@ -50,3 +50,11 @@ export async function apiVoteWTS(vote_suggID, want_see_rating){
 export function apiGetVote(suggID){
     return axios.get('http://localhost:5000/crud/api/vote/'+suggID)
 }
+
+export function apiVoteSeen(suggID, newRating){
+    return axios.post('http://localhost:5000/crud/api/vote/'+suggID, {seen: newRating})
+}
+
+export function apiVoteRating(suggID, newRating){
+    return axios.put('http://localhost:5000/crud/api/vote/'+suggID, {rating: newRating})
+}

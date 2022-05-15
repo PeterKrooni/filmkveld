@@ -66,10 +66,7 @@ export default {
         const me = await getMe()
         this.imgSource = me.profile_picture
         this.name = me.username;
-
-        const wts = me.wts_karma
-        const seen = me.seen_karma
-        this.karma = wts + seen
+        this.karma = me.karma
 
         const suggestions = await apiGetSuggestions(true, true)
         this.suggestionsByUser = suggestions.data.filter(s => s.suggested_by !== me._id)

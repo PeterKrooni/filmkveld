@@ -8,15 +8,13 @@ export async function apiGetUser(userid, profile_picture=false){
             username: user.data.username, 
             userid: user.data.userid, 
             profile_picture: avatar.data.profile_picture,
-            wts_karma: user.data.wts_karma,
-            seen_karma: user.data.seen_karma,
+            karma: user.data.karma,
         };
     } else {
         return {
             username: user.data.username, 
             userid: user.data.userid,
-            wts_karma: user.data.wts_karma,
-            seen_karma: user.data.seen_karma,
+            karma: user.data.karma,
         };
     }
 }
@@ -27,8 +25,7 @@ export async function getMe(){
         username: user.data.name, 
         userid: user.data.id, 
         profile_picture: user.data.profile_picture,
-        wts_karma: user.data.wts_karma,
-        seen_karma: user.data.seen_karma,
+        karma: user.karma
     };
 }
 
