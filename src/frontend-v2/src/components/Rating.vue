@@ -1,19 +1,7 @@
 <template>
     <div id="rating">
-        <div v-for="i in numstars" :key="i" id="stars">
-            <div v-if="i<=rating" @click="vote(i)">
-                <svg height="21" width="20">
-                    <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"
-                    style="fill:gold;fill-rule:nonzero;" />
-                </svg>
-            </div>
-            <div v-else @click="vote(i)">
-                <svg height="21" width="20">
-                    <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"
-                    style="fill:grey;fill-rule:nonzero;" />
-                </svg>
-            </div>
-        </div>
+        <i class="fa fa-thumbs-up"></i>
+        <i class="fa fa-thumbs-down"></i>
     </div>
 </template>
 
@@ -49,6 +37,21 @@ export default {
 #rating{
     display: flex;
     flex-flow: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+i{
+    font-size: 25px;
+}
+i:hover{
+    opacity: 0.5;
+}
+.fa-thumbs-up{
+    color: rgba(26, 146, 26, 0.744);
+}
+.fa-thumbs-down{
+    color: rgb(137, 29, 29);
+    margin-top: 10px;
 }
 #stars{
     opacity: 1;
