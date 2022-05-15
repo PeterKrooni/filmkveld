@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler')
 const Vote = require('../../../model/vote')
 const Suggestion = require('../../../model/suggestion')
 const { updateKarma } = require('../vote/voteCounter')
-
+const User = require('../../../model/user')
 
 // @route POST /api/v1/vote/:suggetionId
 const apiVoteSeen = asyncHandler(async(req, res, next) => {
@@ -23,18 +23,23 @@ const apiVoteSeen = asyncHandler(async(req, res, next) => {
 // @route PUT /api/v1/vote/:suggetionId
 const apiVoteRating = asyncHandler(async(req, res, next) => {
     const vote = await Vote.findOne({voted_by: req.user.id, suggestion: req.params.suggestion})
-    
+
     if (!vote) {
         const newVote = await Vote.create({voted_by: req.user.id, suggestion: req.params.suggestion, rating: req.body.rating})
         
-        const suggestion = await Suggestion.findById({suggested_by: vote.suggestion})
+        const suggestion = await Suggestion.findById(vote.suggestion)
         const user = await User.findById(suggestion.suggested_by)
+        console.log(user)
         await User.findByIdAndUpdate(user._id, {karma: user.karma + req.body.rating})
 
         res.status(200).json(newVote)
     }
     else {
         const updateVote = await Vote.findByIdAndUpdate(vote._id, {rating: req.body.rating})
+        const suggestion = await Suggestion.findById(vote.suggestion)
+        const user = await User.findById(suggestion.suggested_by)   
+        console.log(user)
+        await User.findByIdAndUpdate(user._id, {karma: user.karma + req.body.rating})
         res.status(200).json(updateVote)
     }
 
@@ -51,7 +56,7 @@ const apiRemoveVote = asyncHandler(async(req, res, next) => {
     const userID = req.user.id
     const suggestionID = req.params.suggestion
     const vote = Vote.findOne({voted_by: userID, suggestion: suggestionID})
-    const suggestion = await Suggestion.findById(req.params.suggestion)
+    const suggestion = await Suggestion.findOne(req.params.suggestion)
 
     if (!vote){
         res.status(400)

@@ -34,7 +34,7 @@ export default {
             if (!this.seen){
                 await this.voteSeen(true)
             }
-            await apiVoteRating(this.suggestionID, 1).then(res => {
+            await apiVoteRating(this.suggestionID, this.voteHandler(1)).then(res => {
                 this.vote = 1
             })
             .catch(()=>{console.err("Upvote failed")})
@@ -43,16 +43,34 @@ export default {
             if (!this.seen){
                 await this.voteSeen(true)
             }
-            await apiVoteRating(this.suggestionID, -1).then(res => {
+            await apiVoteRating(this.suggestionID, this.voteHandler(-1)).then(res => {
                 this.vote = -1
             })
             .catch(()=>{console.err("Upvote failed")})
         },
         async resetVote(){
-            await apiVoteRating(this.suggestionID, 0).then(res => {
+            await apiVoteRating(this.suggestionID, this.voteHandler(0)).then(res => {
                 this.vote = 0
             })
             .catch(()=>{console.err("Reset vote failed")})
+        },
+        voteHandler(newVote) { //handle edgecases
+
+            if (newVote === 0) { //remove vote
+                if (this.vote === 1) {return -1}
+                if (this.vote === -1) {return 1}
+                if (this.vote === 0) {return 0}
+            }
+            else if (newVote === 1) { //upvote
+                if (this.vote === 1) {return 0}
+                if (this.vote === -1) {return 2}
+                if (this.vote === 0) {return 1}
+            }
+            else if (newVote === -1) { //downvote
+                if (this.vote === 1) {return -2}
+                if (this.vote === -1) {return 0}
+                if (this.vote === 0) {return -1}
+            }
         },
         async voteSeen(vote){
             await apiVoteSeen(this.suggestionID, vote).then((res) => {

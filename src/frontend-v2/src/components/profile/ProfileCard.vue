@@ -32,11 +32,8 @@ export default {
         const me = await getMe()
         this.imgSource = me.profile_picture
         this.name = me.username;
-
-        const wts = me.wts_karma
-        const seen = me.seen_karma
-        this.karma = String(wts + seen)[0] + '.' + String(wts+seen)[2]
-
+        this.karma = me.karma
+        console.log(me)
         this.loaded = true;
     }
 }

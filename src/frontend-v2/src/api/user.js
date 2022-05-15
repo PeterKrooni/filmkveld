@@ -25,7 +25,7 @@ export async function getMe(){
         username: user.data.name, 
         userid: user.data.id, 
         profile_picture: user.data.profile_picture,
-        karma: user.karma
+        karma: user.data.karma
     };
 }
 
