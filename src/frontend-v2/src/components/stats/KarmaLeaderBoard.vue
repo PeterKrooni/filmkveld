@@ -27,7 +27,7 @@ export default {
             users: [],
             loaded: false,
             userlimit: 5,
-            colors: []
+            colors: [],
         }
     },
     async mounted(){
@@ -47,7 +47,7 @@ export default {
     display: flex;
     flex-flow: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 #karma-list-container{
     margin-top: 25px;
@@ -68,7 +68,7 @@ export default {
 .karma-bar{
     width: 20px; 
     margin: auto; 
-    background-color: grey; 
+    background-color: rgb(177, 152, 201); 
     border-top-left-radius: 0.2em; 
     border-top-right-radius: 0.2em;
 }

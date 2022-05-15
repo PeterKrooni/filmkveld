@@ -11,21 +11,24 @@
 
     <!-- Side view -->
     <div id="side-view" v-if="loaded">
-      <div>
-        <BigHeader :text="'Filmkveld'" />
+      
+      
+      <div id="logo">
+        <img src="../assets/filmkveld.logo.png" style="width: 400px;" alt="">
+      </div>
+      <div class="side-section">
+        <SmallHeader :toptext="'Add a movie'" :bottomtext="'Wooo!'" />
+        <AddMovie style="margin-top: 30px;"/>
       </div>
       
-      <div>
+
+      <div class="side-section">
         <SmallHeader :toptext="'Your profile!'" :bottomtext="'You are stuff!'" />
         <ProfileCard style="margin-top: 85px;" />
       </div>
       
-      <div style="margin-top: 100px">
-        <SmallHeader :toptext="'Add a movie'" :bottomtext="'Wooo!'" />
-        <AddMovie style="margin-top: 20px;" />
-      </div>
-
-      <div>
+      <div class="side-section" style="margin-bottom: 50px;">
+        <KarmaLeaderBoard />
       </div>
     </div>
 
@@ -67,6 +70,7 @@ import BigHeader from '../components/BigHeader.vue'
 import SmallHeader from '../components/SmallHeader.vue'
 import ProfileCard from '../components/profile/ProfileCard.vue'
 import NavMenu from '../components/NavMenu.vue'
+import KarmaLeaderBoard from '../components/stats/KarmaLeaderBoard.vue'
 import { apiGetSuggestions } from '../api/rest/suggestions'
 
 export default {
@@ -77,7 +81,8 @@ export default {
     BigHeader,
     SmallHeader,
     ProfileCard,
-    NavMenu
+    NavMenu,
+    KarmaLeaderBoard
   },
   data() {
     return {
@@ -136,9 +141,13 @@ export default {
 #side-view{
   height: 95vh;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-items:flex-start;
   flex-flow: column;
   margin-top: 50px;
+}
+.side-section{
+  display:flex; justify-content: left; align-items: flex-start; flex-flow: column;
 }
 #stats-header{  
   box-shadow: rgb(26, 112, 173) 0px 0px 0px 2px inset, #303841 10px -10px 0px -3px, rgb(18, 104, 17) 10px -10px, #303841 20px -20px 0px -3px, rgb(234, 195, 5) 20px -20px, #303841 30px -30px 0px -3px, rgb(85, 221, 255) 30px -30px, #303841 40px -40px 0px -3px, rgb(18, 150, 47) 40px -40px; padding: 5px;
@@ -407,6 +416,60 @@ export default {
   100% {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
+  }
+}
+
+#logo{
+  border-radius: 2em;
+  border: 1px dashed rgba(255, 0, 255, 0.213);
+  padding-left: 5px; padding-right: 10px;
+  animation: shading linear 10s;
+  animation-iteration-count: infinite;
+}
+@keyframes shading{
+  0% {
+  box-shadow:
+    inset 0 0 50px rgba(255, 255, 255, 0.283),   
+    inset 20px 0 80px rgba(255, 0, 255, 0.213),   
+    inset -20px 0 80px rgba(0, 255, 255, 0.269), 
+    inset 20px 0 200px rgba(255, 0, 255, 0.291),  
+    inset -20px 0 300px rgba(0, 255, 255, 0.17),
+      0 0 50px rgba(255, 255, 255, 0.3),          
+      -10px 0 80px rgba(255, 0, 255, 0.265),       
+      10px 0 80px rgba(0, 255, 255, 0.321);   
+    }
+  25% {
+  box-shadow:
+    inset 0 0 50px rgba(255, 255, 255, 0.402),   
+    inset 20px 0 80px rgba(255, 0, 255, 0.309),   
+    inset -20px 0 80px rgba(0, 255, 255, 0.399), 
+    inset 20px 0 200px rgba(255, 0, 255, 0.495),  
+    inset -20px 0 300px rgba(0, 255, 255, 0.374),
+      0 0 50px rgba(255, 255, 255, 0.3),          
+      -10px 0 80px rgba(255, 0, 255, 0.265),       
+      10px 0 80px rgba(0, 255, 255, 0.321);    
+  }
+  75% {
+  box-shadow:
+    inset 0 0 50px rgba(255, 255, 255, 0.122),   
+    inset 20px 0 80px rgba(255, 0, 255, 0.109),   
+    inset -20px 0 80px rgba(0, 255, 255, 0.085), 
+    inset 20px 0 200px rgba(255, 0, 255, 0.073),  
+    inset -20px 0 300px rgba(0, 255, 255, 0.077),
+      0 0 50px rgba(255, 255, 255, 0.3),          
+      -10px 0 80px rgba(255, 0, 255, 0.265),       
+      10px 0 80px rgba(0, 255, 255, 0.321);    
+  }
+  100% {
+  box-shadow:
+    inset 0 0 50px rgba(255, 255, 255, 0.283),   
+    inset 20px 0 80px rgba(255, 0, 255, 0.213),   
+    inset -20px 0 80px rgba(0, 255, 255, 0.269), 
+    inset 20px 0 200px rgba(255, 0, 255, 0.291),  
+    inset -20px 0 300px rgba(0, 255, 255, 0.17),
+      0 0 50px rgba(255, 255, 255, 0.3),          
+      -10px 0 80px rgba(255, 0, 255, 0.084),       
+      10px 0 80px rgba(0, 255, 255, 0.06);    
   }
 }
 </style>
