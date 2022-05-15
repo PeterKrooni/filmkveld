@@ -33,3 +33,7 @@ export async function apiUpdateProfilePicture(userid, base64_img){
     const user = await axios.put("http://localhost:5000/crud/api/user/" + userid, {profile_picture: base64_img})
     return {username: user.data.name, userid: user.data.id, profile_picture: user.data.profile_picture}
 }
+
+export async function apiGetTopKarmaUsers(limit){
+    return axios.get("http://localhost:5000/crud/api/user/top/karma/" + limit)
+}

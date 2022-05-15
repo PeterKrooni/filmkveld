@@ -3,7 +3,8 @@ const {
     apiRegisterUser, 
     apiUpdateUser, 
     apiGetMe, apiGetUsers, apiGetUser, apiGetProfilePicture,
-    apiDeleteUser, apiAuthUser
+    apiDeleteUser, apiAuthUser,
+    apiGetTopKarmaUsers
 } = require('./users.controller')
 
 const router = express.Router()
@@ -28,5 +29,8 @@ router.route("/:id")
 // as this can help performance by not getting the profile picture unneccesarily
 router.route("/:id/avatar")
     .get(protect, apiGetProfilePicture)
+
+router.route("/top/karma/:limit")
+    .get(apiGetTopKarmaUsers)
 
 module.exports = router;

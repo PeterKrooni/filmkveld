@@ -144,6 +144,21 @@ const apiGetProfilePicture = asyncHandler(async(req, res, next) => {
     res.status(200).json(ret)
 })
 
+// @desc    Get users with highest karma
+// @route   GET /api/v1/user/top/karma/:userlimit
+// @access  Public
+const apiGetTopKarmaUsers = asyncHandler(async(req, res, next) => {
+    const max_users = req.params.limit;
+    if (max_users === 0){
+        res.status(204).json({message: "Max users was set to 0, nothing to return."})
+    }
+    const users = await User.find().sort({karma: -1}).limit(max_users)
+    if (!users){
+        res.status(204).json({message: "No users found."})
+    }
+    res.status(200).json(users)
+})
+
 const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET, { expiresIn: '90d' })
 }
@@ -152,5 +167,6 @@ module.exports = {
     apiRegisterUser,
     apiDeleteUser,
     apiGetMe, apiGetUsers, apiGetUser, apiGetProfilePicture,
-    apiUpdateUser, apiAuthUser
+    apiUpdateUser, apiAuthUser,
+    apiGetTopKarmaUsers
 }
