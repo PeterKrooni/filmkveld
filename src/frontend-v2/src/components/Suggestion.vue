@@ -22,7 +22,7 @@
             </div>
         </div>
         <div id="footer" v-if="!compact">
-            <div v-if="rating_loaded" id="rating-stars">
+            <div id="rating-text">Want to see it?</div>
             <Rating 
             @upvote="this.upvote" 
             @downvote="this.downvote" 
@@ -30,7 +30,6 @@
             :seen="this.seenValue"
             :rating="this.rating"
             /></div>
-        </div>
     </div>    
 </template>
 
