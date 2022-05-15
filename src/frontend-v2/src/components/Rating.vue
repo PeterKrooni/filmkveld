@@ -1,7 +1,23 @@
 <template>
     <div id="rating">
-        <i class="fa fa-thumbs-up" @click="upvote"></i>
-        <i class="fa fa-thumbs-down" @click="downvote"></i>
+        <div v-if="!this.seen" @click="upvote"><i class="fa fa-thumbs-up"></i></div>
+        <div v-if="!this.seen" @click="downvote"><i class="fa fa-thumbs-down"></i></div>
+        <div v-if="this.seen" id="stars-container">
+            <div v-for="i in 5" :key="i" id="stars">
+                <div v-if="i <= this.star" @click="vote(i)">
+                    <svg height="21" width="20">
+                        <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"
+                        style="fill:gold;fill-rule:nonzero;" />
+                    </svg>
+                </div>
+                <div v-else @click="vote(i)">
+                    <svg height="21" width="20">
+                        <polygon points="10,1 4,19.8 19,7.8 1,7.8 16,19.8"
+                        style="fill:grey;fill-rule:nonzero;" />
+                    </svg>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -10,7 +26,7 @@ export default {
     name: 'Rating',
     props: {
         seen: false,
-        rating: 0
+        star: 0,
     },
     methods:{
         upvote: function() {
@@ -26,9 +42,10 @@ export default {
                 this.rating = i;
             }
             this.$emit("rated", {rating: this.rating});
+            this.star = this.rating
         }
     },
-    emits: ["upvote", "downvote"]
+    emits: ["upvote", "downvote", "rated"]
 }
 </script>
 
@@ -58,5 +75,9 @@ i:hover{
 }#stars:hover{
     opacity: 0.5;
     transition-duration: 100ms;
+}
+#stars-container{
+    display: flex;
+    justify-content: space-evenly;
 }
 </style>

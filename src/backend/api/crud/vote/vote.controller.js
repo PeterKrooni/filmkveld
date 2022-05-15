@@ -2,7 +2,6 @@ const asyncHandler = require('express-async-handler')
 const Vote = require('../../../model/vote')
 const Suggestion = require('../../../model/suggestion')
 const { updateKarma } = require('../vote/voteCounter')
-const suggestion = require('../../../model/suggestion')
 
 
 // @route POST /api/v1/vote/:suggetionId
@@ -10,7 +9,7 @@ const apiVoteSeen = asyncHandler(async(req, res, next) => {
     const vote = await Vote.findOne({voted_by: req.user.id, suggestion: req.params.suggestion})
     
     if (!vote) {
-        const newVote = await Vote.Create({voted_by: req.user.id, suggestion: req.params.suggestion, seen: req.body.seen})
+        const newVote = await Vote.create({voted_by: req.user.id, suggestion: req.params.suggestion, seen: req.body.seen})
         res.status(200).json(newVote)
     }
     else {
@@ -26,7 +25,7 @@ const apiVoteRating = asyncHandler(async(req, res, next) => {
     const vote = await Vote.findOne({voted_by: req.user.id, suggestion: req.params.suggestion})
     
     if (!vote) {
-        const newVote = await Vote.Create({voted_by: req.user.id, suggestion: req.params.suggestion, rating: req.body.rating})
+        const newVote = await Vote.create({voted_by: req.user.id, suggestion: req.params.suggestion, rating: req.body.rating})
         
         const suggestion = await Suggestion.findById({suggested_by: vote.suggestion})
         const user = await User.findById(suggestion.suggested_by)

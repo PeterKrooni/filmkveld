@@ -22,13 +22,14 @@
             </div>
         </div>
         <div id="footer" v-if="!compact">
-            <div id="rating-text">Want to see it?</div>
+            <div v-if="!this.seenValue" id="rating-text">Want to see it?</div>
+            <div v-else>Rate it!</div>
             <Rating 
-            @upvote="this.upvote" 
-            @downvote="this.downvote" 
-            @seen="this.seen" 
-            :seen="this.seenValue"
-            :rating="this.rating"
+                @upvote="this.upvote" 
+                @downvote="this.downvote" 
+                @rated="this.rate"
+                :seen="this.seenValue"
+                :star="this.rating"
             /></div>
     </div>    
 </template>
@@ -92,24 +93,26 @@ export default {
         }
     },
     methods: {
-        async seen () {
+        async upvote() {
             const sid = this.preloaded ? this.preloadedData._id : this.id 
             await apiVoteSeen(sid, true).then(res => {
                 this.seenValue = res.data.seen
             })
-        },
-        async upvote() {
-            const sid = this.preloaded ? this.preloadedData._id : this.id 
-            await apiVoteRating(sid, 1).then(res => {
-                 this.rating = res.data.rating
-                 console.log(res.data)
-            })
+            .catch(()=>{console.err("Upvote failed")})
         },
         async downvote() {
             const sid = this.preloaded ? this.preloadedData._id : this.id 
-            await apiVoteRating(sid, -1).then(res => {
+            await apiVoteSeen(sid, false).then(res => {
+                this.seenValue = res.data.seen
+            })
+            .catch(()=>{console.err("Upvote failed")})
+        },
+        async rate({rating}){
+            const sid = this.preloaded ? this.preloadedData._id : this.id 
+            await apiVoteRating(sid, rating).then(res => {
                  this.rating = res.data.rating
             })
+            .catch(()=>{console.err("Rating failed")})
         },
         trimtext(title){
             return title.length < 18 ? title : title.substring(0, 18) + "..." 
@@ -122,10 +125,6 @@ export default {
                     && i !== ':' 
                     && i !== '"') || i === '&').length
             return title.length - penalties < sizeAllowance ? title.substring(0, title.length - penalties) + "..." : title
-        },
-        async WTS_rateChange({rating}){
-            let id = this.preloaded ? this.preloadedData._id : this.id
-            await apiVoteWTS(id, rating)
         },
         // fetches data from id
         async fetchDisplayData(){
@@ -172,6 +171,11 @@ export default {
                 this.seenValue = res.data.seen; 
                 this.rating_loaded = true;
             })
+        .catch(() => {
+                this.rating = 0;
+                this.seenValue = false;
+                this.rating_loaded = true;
+        })
         this.loaded = true
     }
 }
