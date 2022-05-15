@@ -7,7 +7,7 @@
                 <i :style="'color: green;'" class="fa fa-check" @click="this.voteSeen(false); resetVote()"></i>
             </div>
             <div v-else>Seen 
-                <i :style="'color: red; font-weight: light;'" class="fa fa-times" @click="this.voteSeen(true); resetVote()"></i>
+                <i :style="'color: darkred; font-weight: light;'" class="fa fa-times" @click="this.voteSeen(true); resetVote()"></i>
             </div>
         </div>
     </div>
