@@ -32,7 +32,6 @@
       </div>
     </div>
 
-
     <!-- Suggestions view -->
     <div id="suggestions-section" v-if="loaded">
       <div class="suggestions-container">
@@ -82,7 +81,7 @@ export default {
     SmallHeader,
     ProfileCard,
     NavMenu,
-    KarmaLeaderBoard
+    KarmaLeaderBoard,
   },
   data() {
     return {

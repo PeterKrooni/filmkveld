@@ -37,7 +37,7 @@ export default {
             await apiVoteRating(this.suggestionID, this.voteHandler(1)).then(res => {
                 this.vote = 1
             })
-            .catch(()=>{console.err("Upvote failed")})
+            .catch(()=>{console.error("Upvote failed")})
         },
         async downvote() {
             if (!this.seen){
@@ -46,16 +46,15 @@ export default {
             await apiVoteRating(this.suggestionID, this.voteHandler(-1)).then(res => {
                 this.vote = -1
             })
-            .catch(()=>{console.err("Upvote failed")})
+            .catch(()=>{console.error("Downvote failed")})
         },
         async resetVote(){
             await apiVoteRating(this.suggestionID, this.voteHandler(0)).then(res => {
                 this.vote = 0
             })
-            .catch(()=>{console.err("Reset vote failed")})
+            .catch(()=>{console.error("Reset vote failed")})
         },
         voteHandler(newVote) { //handle edgecases
-
             if (newVote === 0) { //remove vote
                 if (this.vote === 1) {return -1}
                 if (this.vote === -1) {return 1}
@@ -77,7 +76,7 @@ export default {
                 this.$emit("wts")
                 this.seen = vote
             })
-            .catch(()=>{console.err("Vote want to see failed")})
+            .catch(()=>{console.error("Vote want to see failed")})
         },
         async hidden(){
             alert("Suggestion hiding is a work in progress.")
@@ -86,6 +85,7 @@ export default {
     mounted() {
         this.seen = this.seenProp
         this.vote = this.voteProp
+        console.log(this.vote)
     }
 }
 </script>
