@@ -2,13 +2,16 @@
 <div id="tags-container">
     <div id="icons">
         <i class="fa fa-tags" style="margin-top: 5px;"></i>
-        <i class="fa fa-pencil" style="margin-top: 12px;"  @click="this.toggleInput()"></i>
+
+        <i v-if="!this.toggle" class="fa fa-pencil" style="margin-top: 12px;"  @click="this.toggleInput()"></i>
+        <i v-else class="fa fa-times" style="margin-top: 12px;" @click="this.toggleInput()"></i>
     </div>
     <div>
-        <input id="input_tag" v-if="this.toggle" :value="this.tag_input" type="text">
         <div id="tag-display">
+            
             <div style="font-size: 14px; margin-bottom: 5px;">Current Tag </div>
-            <div style="color: white; font-weight: bold; border: 1px solid white; padding: 5px; border-radius: 0.5em;">{{this.current_tag}}</div>
+            <input id="tag-input" :value="this.current_tag" :disabled="this.toggle">
+
         </div>
     </div>
 </div>    
@@ -26,14 +29,30 @@ export default {
     },
     methods: {
         toggleInput(){
-            if (this.toggle){
-                this.current_tag = document.getElementById("input_tag").value
-                if (this.current_tag === ''){
-                    this.current_tag = 'None'
-                }
-            }
-            this.toggle = !this.toggle;
+            this.toggle = !this.toggle
+        },
+        getTags(){
+            const imported_tags = [
+                {
+                    _id: '348953249857234',
+                    tagname: 'Korean Movie Night',
+                    numtagged: 6, 
+                },
+                {
+                    _id: '8459732459823742345',
+                    tagname: 'Lord of the Rings marathon',
+                    numtagged: 4, 
+                }, 
+                {
+                    _id: '982347392845',
+                    tagname: 'Dune movies',
+                    numtagged: 3, 
+                }]
+            this.tags = imported_tags        
         }
+    },
+    async mounted() {
+        this.getTags();
     }
 }
 </script>
@@ -42,6 +61,15 @@ export default {
 #tags-container{
     display: flex;
     flex-flow: row;
+}
+#tag-select{
+    background-color: rgb(124, 168, 185);
+    border: none;
+    font-size: 13px;
+    color: white;
+    margin: 2px;
+    padding: 5px;
+    border-radius: 0.25em;
 }
 #icons{
     display: flex;
@@ -54,26 +82,19 @@ export default {
 div{
     color: rgb(164, 164, 164);
 }
-input{
-    color: white;
-    border: none;
+#tag-input{
+    color: white; font-size: 14px; font-weight: bold; border: 1px solid white; padding: 5px; border-radius: 0.5em;
     background-color: rgb(63, 69, 83);
-    border-radius: 0.25em;
-    font-size: 20px;
-    padding: 5px;
-    padding-left: 10px;
-    margin-left: 5px;
-    animation: increase cubic-bezier(0.075, 0.82, 0.165, 1) 400ms;
+}
+#tag-input:disabled{
+    color: rgb(146, 140, 140);
+    background-color: rgb(82, 87, 100);
+}
+#tag-display{
+    margin-left: 10px;
 }
 i {
     margin-left: 5px;
     color: white;
-}
-@keyframes increase{
-    0% { font-size: 10px; }
-    100% { font-size: 20px; }
-}
-#tag-display{
-    margin-left: 10px;
 }
 </style>

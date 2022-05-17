@@ -22,6 +22,7 @@
             </div>
         </div>
         <div id="footer" v-if="!compact">
+            tag: tag, added: date 
             <div>Rate it!</div>
             <Rating 
                 :suggestionID="this.preloaded ? this.preloadedData._id : this.id"
