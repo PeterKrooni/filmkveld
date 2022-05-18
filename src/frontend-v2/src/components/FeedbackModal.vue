@@ -43,7 +43,7 @@ export default {
 .modal {
     position: fixed;box-shadow: rgba(0, 0, 0, 0.56) 1px 50px 100px 20px;
     padding: 10px;
-    background: #2a3139;
+    background: #333c47;
     color: white;
     backdrop-filter: blur(20px);
     border-radius: 0.5em;
@@ -63,8 +63,8 @@ export default {
     border-top: 15px solid green;
 }
 #close-btn{
-    float: right;
-    background: #2a3139;
+    float: right;   
+    background: #333c47;
     color: rgb(198, 190, 190);
     border: 1px solid white;
     border-radius: 0.5em;
@@ -77,8 +77,8 @@ export default {
 #type-icon{
     padding-right: 5px;
     float: right;
-    border: none;
-    background: #2a3139;
+    border: none;    
+    background: #333c47;
     color: white;
     font-size: 20px;
 }
