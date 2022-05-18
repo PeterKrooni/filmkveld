@@ -33,7 +33,6 @@ export default {
         this.imgSource = me.profile_picture
         this.name = me.username;
         this.karma = me.karma
-        console.log(me)
         this.loaded = true;
     }
 }
