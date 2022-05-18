@@ -8,7 +8,7 @@
             </div>
                 <div id="profile-stats" style="text-align: left;">
                 <h2 class="profile-header">Karma: <b>{{karma}}</b></h2>
-                <h2 class="profile-header">Suggestions: <b>12</b></h2>
+                <h2 class="profile-header">Suggestions: <b>{{suggestions_count}}</b></h2>
             </div>
         </div>
     </div>
@@ -16,6 +16,7 @@
 
 <script>
 
+import { apiGetSuggestionsBy } from '../../api/suggestion'
 import { getMe } from '../../api/user'
 
 export default {
@@ -24,6 +25,7 @@ export default {
             imgSource: "https://us.123rf.com/450wm/happyvector071/happyvector0711904/happyvector071190414500/120957417-creative-illustration-of-default-avatar-profile-placeholder-isolated-on-background-art-design-grey-p.jpg?ver=6",
             name: "",
             karma: "",
+            suggestions_count: 0,
             loaded: false,
         }
     },
@@ -33,7 +35,12 @@ export default {
         this.imgSource = me.profile_picture
         this.name = me.username;
         this.karma = me.karma
+        
+        const suggestions = await apiGetSuggestionsBy(me.userid)
+        this.suggestions_count = suggestions.data.length
+
         this.loaded = true;
+
     }
 }
 </script>
