@@ -22,9 +22,17 @@
             </div>
         </div>
         <div id="footer" v-if="!compact">
-            tag: tag, added: date 
-            <div>Rate it!</div>
-            <Rating 
+            <div id="date-tag">
+                <div v-if="this.tag != ''" id="tag-container">
+                    <i @click="toggletag()" class="fa fa-tags"></i>
+                    <span style="color: white;" v-if="this.showtag">{{this.tag}}</span>
+                    </div>
+                <div id="created-container">
+                    <i @click="togglecreated()" class="fa fa-calendar"></i>
+                    <span style="color: white;" v-if="this.showcreated">{{this.created}}</span>
+                </div>
+            </div>
+            <Rating style="margin-left: -20px;"
                 :suggestionID="this.preloaded ? this.preloadedData._id : this.id"
                 :seenProp="this.seenValue"
                 :voteProp="this.voteValue"
@@ -59,7 +67,6 @@ export default {
             suggestor_username: "None",
             suggestor_profile_picture: "",            
             poster: "https://s.studiobinder.com/wp-content/uploads/2017/12/Movie-Poster-Template-Dark-with-Image.jpg?x81279",
-            loaded: false,
         }   
     }, 
     props: {
@@ -88,10 +95,21 @@ export default {
             compact_container: {
                 width: '150px',
                 height: '200px',    
-            }
+            },
+            created: '',
+            showcreated: false, 
+            tag: 'Korean Movie Night',
+            showtag: false,
+            loaded: false,
         }
     },
     methods: {
+        toggletag(){
+            this.showtag = !this.showtag
+        },
+        togglecreated(){
+            this.showcreated = !this.showcreated
+        },
         trimtext(title){
             return title.length < 18 ? title : title.substring(0, 18) + "..." 
             // TODO rework this when not tired
@@ -117,6 +135,7 @@ export default {
             this.suggestor_username = user.username
             this.suggestor_profile_picture = user.profile_picture ? user.profile_picture : /* need some default image handling*/ "https://cdn.britannica.com/84/206384-050-00698723/Javan-gliding-tree-frog.jpg";
             this.poster = movie.data.poster; 
+            this.created = suggestion.data.createdAt.substring(0, 10).replace(/-/g, '/');
         },
         // uses preloaded data instead of fetching it
         async loadDisplayData(){
@@ -131,6 +150,8 @@ export default {
             this.suggestor_username = user.name
             this.suggestor_profile_picture = user.profile_picture ? user.profile_picture : /* need some default image handling*/ "https://cdn.britannica.com/84/206384-050-00698723/Javan-gliding-tree-frog.jpg";
             this.poster = movie.poster; 
+            console.log(suggestion)
+            this.created = suggestion.createdAt.substring(0, 10).replace(/-/g, '/');
         }
     },
     async mounted() {
@@ -259,10 +280,9 @@ export default {
 #footer{
     font-size: 16px;
     width: 100%;
-    height: 60px;
     display: flex;
-    flex-flow: column;
-    justify-content: center;
+    flex-flow: row;
+    justify-content: left;
     align-items: center;
     transition-duration: 150ms;
 }
@@ -272,5 +292,36 @@ export default {
 #rating-text{
     text-align: center;
     margin-bottom: 1%;
+}
+#date-tag{
+    color: rgb(178, 173, 173);
+    width: 140px;
+    font-size: 10.5px;
+    margin-top: 25px;
+    margin-left: 5px;
+    display: flex;
+    flex-flow: column;
+}
+#date-tag i{
+    margin: 4px;
+    color: rgb(189, 187, 187);
+}
+#tag-container{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#tag-container i {
+    margin: 2px;
+}
+#created-container{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#created-container i {
+    margin: 3px;
+    margin-left: 4px;
+    margin-right: 6px;
 }
 </style>

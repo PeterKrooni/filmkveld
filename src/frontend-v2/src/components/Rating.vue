@@ -1,12 +1,18 @@
 <template>
     <div id="rating">
         <div id="vote-container">
-            <i :style="this.vote === 1 ? 'color: orange' : ''" @click="upvote()" class="fa fa-arrow-up"></i>
-            <i :style="this.vote === -1 ? 'color: lightblue' : ''" @click="downvote()" class="fa fa-arrow-down"></i>
-            <div v-if="this.seen">Seen 
+            <div id="rate-container">
+                <div style="width: 50px; margin-bottom: 10px;">Rate it!</div>
+                <div id="up-down-container">
+                    <i :style="this.vote === 1 ? 'color: orange' : ''" @click="upvote()" class="fa fa-arrow-up"></i>
+                    <i :style="this.vote === -1 ? 'color: lightblue' : ''" @click="downvote()" class="fa fa-arrow-down"></i>
+                </div>
+            </div>
+
+            <div class="seen-container" v-if="this.seen">Seen 
                 <i :style="'color: green;'" class="fa fa-check" @click="this.voteSeen(false); resetVote()"></i>
             </div>
-            <div v-else>Seen 
+            <div class="seen-container" v-else>Seen 
                 <i :style="'color: darkred; font-weight: light;'" class="fa fa-times" @click="this.voteSeen(true); resetVote()"></i>
             </div>
         </div>
@@ -43,12 +49,16 @@ export default {
             if (!this.seen){
                 await this.voteSeen(true)
             }
+            const newRating = this.voteHandler(-1)
             await apiVoteRating(this.suggestionID, this.voteHandler(-1)).then(res => {
                 this.vote = -1
             })
             .catch(()=>{console.error("Downvote failed")})
         },
         async resetVote(){
+            if (this.seen){
+                await this.voteSeen(false)
+            }
             await apiVoteRating(this.suggestionID, this.voteHandler(0)).then(res => {
                 this.vote = 0
             })
@@ -123,14 +133,32 @@ i:hover{
     margin-left: 5px;
     margin-right: 5px;
 }
-#vote-container div{
-    margin-left: 55px;
+#vote-container {
     font-size: 16px;
     color: white;
     font-weight: lighter;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    flex-flow: row;
+}
+#rate-container{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+#up-down-container{
+    display: flex;
+    flex-flow: row;
+}
+#up-down-container i {
+    margin-left: -2px;
+}
+.seen-container{
+    margin-left: 55px;
+    margin-top: 30px;
+    display: flex; 
     flex-flow: row;
 }
 .fa-check {
