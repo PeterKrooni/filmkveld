@@ -83,8 +83,47 @@ const deleteSuggestion = asyncHandler(async(req, res, next) => {
     return res.status(200).json({message: "deleteSuggestoion: Deletion successful."})
 })
 
+// @desc    Add tag to suggestion
+// @body    tag_id: Tag id, suggestion_id: Suggestion id
+// @route   PUT /tag/add
+// @access  Private
+const addTag = asyncHandler(async(req, res, next) => {
+    if (!req.body.suggestion_id){
+        console.log("addTag:: Error from suggestion rest: no suggestion ID in body")
+        return res.status(400).json({message: "addTag:: Error from suggestion rest: no suggestion ID in body"})
+    }
+    if (!req.body.tag_id){
+        console.log("addTag:: Error from suggestion rest: no tag ID in body")
+        return res.status(400).json({message: "addTag:: Error from suggestion rest: no tag ID in body"})
+    }
+    const suggestion = await Suggestion.findByIdAndUpdate(req.body.suggestion_id, {tag: req.body.tag_id})
+    return res.status(200).json(suggestion)
+})  
+
+// @desc    Remove tag from suggestion
+// @body    tag_id: Tag id, suggestion_id: Suggestion id
+// @route   PUT /tag/remove
+// @access  Private
+const removeTag = asyncHandler(async(req, res, next) => {
+    if (!req.body.suggestion_id){
+        console.log("removeTag:: Error from suggestion rest: no suggestion id in body")
+        return res.status(400).json({message: "removeTag:: Error from suggestion rest: no suggestion id in body"})
+    }
+    if (!req.body.tag_id){
+        console.log("removeTag:: Error from suggestion rest: no tag id in body")
+        return res.status(400).json({message: "removeTag:: Error from suggestion rest: no tag id in body"})
+    }
+    const suggestion = await Suggestion.findOne({_id: req.body.suggestion_id}, function(err, suggestion){
+        suggestion.set('tag', undefined, {strict: false});
+        suggestion.save()
+    })
+    return res.status(200).json(suggestion)
+})
+
 module.exports = {
     getSuggestions,
     getMostWanted,
-    deleteSuggestion
+    deleteSuggestion,
+    addTag,
+    removeTag
 }

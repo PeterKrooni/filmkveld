@@ -1,7 +1,7 @@
 const express = require('express')
 
 const {
-    getSuggestions, getMostWanted, deleteSuggestion
+    getSuggestions, getMostWanted, deleteSuggestion, addTag, removeTag
 } = require('./rest.suggestion.controller')
 
 const router = express.Router()
@@ -15,5 +15,12 @@ router.route("/mostwanted")
 
 router.route("/:id")
     .delete(protect, deleteSuggestion)
+
+router.route("/tag/add")
+    .put(protect, addTag)
+
+router.route("/tag/remove")
+    .put(protect, removeTag)
+
 
 module.exports = router;

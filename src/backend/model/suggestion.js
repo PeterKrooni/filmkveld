@@ -11,6 +11,11 @@ const suggestionSchema = mongoose.Schema({
         required: [true, 'Movie ID required to add suggestion'],
         ref: 'Movie',
     },
+    tag: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: "",
+        ref: 'Tag'
+    }
 }, {
     timestamps: true
 })
