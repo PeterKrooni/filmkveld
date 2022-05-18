@@ -18,7 +18,7 @@
       </div>
       <div class="side-section">
         <SmallHeader :toptext="'Add a movie'" :bottomtext="'Wooo!'" />
-        <AddMovie style="margin-top: 30px;"/>
+        <AddMovie style="margin-top: 30px;" @added="movieAdded" />
       </div>
       
 
@@ -74,6 +74,9 @@ import ProfileCard from '../components/profile/ProfileCard.vue'
 import NavMenu from '../components/NavMenu.vue'
 import KarmaLeaderBoard from '../components/stats/KarmaLeaderBoard.vue'
 import { apiGetSuggestions, apiDeleteSuggestion } from '../api/rest/suggestions'
+import { apiGetSuggestionById } from '../api/suggestion'
+import { apiGetMovie } from '../api/movie'
+import { apiGetUser } from '../api/user'
 
 export default {
   name: 'Home',
@@ -110,6 +113,35 @@ export default {
       this.suggestions_m = this.suggestions_m.filter(x => x._id !== id)
       this.suggestions_r = this.suggestions_r.filter(x => x._id !== id)
     },
+    async movieAdded(sid){
+      const newSuggestion = await apiGetSuggestionById(sid)
+      const movie = await apiGetMovie(newSuggestion.data.movie_id)
+      const user = await apiGetUser(newSuggestion.data.suggested_by, true)
+      var suggestion = newSuggestion.data
+      suggestion.movie_id = movie.data
+      suggestion.suggested_by = user
+
+      // compatability with getSuggestions rest api
+      suggestion.suggested_by.name = suggestion.suggested_by.username
+      delete suggestion.suggested_by.username
+
+      suggestion.suggested_by._id = suggestion.suggested_by.userid
+      delete suggestion.suggested_by.userid
+
+      // balance suggestion in suggestions list
+      var l = this.suggestions_l <= this.suggestions_m && this.suggestions_l <= this.suggestions_r
+      var m = this.suggestions_m <= this.suggestions_l && this.suggestions_m <= this.suggestions_r
+      var r = this.suggestions_r <= this.suggestions_l && this.suggestions_r <= this.suggestions_m
+      if (l) {
+        this.suggestions_l.push(suggestion)
+      } else if (m) {
+        this.suggestions_m.push(suggestion)
+      } else if (r) {
+        this.suggestions_r.push(suggestion)
+      } else {
+        this.suggestions_l.push(suggestion)
+      }
+    }
   },
   async mounted(){
     const allWithMovie = await apiGetSuggestions(true, true)
@@ -130,7 +162,6 @@ export default {
         side = 0
       }
     }
-    //-this.suggestions_l = suggs
     this.loaded = true      
   }
 }

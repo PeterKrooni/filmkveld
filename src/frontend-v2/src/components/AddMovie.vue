@@ -49,6 +49,7 @@ export default{
                 this.modalText= res.data.movie.title + " added."
                 this.modalType="Confirmation"
                 this.openModal = true
+                this.$emit("added", res.data.suggestion._id)
              })
             .catch((res) => {
                 console.log(res.response)

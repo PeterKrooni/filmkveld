@@ -124,8 +124,7 @@ const apiGetUser = asyncHandler(async(req, res, next) => {
     const ret = {
         username: user.name, 
         userid: user._id,
-        wts_karma: user.want_to_see_karmascore,
-        seen_karma: user.seen_karmascore
+        karma: user.karma
     }
     res.status(200).json(ret)
 })

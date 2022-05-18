@@ -149,6 +149,7 @@ export default {
             const user = this.preloadedData.suggested_by
             const me = await getMe()
             this.enable_delete = me.userid === this.preloadedData.suggested_by._id
+            console.log(me.userid, "eh", this.preloadedData.suggested_by)
             this.title = movie.title
             this.external_rating = movie.imdbRating
             this.runtime = movie.runtime
@@ -232,11 +233,20 @@ export default {
 }
 #delete-btn{
     font-size: 8px;
+    background-color: rgba(109, 19, 19, 0.65);
+    color: white;
+    border: none;
+    position: absolute;
+    right: 0;
+}
+#delete-btn:hover{
+    font-size: 12px;
     background-color: rgb(189, 11, 11);
     color: white;
     border: none;
     position: absolute;
     right: 0;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1) 200ms;
 }
 #title{
     height: 70px;
