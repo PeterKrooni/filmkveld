@@ -1,7 +1,7 @@
 const express = require('express')
 
 const {
-    getSuggestions, getMostWanted
+    getSuggestions, getMostWanted, deleteSuggestion
 } = require('./rest.suggestion.controller')
 
 const router = express.Router()
@@ -12,5 +12,8 @@ router.route("/:movieData/:profileData")
 
 router.route("/mostwanted")
     .get(protect, getMostWanted)
+
+router.route("/:id")
+    .delete(protect, deleteSuggestion)
 
 module.exports = router;
