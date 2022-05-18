@@ -1,5 +1,6 @@
 <template>
-    <div v-if="loaded" id="container">
+    <div v-if="loaded" id="container" >
+        <button id="delete-btn" v-if="this.enable_delete" @click="this.$emit('delete')">X</button>
         <div id="header">
             <div id="title"><p>{{trimtext(this.title)}}</p></div>
             <div v-if="!compact" id="rating"><p>{{this.external_rating}} <img style="width: 22px; height: 15px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/575px-IMDB_Logo_2016.svg.png?20200406194337" alt=""></p></div>
@@ -48,6 +49,7 @@ import ProfileFrame from './profile/ProfileFrame.vue'
 import { apiGetMovie } from '../api/movie'
 import { apiGetUser } from '../api/user'
 import { apiGetVote } from '../api/vote'
+import { getMe } from '../api/user'
 import { apiGetSuggestionById } from '../api/suggestion'
 
 export default {
@@ -84,7 +86,7 @@ export default {
         compact: {
             type: Boolean, 
             default: false
-        }
+        },
     },
     data() {
         return {
@@ -101,6 +103,7 @@ export default {
             tag: 'Korean Movie Night',
             showtag: false,
             loaded: false,
+            enable_delete: false,
         }
     },
     methods: {
@@ -111,7 +114,7 @@ export default {
             this.showcreated = !this.showcreated
         },
         trimtext(title){
-            return title.length < 18 ? title : title.substring(0, 18) + "..." 
+            return title.length < 17 ? title : title.substring(0, 17) + "..." 
             // TODO rework this when not tired
             var sizeAllowance = 20
             var penalties = title.split('').filter(i => (i === i.toUpperCase() 
@@ -127,6 +130,8 @@ export default {
             const suggestion = await apiGetSuggestionById(this.id)
             const movie = await apiGetMovie(suggestion.data.movie_id)
             const user = await apiGetUser(suggestion.data.suggested_by, true)
+            const me = await getMe()
+            this.enable_delete = me.userid === user.data._id
             this.title = movie.data.title
             this.external_rating = movie.data.imdbRating
             this.runtime = movie.data.runtime
@@ -142,6 +147,8 @@ export default {
             const suggestion = this.preloadedData
             const movie = this.preloadedData.movie_id
             const user = this.preloadedData.suggested_by
+            const me = await getMe()
+            this.enable_delete = me.userid === this.preloadedData.suggested_by._id
             this.title = movie.title
             this.external_rating = movie.imdbRating
             this.runtime = movie.runtime
@@ -150,7 +157,6 @@ export default {
             this.suggestor_username = user.name
             this.suggestor_profile_picture = user.profile_picture ? user.profile_picture : /* need some default image handling*/ "https://cdn.britannica.com/84/206384-050-00698723/Javan-gliding-tree-frog.jpg";
             this.poster = movie.poster; 
-            console.log(suggestion)
             this.created = suggestion.createdAt.substring(0, 10).replace(/-/g, '/');
         }
     },
@@ -198,6 +204,8 @@ export default {
     transition-duration: 100ms;
     transition-timing-function: ease-out;
 
+    position: relative;
+
     border-bottom-right-radius: 1em;
 }
 #seen-container{
@@ -222,11 +230,21 @@ export default {
     justify-content: space-between;
     align-items: center;
 }
-
+#delete-btn{
+    font-size: 8px;
+    background-color: rgb(189, 11, 11);
+    color: white;
+    border: none;
+    position: absolute;
+    right: 0;
+}
 #title{
     height: 70px;
     width: 75%;
     font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #title p{
     font-weight: bolder;

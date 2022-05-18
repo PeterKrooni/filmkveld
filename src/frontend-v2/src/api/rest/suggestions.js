@@ -11,3 +11,7 @@ export async function apiGetSuggestions(includeMovieData, includeProfileData){
 export async function apiGetMostWanted(){
     return axios.get("http://localhost:5000/rest/api/suggestions/mostwanted")
 }
+
+export async function apiDeleteSuggestion(suggestionID){
+    return axios.delete("http://localhost:5000/rest/api/suggestions/" + suggestionID)
+}

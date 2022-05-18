@@ -37,6 +37,7 @@
       <div class="suggestions-container">
         <div v-for="i in this.suggestions_l" :key="i" class="suggestions">
             <Suggestion class="sugg"
+              @delete="this.deleteSuggestion(i._id)"
               :preloaded="true"
               :preloadedData="i"
             />
@@ -45,6 +46,7 @@
       <div class="suggestions-container">
         <div v-for="i in this.suggestions_m" :key="i" class="suggestions">
             <Suggestion class="sugg"
+              @delete="this.deleteSuggestion(i._id)"
               :preloaded="true"
               :preloadedData="i"
             />
@@ -53,6 +55,7 @@
       <div class="suggestions-container">
         <div v-for="i in this.suggestions_r" :key="i" class="suggestions">
             <Suggestion class="sugg"
+              @delete="this.deleteSuggestion(i._id)"
               :preloaded="true"
               :preloadedData="i"
             />
@@ -70,7 +73,7 @@ import SmallHeader from '../components/SmallHeader.vue'
 import ProfileCard from '../components/profile/ProfileCard.vue'
 import NavMenu from '../components/NavMenu.vue'
 import KarmaLeaderBoard from '../components/stats/KarmaLeaderBoard.vue'
-import { apiGetSuggestions } from '../api/rest/suggestions'
+import { apiGetSuggestions, apiDeleteSuggestion } from '../api/rest/suggestions'
 
 export default {
   name: 'Home',
@@ -92,6 +95,21 @@ export default {
     }
   },
   methods: {
+    async deleteSuggestion(id){
+      await apiDeleteSuggestion(id)
+      .then(()=> {
+        console.log("Suggestion deleted.")      
+        this.removeSuggestionFromList(id)
+        })
+      .catch((err)=>{
+        console.log(err, err.message)
+        })
+    },
+    removeSuggestionFromList(id){
+      this.suggestions_l = this.suggestions_l.filter(x => x._id !== id)
+      this.suggestions_m = this.suggestions_m.filter(x => x._id !== id)
+      this.suggestions_r = this.suggestions_r.filter(x => x._id !== id)
+    },
   },
   async mounted(){
     const allWithMovie = await apiGetSuggestions(true, true)
