@@ -18,7 +18,7 @@
       </div>
       <div class="side-section">
         <SmallHeader :toptext="'Add a movie'" :bottomtext="'Wooo!'" />
-        <AddMovie style="margin-top: 30px;" @added="movieAdded" />
+        <AddMovie style="margin-top: 30px; width: 340px;" @added="movieAdded" />
       </div>
       
 
@@ -73,7 +73,7 @@ import SmallHeader from '../components/SmallHeader.vue'
 import ProfileCard from '../components/profile/ProfileCard.vue'
 import NavMenu from '../components/NavMenu.vue'
 import KarmaLeaderBoard from '../components/stats/KarmaLeaderBoard.vue'
-import { apiGetSuggestions, apiDeleteSuggestion } from '../api/rest/suggestions'
+import { apiGetSuggestions, apiDeleteSuggestion, apiTagSuggestion } from '../api/rest/suggestions'
 import { apiGetSuggestionById } from '../api/suggestion'
 import { apiGetMovie } from '../api/movie'
 import { apiGetUser } from '../api/user'
@@ -113,8 +113,13 @@ export default {
       this.suggestions_m = this.suggestions_m.filter(x => x._id !== id)
       this.suggestions_r = this.suggestions_r.filter(x => x._id !== id)
     },
-    async movieAdded(sid){
+    async movieAdded(sid, tag){
+      console.log("tag", tag)
       const newSuggestion = await apiGetSuggestionById(sid)
+      if (tag !== ''){
+        await apiTagSuggestion(tag._id, newSuggestion.data._id)
+        .then((res) => { console.log(res) })
+      }
       const movie = await apiGetMovie(newSuggestion.data.movie_id)
       const user = await apiGetUser(newSuggestion.data.suggested_by, true)
       var suggestion = newSuggestion.data
@@ -173,6 +178,11 @@ export default {
   align-items: center; 
   justify-content: space-evenly;
   flex-flow: row;
+}
+@keyframes ree {
+  0% {transform: rotateZ(0deg);}
+  100% {transform: rotateZ(360deg);}
+  
 }
 @media screen and (max-width: 1000px) {
   #home {
