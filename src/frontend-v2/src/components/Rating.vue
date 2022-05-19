@@ -10,10 +10,10 @@
             </div>
 
             <div class="seen-container" v-if="this.seen">Seen 
-                <i :style="'color: green;'" class="fa fa-check" @click="this.voteSeen(false); resetVote()"></i>
+                <i :style="'color: green; margin-top: 3px; font-size: 15px;'" class="fa fa-check" @click="this.voteSeen(false); resetVote()"></i>
             </div>
             <div class="seen-container" v-else>Seen 
-                <i :style="'color: darkred; font-weight: light;'" class="fa fa-times" @click="this.voteSeen(true); resetVote()"></i>
+                <i :style="'color: rgb(171, 136, 136); margin-top: 3.5px; font-weight: light; font-size: 15px;'" class="fa fa-times" @click="this.voteSeen(true); resetVote()"></i>
             </div>
         </div>
     </div>
@@ -117,7 +117,7 @@ i:hover{
     color: rgba(14, 133, 14, 0.746);
 }
 .fa-thumbs-down{
-    color: rgba(114, 17, 17, 0.889);
+    color: rgba(127, 79, 79, 0.889);
     margin-top: 10px;
 }
 #vote-container{
@@ -156,10 +156,13 @@ i:hover{
     margin-left: -2px;
 }
 .seen-container{
-    margin-left: 55px;
-    margin-top: 30px;
+    margin-left: 60px;
+    margin-top: 37.5px;
     display: flex; 
     flex-flow: row;
+    font-size: 14px;
+    color: rgb(176, 170, 170);
+    font-style: normal;
 }
 .fa-check {
     width: 20px;

@@ -1,6 +1,7 @@
 <template>
     <div v-if="loaded" id="container" >
         <button id="delete-btn" v-if="this.enable_delete" @click="this.$emit('delete')">X</button>
+        <i v-else class="fa fa-eye-slash"> </i>
         <div id="header">
             <div id="title"><p>{{trimtext(this.title)}}</p></div>
             <div v-if="!compact" id="rating"><p>{{this.external_rating}} <img style="width: 22px; height: 15px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/575px-IMDB_Logo_2016.svg.png?20200406194337" alt=""></p></div>
@@ -26,11 +27,11 @@
             <div id="date-tag">
                 <div v-if="this.tag != ''" id="tag-container">
                     <i @click="toggletag()" class="fa fa-tags"></i>
-                    <span style="color: white;" v-if="this.showtag">{{this.tag}}</span>
+                    <span v-if="this.showtag">{{this.tag}}</span>
                     </div>
                 <div id="created-container">
                     <i @click="togglecreated()" class="fa fa-calendar"></i>
-                    <span style="color: white;" v-if="this.showcreated">{{this.created}}</span>
+                    <span v-if="this.showcreated">{{this.created}}</span>
                 </div>
             </div>
             <Rating style="margin-left: -20px;"
@@ -51,6 +52,7 @@ import { apiGetUser } from '../api/user'
 import { apiGetVote } from '../api/vote'
 import { getMe } from '../api/user'
 import { apiGetSuggestionById } from '../api/suggestion'
+import { apiGetTagOnSuggestion } from '../api/rest/suggestions'
 
 export default {
     name: 'Suggestion',
@@ -100,7 +102,7 @@ export default {
             },
             created: '',
             showcreated: false, 
-            tag: 'Korean Movie Night',
+            tag: ' ',
             showtag: false,
             loaded: false,
             enable_delete: false,
@@ -182,6 +184,15 @@ export default {
                 this.seenValue = false;
                 this.rating_loaded = true;
         })
+
+        const tag = await apiGetTagOnSuggestion(id_for_getvote)
+        .then((res)=>{
+            if (res.status !== 204){
+                this.tag = res.data.name
+            }
+        })
+        .catch(()=>{})
+        
         this.loaded = true
     }
 }
@@ -247,6 +258,14 @@ export default {
     position: absolute;
     right: 0;
     transition: cubic-bezier(0.075, 0.82, 0.165, 1) 200ms;
+    border-bottom-left-radius: 0.35em;
+}
+.fa-eye-slash{
+    position: absolute;
+    color: darkgrey;
+    right: 3px;
+    top: 3px;
+    font-size: 10px;
 }
 #title{
     height: 70px;
@@ -322,7 +341,7 @@ export default {
     margin-bottom: 1%;
 }
 #date-tag{
-    color: rgb(178, 173, 173);
+    color: rgb(142, 137, 137);
     width: 140px;
     font-size: 10.5px;
     margin-top: 25px;
@@ -340,7 +359,8 @@ export default {
     text-overflow: ellipsis;
 }
 #tag-container i {
-    margin: 2px;
+    color: rgba(240, 190, 146, 0.574);
+    margin: 2.5px;
 }
 #created-container{
     white-space: nowrap;
@@ -348,6 +368,7 @@ export default {
     text-overflow: ellipsis;
 }
 #created-container i {
+    color: rgba(173, 216, 230, 0.552);
     margin: 3px;
     margin-left: 4px;
     margin-right: 6px;

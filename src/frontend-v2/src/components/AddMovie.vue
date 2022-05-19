@@ -4,7 +4,7 @@
         <input id="imdb_input" type="text" placeholder="Paste IMDB link...">
         <div style="display: flex; flex-flow: row;">
             <button @click="addMovie" id="add-btn">Add movie!</button>
-            <Tags style="margin-left: 10px;" />
+            <Tags style="margin-left: 10px;" @tagged="tagSelected" @clear_tag="this.tag=''" :currently_tagged_as="tag" />
         </div>
         <FeedbackModal @modalClosed="openModal = false" :open="openModal" :content="modalText" :type="modalType" />
     </div>
@@ -26,7 +26,8 @@ export default{
         return{
             openModal: false,
             modalText: '',
-            modalType: 'Confirmation'
+            modalType: 'Confirmation',
+            tag: '',
         }
     },
     methods: {
@@ -46,10 +47,10 @@ export default{
             }
             await apiAddMovieFromOMDB(imdb_link)
             .then((res) => {
-                this.modalText= res.data.movie.title + " added."
+                this.modalText= res.data.movie.title + " added." + (this.tag !== '' ? "\n Tag: " + this.tag.name : '')
                 this.modalType="Confirmation"
                 this.openModal = true
-                this.$emit("added", res.data.suggestion._id)
+                this.$emit("added", res.data.suggestion._id, this.tag)
              })
             .catch((res) => {
                 console.log(res.response)
@@ -57,6 +58,9 @@ export default{
                 this.modalType = "Error"
                 this.openModal = true
             })
+        },
+        tagSelected(tag){
+            this.tag = tag;
         }
     }
 }
