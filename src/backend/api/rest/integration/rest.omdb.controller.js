@@ -44,13 +44,14 @@ const apiAddMovieFromOMDB = asyncHandler(async(req, res, next)=>{
     // TODO: code below shouldn't be done here, this functionality already exists
     // perhaps make this entire controller into a middleware function or something
 
+    console.log(omdb_response)
     // create movie
     const movie = await Movie.create({
         title: omdb_response.data.Title,
         source: "https://www.imdb.com/title/" + omdb_response.data.imdbID,
         runtime: omdb_response.data.Runtime,
         director: omdb_response.data.Director,
-        rating: omdb_response.data.Ratings[0].value,
+        rating: omdb_response.data.Ratings.length > 0 ? omdb_response.data.Ratings[0].value : 0,
         year: omdb_response.data.Released,
         released: omdb_response.data.released,
         actors: omdb_response.data.Actors,
