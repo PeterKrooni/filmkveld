@@ -13,7 +13,6 @@ const suggestionSchema = mongoose.Schema({
     },
     tag: {
         type: mongoose.Schema.Types.ObjectId,
-        default: "",
         ref: 'Tag'
     }
 }, {

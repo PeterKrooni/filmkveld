@@ -3,6 +3,7 @@ const Suggestion = require('../../../model/suggestion')
 const Vote = require('../../../model/vote')
 const Movie = require('../../../model/movie')
 const User = require('../../../model/user')
+const Tag = require('../../../model/tag')
 
 // @desc    Get suggestions (opts include movie data, profile data in response)
 // @route   GET /:movieData/:profileData
@@ -96,9 +97,26 @@ const addTag = asyncHandler(async(req, res, next) => {
         console.log("addTag:: Error from suggestion rest: no tag ID in body")
         return res.status(400).json({message: "addTag:: Error from suggestion rest: no tag ID in body"})
     }
-    const suggestion = await Suggestion.findByIdAndUpdate(req.body.suggestion_id, {tag: req.body.tag_id})
+    const suggestion = await Suggestion.findByIdAndUpdate(req.body.suggestion_id, {$set: {'tag': req.body.tag_id}})
     return res.status(200).json(suggestion)
 })  
+
+// @desc    Get tag on suggestion
+// @params  sid: suggestion id
+// @route   GET /tag/get/:id
+// @access  Public
+const getTag = asyncHandler(async(req, res, next) => {
+    if (!req.params.sid){
+        console.log(`getTag:: Error from suggestion rest, missing suggestion id ${req.params.sid}`)
+        return res.status(400).json({message: `getTag:: Error from suggestion rest, missing suggestion id ${req.params.sid}`})
+    }   
+    const suggestion = await Suggestion.findById(req.params.sid)
+    if (!suggestion.tag){
+        return res.status(204).json({message: 'No tag found.'})
+    }
+    const tag = await Tag.findById(suggestion.tag)
+    return res.status(200).json(tag)
+})
 
 // @desc    Remove tag from suggestion
 // @body    tag_id: Tag id, suggestion_id: Suggestion id
@@ -125,5 +143,6 @@ module.exports = {
     getMostWanted,
     deleteSuggestion,
     addTag,
+    getTag,
     removeTag
 }

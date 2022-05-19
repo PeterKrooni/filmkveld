@@ -7,7 +7,7 @@ const Tag = require('../../../model/tag')
 // @access  Public
 const apiGetTags = asyncHandler(async(req, res, next) => {
     const tags = await Tag.find()
-    return res.status(200).json(tag)
+    return res.status(200).json(tags)
 })
 
 // @desc    Get tag with tagid
@@ -36,7 +36,12 @@ const apiAddTag = asyncHandler(async(req, res, next) => {
         console.log('apiAddTag:: Error in tag controller, missing tag name')
         return res.status(400).json({message: 'apiAddTag:: Error in tag controller, missing tag name'})
     }
-    const tag = await Tag.create({name: req.body.name})
+    const exists = await Tag.findOne({name: req.body.name})
+    if(exists){
+        console.log(`apiAddTag:: Error in tag controller, tag with name ${req.body.name} already exists.`)
+        return res.status(409).json({message: `apiAddTag:: Error in tag controller, tag with name ${req.body.name} already exists.`})
+    }
+    const tag = await Tag.create({name: req.body.name, submitted_by: req.user.id})
     return res.status(200).json(tag)
 })
 
@@ -49,6 +54,13 @@ const apiRemoveTag = asyncHandler(async(req, res, next) => {
         console.log('apiRemoveTag:: Error in tag controller, missing tag id')
         return res.status(400).json({message: 'apiRemoveTag:: Error in tag controller, missing tag id'})
     }
+    
+    const owned = await tag.findById(req.params.id)
+    if (owned.submitted_by !== req.user.id){
+        console.log('apiRemoveTag:: Error in tag controller, tag submitter ID does not match request user id')
+        return res.status(401).json({message: 'apiRemoveTag:: Error in tag controller, tag submitter ID does not match request user id'})
+    }
+
     const tag = await Tag.findByIdAndDelete({_id: req.params.id})
     if (!tag){
         console.log(`apiRemoveTag:: Error in tag controller, no tag found with id ${req.params.id}`)
