@@ -15,3 +15,11 @@ export async function apiGetMostWanted(){
 export async function apiDeleteSuggestion(suggestionID){
     return axios.delete("http://localhost:5000/rest/api/suggestions/" + suggestionID)
 }
+
+export async function apiTagSuggestion(tagid, suggestionid){
+    return axios.put("http://localhost:5000/rest/api/suggestions/tag/add/", {tag_id: tagid, suggestion_id: suggestionid} )
+}
+
+export async function apiGetTagOnSuggestion(sid){
+    return axios.get("http://localhost:5000/rest/api/suggestions/tag/get/" + sid)
+}
