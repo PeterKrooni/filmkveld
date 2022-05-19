@@ -19,7 +19,10 @@
                     <div><SmallHeader :toptext="'Your karmascore is ' + this.karma + '!'" :bottomtext="'True popularity!'" /></div>
                 </div>
             </div>
-            Settings: show tags by default, show created by default: 
+            <div id="settingsContainer">
+                <div><SettingsCheckbox :settingName="'Show Tags'" /></div>
+                <div><SettingsCheckbox :settingName="'Show CreatedAtDate'" /></div>
+            </div>
             <div style="margin-top: 150px; margin-right: 35x; margin-bottom: -50px;"> <BigHeader :text="'Suggestions'"/> </div>
             <div id="suggestions">
                 <div id="suggestions-container" v-if="loaded">
@@ -40,6 +43,7 @@ import NavMenu from '../components/NavMenu'
 import Suggestion from '../components/Suggestion'
 import SmallHeader from '../components/SmallHeader.vue'
 import BigHeader from '../components/BigHeader.vue'
+import SettingsCheckbox from '../components/SettingsCheckbox.vue'
 
 import { apiGetSuggestions } from '../api/rest/suggestions'
 import { getMe, apiUpdateProfilePicture } from '../api/user'
@@ -50,6 +54,7 @@ export default {
         Suggestion,
         SmallHeader,
         BigHeader,
+        SettingsCheckbox,
     },
     data() {
         return {
@@ -190,6 +195,11 @@ export default {
 #user-stats div{
     margin: 20px;
     width: 260px;
+}
+
+.settingsContainer {
+    text-align:center;
+    margin-bottom: 30px;
 }
 
 @media screen and (min-width: 1401px){
