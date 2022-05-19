@@ -19,6 +19,7 @@
                     <div><SmallHeader :toptext="'Your karmascore is ' + this.karma + '!'" :bottomtext="'True popularity!'" /></div>
                 </div>
             </div>
+            Settings: show tags by default, show created by default: 
             <div style="margin-top: 150px; margin-right: 35x; margin-bottom: -50px;"> <BigHeader :text="'Suggestions'"/> </div>
             <div id="suggestions">
                 <div id="suggestions-container" v-if="loaded">
