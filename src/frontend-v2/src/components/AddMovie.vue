@@ -1,6 +1,5 @@
 <template>
     <div id="add-movie-container">
-        <NavMenu />
         <input id="imdb_input" type="text" placeholder="Paste IMDB link...">
         <div style="display: flex; flex-flow: row;">
             <button @click="addMovie" id="add-btn">Add movie!</button>
