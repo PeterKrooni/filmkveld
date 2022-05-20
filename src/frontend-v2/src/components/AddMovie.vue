@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import NavMenu from '../components/NavMenu.vue'
 import FeedbackModal from '../components/FeedbackModal.vue'
 import Tags from '../components/Tags.vue'
 import { apiAddMovieFromOMDB } from '../api/omdb'
