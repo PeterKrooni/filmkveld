@@ -16,7 +16,6 @@ import { apiAddMovieFromOMDB } from '../api/omdb'
 
 export default{
     components: {
-        NavMenu,
         FeedbackModal,
         Tags
     },
