@@ -114,9 +114,8 @@ export default {
       this.suggestions_r = this.suggestions_r.filter(x => x._id !== id)
     },
     async movieAdded(sid, tag){
-      console.log("tag", tag)
       const newSuggestion = await apiGetSuggestionById(sid)
-      if (tag !== ''){
+      if (tag._id !== 0){
         await apiTagSuggestion(tag._id, newSuggestion.data._id)
         .then((res) => { console.log(res) })
       }
