@@ -1,24 +1,21 @@
 <template>
     <div id="add-movie-container">
-        <NavMenu />
         <input id="imdb_input" type="text" placeholder="Paste IMDB link...">
         <div style="display: flex; flex-flow: row;">
             <button @click="addMovie" id="add-btn">Add movie!</button>
-            <Tags style="margin-left: 10px;" @tagged="tagSelected" @clear_tag="this.tag=''" :currently_tagged_as="tag" />
+            <Tags style="margin-left: 10px;" @tagged="tagSelected" @clear_tag="this.tag=this.empty_tag" :currently_tagged_as="tag" />
         </div>
         <FeedbackModal @modalClosed="openModal = false" :open="openModal" :content="modalText" :type="modalType" />
     </div>
 </template>
 
 <script>
-import NavMenu from '../components/NavMenu.vue'
 import FeedbackModal from '../components/FeedbackModal.vue'
 import Tags from '../components/Tags.vue'
 import { apiAddMovieFromOMDB } from '../api/omdb'
 
 export default{
     components: {
-        NavMenu,
         FeedbackModal,
         Tags
     },
@@ -27,7 +24,8 @@ export default{
             openModal: false,
             modalText: '',
             modalType: 'Confirmation',
-            tag: '',
+            empty_tag: { _id: 0, name: "None"},
+            tag: { _id: 0, name: "None"},
         }
     },
     methods: {
@@ -47,7 +45,7 @@ export default{
             }
             await apiAddMovieFromOMDB(imdb_link)
             .then((res) => {
-                this.modalText= res.data.movie.title + " added." + (this.tag !== '' ? "\n Tag: " + this.tag.name : '')
+                this.modalText= res.data.movie.title + " added." + (this.tag._id !== 0 ? "\n Tag: " + this.tag.name : '')
                 this.modalType="Confirmation"
                 this.openModal = true
                 this.$emit("added", res.data.suggestion._id, this.tag)

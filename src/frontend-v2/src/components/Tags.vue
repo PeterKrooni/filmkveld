@@ -14,7 +14,7 @@
                 <span style="color: white;">
                     {{this.currently_tagged_as.name}}
                     <i 
-                        v-if="this.currently_tagged_as !== ''" 
+                        v-if="this.currently_tagged_as._id !== 0" 
                         @click="this.$emit('clear_tag')" 
                         class="fa fa-times" 
                         style="font-size: 12px; color: darkred; margin-left: 2px;">

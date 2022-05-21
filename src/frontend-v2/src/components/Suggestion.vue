@@ -243,20 +243,18 @@ export default {
     align-items: center;
 }
 #delete-btn{
-    font-size: 8px;
+    font-size: 12px;
     background-color: rgba(109, 19, 19, 0.65);
-    color: white;
+    color: rgb(171, 168, 168);
     border: none;
     position: absolute;
-    right: 0;
+    right: -6px;
+    top: -6px;
+    border-radius: 100%;
 }
 #delete-btn:hover{
-    font-size: 12px;
     background-color: rgb(189, 11, 11);
     color: white;
-    border: none;
-    position: absolute;
-    right: 0;
     transition: cubic-bezier(0.075, 0.82, 0.165, 1) 200ms;
     border-bottom-left-radius: 0.35em;
 }

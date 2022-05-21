@@ -66,19 +66,22 @@ export default {
         },
         voteHandler(newVote) { //handle edgecases
             if (newVote === 0) { //remove vote
-                if (this.vote === 1) {return -1}
-                if (this.vote === -1) {return 1}
+                if (this.vote === 1) {return 0}
+                if (this.vote === -1) {return 0}
                 if (this.vote === 0) {return 0}
+                return newVote
             }
             else if (newVote === 1) { //upvote
                 if (this.vote === 1) {return 0}
-                if (this.vote === -1) {return 2}
+                if (this.vote === -1) {return 1}
                 if (this.vote === 0) {return 1}
+                return newVote
             }
             else if (newVote === -1) { //downvote
-                if (this.vote === 1) {return -2}
+                if (this.vote === 1) {  return -1}
                 if (this.vote === -1) {return 0}
                 if (this.vote === 0) {return -1}
+                return newVote
             }
         },
         async voteSeen(vote){
