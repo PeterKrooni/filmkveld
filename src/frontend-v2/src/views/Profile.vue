@@ -19,6 +19,7 @@
                     <div><SmallHeader :toptext="'Your karmascore is ' + this.karma + '!'" :bottomtext="'True popularity!'" /></div>
                 </div>
             </div>
+            <div><h1>Settings</h1></div>
             <div id="settingsContainer">
                 <div><SettingsCheckbox :settingName="'Show Tags'" /></div>
                 <div><SettingsCheckbox :settingName="'Show CreatedAtDate'" /></div>
@@ -197,9 +198,10 @@ export default {
     width: 260px;
 }
 
-.settingsContainer {
-    text-align:center;
-    margin-bottom: 30px;
+#settingsContainer {
+    margin: auto;
+    width: 38%;
+    border: 1px solid #FFFF00;
 }
 
 @media screen and (min-width: 1401px){
