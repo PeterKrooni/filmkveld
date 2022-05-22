@@ -1,5 +1,5 @@
 <template>
-    <div class="profile-card-container" v-if="loaded">
+    <div class="profile-card-container">
         <div id="profile-container" style="margin-top: -50px;">
             <div id="profile-info">
                 <img :src="imgSource" id="PP" alt="">
@@ -52,6 +52,7 @@ export default {
   justify-content: center;
   align-items: center;
   width: 350px;
+  height: 135px;
   padding-top: 10px;
   padding-right: 20px;
   box-shadow: rgba(0, 0, 0, 0.133) 0px 12px 12.5px, rgba(0, 0, 0, 0.12) 0px -2px 6px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 2px 3px, rgba(0, 0, 0, 0.09) 0px -3px 5px; 
