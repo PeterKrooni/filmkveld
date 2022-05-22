@@ -52,6 +52,9 @@ export default {
     border-radius: 0.5em;
     box-shadow: rgba(23, 23, 126, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
+#profile-frame:hover{
+    cursor: pointer;
+}
 #profile-frame img{
     margin-right: 7px;
 }
