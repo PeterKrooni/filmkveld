@@ -1,11 +1,12 @@
 import axios from 'axios'
+import env from './config/env'
 
 export async function apiGetMovies(){
-    return axios.get("http://localhost:5000/crud/api/movie/")
+    return axios.get(env.crud_url() + "movie/")
 }
 
 export async function apiGetMovie(movieID){
-    return axios.get("http://localhost:5000/crud/api/movie/"+movieID)
+    return axios.get(env.crud_url() + "movie/"+movieID)
 }
 
 export default apiGetMovies;

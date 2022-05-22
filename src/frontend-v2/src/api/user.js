@@ -1,9 +1,10 @@
 import axios from 'axios'
+import env from './config/env'
 
 export async function apiGetUser(userid, profile_picture=false){
-    const user = await axios.get("http://localhost:5000/crud/api/user/"+userid)
+    const user = await axios.get(env.crud_url() + "user/"+userid)
     if (profile_picture){
-        const avatar = await axios.get("http://localhost:5000/crud/api/user/"+userid+"/avatar")
+        const avatar = await axios.get(env.crud_url() + "user/"+userid+"/avatar")
         return {
             username: user.data.username, 
             userid: user.data.userid, 
@@ -20,7 +21,7 @@ export async function apiGetUser(userid, profile_picture=false){
 }
 
 export async function getMe(){
-    const user = await axios.get("http://localhost:5000/crud/api/user/me")
+    const user = await axios.get(env.crud_url() + "user/me")
     return { 
         username: user.data.name, 
         userid: user.data.id, 
@@ -30,10 +31,10 @@ export async function getMe(){
 }
 
 export async function apiUpdateProfilePicture(userid, base64_img){
-    const user = await axios.put("http://localhost:5000/crud/api/user/" + userid, {profile_picture: base64_img})
-    return {username: user.data.name, userid: user.data.id, profile_picture: user.data.profile_picture}
+    const user = await axios.put(env.crud_url() + "user/" + userid, {profile_picture: base64_img})
+    return {username: user.data.name, userid: user.data._id, profile_picture: user.data.profile_picture}
 }
 
 export async function apiGetTopKarmaUsers(limit){
-    return axios.get("http://localhost:5000/crud/api/user/top/karma/" + limit)
+    return axios.get(env.crud_url() + "user/top/karma/" + limit)
 }

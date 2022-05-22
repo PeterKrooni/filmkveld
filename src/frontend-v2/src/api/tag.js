@@ -1,13 +1,14 @@
 import axios from 'axios'
+import env from './config/env'
 
 export async function apiGetTags(){
-    return axios.get("http://localhost:5000/crud/api/tag/")
+    return axios.get(env.crud_url() + "tag/")
 }
 
 export async function apiGetTag(tagid){
-    return axios.get("http://localhost:5000/crud/api/tag/" + tagid)
+    return axios.get(env.crud_url() + "tag/" + tagid)
 }
 
 export async function apiSubmitTag(tagname){
-    return axios.post("http://localhost:5000/crud/api/tag/", {name: tagname})
+    return axios.post(env.crud_url() + "tag/", {name: tagname})
 }
