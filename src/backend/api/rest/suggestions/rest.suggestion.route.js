@@ -1,11 +1,14 @@
 const express = require('express')
 
 const {
-    getSuggestions, getMostWanted, deleteSuggestion, addTag, getTag, removeTag
+    getSuggestions, getSuggestionsPreloaded, getMostWanted, deleteSuggestion, addTag, getTag, removeTag
 } = require('./rest.suggestion.controller')
 
 const router = express.Router()
 const protect = require('../../../middleware/authMiddleware')
+
+router.route("/")
+    .get(protect, getSuggestionsPreloaded)
 
 router.route("/:movieData/:profileData")
     .get(protect, getSuggestions)
