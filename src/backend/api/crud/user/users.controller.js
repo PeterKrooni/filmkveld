@@ -3,6 +3,10 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const User = require('../../../model/user')
 
+// Image CDN
+require('dotenv').config()
+const cloudinary = require('cloudinary').v2
+
 // @desc    Authenticate user login
 // @route   POST /api/v1/user/login
 // @access  Public
@@ -41,7 +45,7 @@ const apiGetMe = asyncHandler(async(req, res, next) => {
 // @route   POST /api/v1/user/
 // @access  Private
 const apiRegisterUser = asyncHandler(async(req, res, next) => {
-    const {name, email, password} = req.body
+    const {name, email, password, profile_picture} = req.body
     
     if (!name || !password || !email){
         res.status(400)
@@ -61,7 +65,8 @@ const apiRegisterUser = asyncHandler(async(req, res, next) => {
     const user = await User.create({
         name: req.body.name,
         password: hashed,
-        email: req.body.email ? req.body.email : "none"  
+        email: req.body.email ? req.body.email : "none",
+        profile_picture: profile_picture
     })
 
     if (user){
@@ -87,8 +92,26 @@ const apiUpdateUser = asyncHandler(async(req, res, next) => {
         res.status(400)
         throw new Error(`User with id ${req.params.id} not found.`)
     }
-    const newUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true} /*<-- creates new if not exists*/)
-    res.status(200).json(newUser)
+
+    let body = req.body
+    if (req.body.profile_picture){
+        const uploaded = await cloudinary.uploader
+            .upload(req.body.profile_picture, {
+                resource_type: 'image',
+                public_id: req.params.id,
+                tags: 'profile_picture',
+                quality: 20,
+                height: 150,
+                width: 150,
+                crop: "limit"
+            })
+            .catch((err) => {
+                return res.status(500).err(`apiUpdateUser:: Error in user controller, upload to cloudinary image CDN failed, error: ${err}`)
+            })
+        body.profile_picture = uploaded.secure_url
+    }
+    const newUser = await User.findByIdAndUpdate(req.params.id, body)
+    return res.status(200).json({karma: newUser.karma, _id: newUser._id, profile_picture: newUser.profile_picture, name: newUser.name})
 })
 
 // @desc    Delete user
