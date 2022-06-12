@@ -47,10 +47,10 @@ export default {
 }
 
 
-/** The Style below code is taken from:
-https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_switch
+/** The Style code below is taken from:
+link: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_switch
 Accesed: 20.05.2022
-Publisher: https://www.w3schools.com/howto/howto_css_switch.asp
+Publisher: https://www.w3schools.com/
 Author: Unknown
 */
 
