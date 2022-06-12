@@ -3,7 +3,7 @@
         <div id="settingT"><b>{{this.settingName}}</b></div>
         <div id="settingV">
             <label class="switch">    
-                <input type="checkbox" v-model="valueChecker">
+                <input type="checkbox" v-model="this.defaultState" @change="cs">
                 <span class="slider"></span>
             </label>
         </div>
@@ -13,27 +13,13 @@
 
 <script>
 export default {
-    mounted(){
-        this.buttonState = this.defaultState
-    },
-    data() {
-        return {
-            buttonState: false
-        }
-    },
-    computed: {
-        valueChecker: {  // updates the value after the elem has been clicked
-            set(newState) {
-                this.buttonState = newState;
-                this.$emit("changeSetting", this.buttonState); // makes value available for parent component
-            }
-        }
-    },
     props: {
         settingName: "",
-        defaultState: {  // The state is read from the database
-            type: Boolean,
-            default: false 
+        defaultState: false
+    },
+    methods: {
+        cs(){
+            this.$emit("changeSetting")
         }
     }
 }

@@ -18,41 +18,27 @@
                     <div><SmallHeader :toptext="'You have '+ this.suggestionsByUser.length +  ' suggestions!'" :bottomtext="'Do you live on IMDB?'" /></div>
                     <div><SmallHeader :toptext="'Your karmascore is ' + this.karma + '!'" :bottomtext="'True popularity!'" /></div>
                 </div>
-            </div>
-            <div><h1>Settings</h1></div>
+            </div>            
+            <div style="margin-top: 150px; margin-right: 35x; margin-bottom: -50px;"> <BigHeader :text="'Settings'"/> </div>
             <div id="settingsContainer">
-                <div><SettingsCheckbox :defaultState="this.settings.tag_setting" :settingName="'Show Tags'" @changeSetting='updateSetting($event, "tag_setting")' /></div>
-                <div><SettingsCheckbox  :defaultState="this.settings.date_setting" :settingName="'Show CreatedAtDate'" @changeSetting='updateSetting($event, "date_setting")'/></div>
-            </div>
-            <div style="margin-top: 150px; margin-right: 35x; margin-bottom: -50px;"> <BigHeader :text="'Suggestions'"/> </div>
-            <div id="suggestions">
-                <div id="suggestions-container" v-if="loaded">
-                    <div v-for="i in this.suggestionsByUser" :key="i" id="suggestions">
-                        <Suggestion class="sugg"
-                            :preloaded="true"
-                            :preloadedData="i"
-                        />
-                    </div>
-                </div>
-            </div>
+                <div><SettingsCheckbox :defaultState="this.tag_setting" :settingName="'Show Tags'" @changeSetting='updateSetting("tag_setting")' /></div>
+                <div><SettingsCheckbox  :defaultState="this.date_setting" :settingName="'Show CreatedAtDate'" @changeSetting='updateSetting("date_setting")'/></div>
+           </div>
         </div>
     </div>
 </template>
 
 <script>
 import NavMenu from '../components/NavMenu'
-import Suggestion from '../components/Suggestion'
 import SmallHeader from '../components/SmallHeader.vue'
 import BigHeader from '../components/BigHeader.vue'
 import SettingsCheckbox from '../components/SettingsCheckbox.vue'
 
-import { apiGetSuggestions } from '../api/rest/suggestions'
 import { getMe, apiUpdateProfilePicture, apiUpdateUserSettings } from '../api/user'
 
 export default {
     components: {
         NavMenu,
-        Suggestion,
         SmallHeader,
         BigHeader,
         SettingsCheckbox,
@@ -65,7 +51,8 @@ export default {
             email: "Not found",
             text: "Some text",
             karma: "",
-            settings: {},
+            tag_setting: false,
+            date_setting: false,
             suggestionsByUser: [],
             loaded: false,
             preloaded: true, 
@@ -77,22 +64,25 @@ export default {
         this.imgSource = me.profile_picture
         this.name = me.username;
         this.karma = me.karma;
-        this.settings = me.settings;
-
-        const suggestions = await apiGetSuggestions(true, true)
-        this.suggestionsByUser = suggestions.data.filter(s => s.suggested_by !== me._id)
+        this.tag_setting = me.settings.tag_setting
+        this.date_setting = me.settings.date_setting;
         this.loaded = true;
     },
     methods: {
-        async updateSetting(event, settingType) {
-            //write to database
-            console.log("The Tag value has been changed and is now", event);
-            console.log(settingType);
-
-            //Update settingvalue in databse
-            const updated = await apiUpdateUserSettings(this.userid, this.settings, settingType, event);
-            this.settings = updated.settings;
-            console.log(updated.settings);
+        async updateSetting(settingType) {
+            switch (settingType){
+                case "tag_setting":
+                    this.tag_setting = !this.tag_setting
+                    break;
+                case "date_setting":
+                    this.date_setting = !this.date_setting
+                    break;
+            }
+            const newSettings = {
+                tag_setting: this.tag_setting, 
+                date_setting: this.date_setting
+            }
+            await apiUpdateUserSettings(this.userid, newSettings);
         },
         async updateProfilePicture(event) {
             if (event.target.files.length > 0){
@@ -215,7 +205,7 @@ export default {
 #settingsContainer {
     margin: auto;
     width: 38%;
-    border: 1px solid #FFFF00;
+    border: 1px solid #10af25;
     border-radius: 10px;
 }
 

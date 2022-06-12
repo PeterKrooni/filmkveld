@@ -112,7 +112,7 @@ const apiUpdateUser = asyncHandler(async(req, res, next) => {
         body.profile_picture = uploaded.secure_url
     }
     const newUser = await User.findByIdAndUpdate(req.params.id, body)
-    return res.status(200).json({karma: newUser.karma, _id: newUser._id, profile_picture: newUser.profile_picture, name: newUser.name})
+    return res.status(200).json({karma: newUser.karma, _id: newUser._id, profile_picture: newUser.profile_picture, name: newUser.name, settings: newUser.settings})
 })
 
 // @desc    Delete user
