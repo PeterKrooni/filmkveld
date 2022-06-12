@@ -44,6 +44,7 @@
               @delete="this.deleteSuggestion(i._id)"
               :preloaded="true"
               :preloadedData="i"
+              :settings="this.settings"
             />
         </div>
       </div>
@@ -53,6 +54,7 @@
               @delete="this.deleteSuggestion(i._id)"
               :preloaded="true"
               :preloadedData="i"
+              :settings="this.settings"
             />
         </div>
       </div>
@@ -62,6 +64,7 @@
               @delete="this.deleteSuggestion(i._id)"
               :preloaded="true"
               :preloadedData="i"
+              :settings="this.settings"
             />
         </div>
       </div>
@@ -107,7 +110,8 @@ export default {
       all_m: [],
       all_r: [],
       loaded: false,
-      loader_progress: 0
+      loader_progress: 0,
+      settings: {},
     }
   },
   methods: {
@@ -240,6 +244,9 @@ export default {
     this.loader_progress += 20
     var side = 0;
     const me = await getMe()
+    this.settings = me.settings
+    console.log(me.settings);
+    console.log(this.settings);
     this.loader_progress += 5
     for (var i = 0; i<suggs.length; i++){
       suggs[i].me_id = me.userid // add this here so each suggestion doesn't call getMe()

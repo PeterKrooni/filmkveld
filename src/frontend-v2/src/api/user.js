@@ -26,8 +26,13 @@ export async function getMe(){
         username: user.data.name, 
         userid: user.data.id, 
         profile_picture: user.data.profile_picture,
-        karma: user.data.karma
+        karma: user.data.karma,
+        settings: user.data.settings
     };
+}
+
+export async function apiUpdateUserSettings(userid, settings){
+    return axios.put(env.crud_url() + "user/" + userid, {settings: settings});
 }
 
 export async function apiUpdateProfilePicture(userid, base64_img){

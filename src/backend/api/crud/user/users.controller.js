@@ -31,13 +31,14 @@ const apiAuthUser = asyncHandler(async(req, res, next) => {
 // @route   GET /api/v1/user/me
 // @access  Private
 const apiGetMe = asyncHandler(async(req, res, next) => {
-    const {_id, name, email, profile_picture, karma} = await User.findById(req.user.id) // user.id from auth middleware
+    const {_id, name, email, profile_picture, karma, settings} = await User.findById(req.user.id) // user.id from auth middleware
     res.status(200).json({
         id: _id,
         name: name,
         email: email,
         profile_picture: profile_picture,
-        karma: karma
+        karma: karma,
+        settings: settings
     })
 })
 
@@ -111,7 +112,7 @@ const apiUpdateUser = asyncHandler(async(req, res, next) => {
         body.profile_picture = uploaded.secure_url
     }
     const newUser = await User.findByIdAndUpdate(req.params.id, body)
-    return res.status(200).json({karma: newUser.karma, _id: newUser._id, profile_picture: newUser.profile_picture, name: newUser.name})
+    return res.status(200).json({karma: newUser.karma, _id: newUser._id, profile_picture: newUser.profile_picture, name: newUser.name, settings: newUser.settings})
 })
 
 // @desc    Delete user
