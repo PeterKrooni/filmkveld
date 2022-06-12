@@ -19,7 +19,7 @@
                     <div><SmallHeader :toptext="'Your karmascore is ' + this.karma + '!'" :bottomtext="'True popularity!'" /></div>
                 </div>
             </div>            
-            <div style="margin-top: 150px; margin-right: 35x; margin-bottom: -50px;"> <BigHeader :text="'Settings'"/> </div>
+            <div style="margin-top: 150px; margin-right: 35x; margin-bottom: 50px;"> <BigHeader :text="'Settings'"/> </div>
             <div id="settingsContainer">
                 <div><SettingsCheckbox :defaultState="this.tag_setting" :settingName="'Show Tags'" @changeSetting='updateSetting("tag_setting")' /></div>
                 <div><SettingsCheckbox  :defaultState="this.date_setting" :settingName="'Show CreatedAtDate'" @changeSetting='updateSetting("date_setting")'/></div>
