@@ -20,7 +20,6 @@
         <img src="../assets/filmkveld.logo.png" style="width: 400px;" alt="">
       </div>
       <Search v-if="loaded" @onInput="searchInput" />
-      <SuggestionSort @change="filterInput" />
       <div class="side-section">
         <SmallHeader :toptext="'Add a movie'" :bottomtext="'Wooo!'" />
         <AddMovie style="margin-top: 30px; width: 340px;" @added="movieAdded" />
@@ -79,7 +78,6 @@ import ProfileCard from '../components/profile/ProfileCard.vue'
 import NavMenu from '../components/NavMenu.vue'
 import KarmaLeaderBoard from '../components/stats/KarmaLeaderBoard.vue'
 import Search from '../components/Search.vue'
-import SuggestionSort from '../components/SuggestionSort.vue'
 import { apiGetSuggestions, apiGetSuggestionsPreloaded, apiDeleteSuggestion, apiTagSuggestion } from '../api/rest/suggestions'
 import { apiGetSuggestionById } from '../api/suggestion'
 import { apiGetVotesByLoggedIn } from '../api/vote'
@@ -99,7 +97,6 @@ export default {
     NavMenu,
     KarmaLeaderBoard,
     Search,
-    SuggestionSort,
   },
   data() {
     return {
