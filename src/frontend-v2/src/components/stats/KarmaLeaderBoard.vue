@@ -34,7 +34,6 @@ export default {
         for (var i = 0; i<this.userlimit; i++){
             this.colors.push("#" + Math.floor(Math.random()*16777215).toString(16))
         }
-        console.log(this.colors)
         const topUsers = await apiGetTopKarmaUsers(this.userlimit)
         .then((res) => { this.users = res.data; this.loaded = true; })
         .catch(() => {console.error("Could not get top users.")})

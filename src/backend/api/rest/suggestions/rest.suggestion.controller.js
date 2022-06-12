@@ -32,6 +32,24 @@ const getSuggestions = asyncHandler(async(req, res, next) => {
     return res.status(200).json(suggestions)
 })
 
+// @desc    Get all suggestions with tag, movie and suggestion by data
+// @route   GET /
+// @access  Private
+const getSuggestionsPreloaded = asyncHandler(async(req, res, next) => {
+    let suggestions = await Suggestion.find()
+    await Promise.all(suggestions.map(async s => {
+            s.movie_id      = await Movie.findById(s.movie_id) 
+            s.tag           = await Tag.findById(s.tag)
+            s.suggested_by  = await User.findById(s.suggested_by).select('-password')
+    }))
+    .then(() => {
+        return res.status(200).json(suggestions)
+    })
+    .catch(() => {
+        return res.status(500).err = "getSuggestionsPreloaded:: Error in suggestions rest controller."
+    })
+})
+
 // @desc    Get most "want to see" voted suggestion
 // @route   GET /mostwanted
 // @access  Public
@@ -140,6 +158,7 @@ const removeTag = asyncHandler(async(req, res, next) => {
 
 module.exports = {
     getSuggestions,
+    getSuggestionsPreloaded,
     getMostWanted,
     deleteSuggestion,
     addTag,

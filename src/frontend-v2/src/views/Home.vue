@@ -4,8 +4,11 @@
     <!-- Spinner -->
     <div id="loader-container" style="height: 75vh; display: flex; align-items: center; flex-flow: column; justify-content: space-evenly;" v-if="!loaded">
 
-      <SmallHeader style="margin-bottom: -200px;" :toptext="'Filmkveld'" :bottomtext="'Sponsored by coffee!'" id="load-header" />
+      <SmallHeader style="" :toptext="'Filmkveld'" :bottomtext="'Sponsored by coffee!'" id="load-header" />
       <div class="loader" v-if="!loaded"></div>
+      <div 
+        id="loader-outer"
+        :style="'background: linear-gradient(0deg, rgba(238,238,238,1)' + this.loader_progress + '%, rgb(133, 143, 149) ' + this.loader_progress + '%); '"></div>
     </div>
     <NavMenu v-if="loaded" />
 
@@ -73,10 +76,12 @@ import SmallHeader from '../components/SmallHeader.vue'
 import ProfileCard from '../components/profile/ProfileCard.vue'
 import NavMenu from '../components/NavMenu.vue'
 import KarmaLeaderBoard from '../components/stats/KarmaLeaderBoard.vue'
-import { apiGetSuggestions, apiDeleteSuggestion, apiTagSuggestion } from '../api/rest/suggestions'
+import { apiGetSuggestions, apiGetSuggestionsPreloaded, apiDeleteSuggestion, apiTagSuggestion } from '../api/rest/suggestions'
 import { apiGetSuggestionById } from '../api/suggestion'
+import { apiGetVotesByLoggedIn } from '../api/vote'
 import { apiGetMovie } from '../api/movie'
 import { apiGetUser } from '../api/user'
+import { getMe } from '../api/user'
 
 export default {
   name: 'Home',
@@ -95,6 +100,7 @@ export default {
       suggestions_m: [],
       suggestions_r: [],
       loaded: false,
+      loader_progress: 0
     }
   },
   methods: {
@@ -148,11 +154,22 @@ export default {
     }
   },
   async mounted(){
+    /*
     const allWithMovie = await apiGetSuggestions(true, true)
     const suggs = allWithMovie.data;
+    */
+    this.loader_progress += 5
+    const suggestions = await apiGetSuggestionsPreloaded()
+    this.loader_progress += 30
+    const votes = await apiGetVotesByLoggedIn()
+    this.loader_progress += 40
+    const suggs = suggestions.data.map(s => ({...s,  vote: votes.data.filter(v => v.suggestion === s._id)[0]}))
+    this.loader_progress += 20
     var side = 0;
-
+    const me = await getMe()
+    this.loader_progress += 5
     for (var i = 0; i<suggs.length; i++){
+      suggs[i].me_id = me.userid // add this here so each suggestion doesn't call getMe()
       if (side === 0){
         this.suggestions_l.push(suggs[i])
         side ++
@@ -193,6 +210,15 @@ export default {
   text-align: center;
   margin-bottom: -60px;
   font-size: 20px;
+}
+#loader-outer{
+  margin-top: -100px;
+  transform: rotateZ(90deg);
+  border-radius: 0.25em;
+  height: 150px;
+  width: 5px; 
+  background: rgb(238,238,238);
+  transition-duration: 300ms;
 }
 #side-view{
   height: 95vh;
@@ -310,6 +336,19 @@ export default {
   #interactions-section {
     width: 67%;
     flex-flow: column;
+  }
+}
+
+@media screen and (max-height: 850px){
+  .side-section{
+    margin-top: 75px;
+    margin-bottom: 75px;
+    margin-left: 40px;
+    align-items: center;
+    width: 350px;
+  }
+  #suggestions-section {
+    margin-top: 350px;
   }
 }
 

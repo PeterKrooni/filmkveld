@@ -1,26 +1,27 @@
 import axios from 'axios'
+import env from './config/env'
 
 export async function apiGetAllSuggestions(){
-    return axios.get("http://localhost:5000/crud/api/suggestion/")
+    return axios.get(env.crud_url() + "suggestion/")
 }
 
 export async function apiGetAllSuggestionsWithMovieData(){
-    return axios.get("http://localhost:5000/crud/api/suggestion/allmovies/")
+    return axios.get(env.crud_url() + "suggestion/allmovies/")
 }
 
 export async function apiAddSuggestion(movieid){
     const movieID = {movieid: movieid}
-    return axios.post("http://localhost:5000/crud/api/suggestion/", movieID)
+    return axios.post(env.crud_url() + "suggestion/", movieID)
 }
 
 export async function apiRemoveSuggestion(suggestionid){
-    return axios.delete("http://localhost:5000/crud/api/suggestion/" + suggestionid)
+    return axios.delete(env.crud_url() + "suggestion/" + suggestionid)
 }
 
 export async function apiGetSuggestionsBy(userID){
-    return axios.get("http://localhost:5000/crud/api/suggestion/" + userID)
+    return axios.get(env.crud_url() + "suggestion/" + userID)
 }
 
 export async function apiGetSuggestionById(suggestionID){
-    return axios.get("http://localhost:5000/crud/api/suggestion/get/" + suggestionID)
+    return axios.get(env.crud_url() + "suggestion/get/" + suggestionID)
 }

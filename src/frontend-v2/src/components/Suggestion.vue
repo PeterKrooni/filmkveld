@@ -47,12 +47,6 @@
 import Rating from './Rating.vue'
 import Button from './Button.vue'
 import ProfileFrame from './profile/ProfileFrame.vue'
-import { apiGetMovie } from '../api/movie'
-import { apiGetUser } from '../api/user'
-import { apiGetVote } from '../api/vote'
-import { getMe } from '../api/user'
-import { apiGetSuggestionById } from '../api/suggestion'
-import { apiGetTagOnSuggestion } from '../api/rest/suggestions'
 
 export default {
     name: 'Suggestion',
@@ -92,7 +86,6 @@ export default {
     },
     data() {
         return {
-            rating_loaded: false,
             voteValue: 0,
             seenValue: false,
             loaded: false,
@@ -117,82 +110,36 @@ export default {
         },
         trimtext(title){
             return title.length < 17 ? title : title.substring(0, 17) + "..." 
-            // TODO rework this when not tired
-            var sizeAllowance = 20
-            var penalties = title.split('').filter(i => (i === i.toUpperCase() 
-                    && i !== ' ' 
-                    && i !== '.' 
-                    && i !== ',' 
-                    && i !== ':' 
-                    && i !== '"') || i === '&').length
-            return title.length - penalties < sizeAllowance ? title.substring(0, title.length - penalties) + "..." : title
-        },
-        // fetches data from id
-        async fetchDisplayData(){
-            const suggestion = await apiGetSuggestionById(this.id)
-            const movie = await apiGetMovie(suggestion.data.movie_id)
-            const user = await apiGetUser(suggestion.data.suggested_by, true)
-            const me = await getMe()
-            this.enable_delete = me.userid === user.data._id
-            this.title = movie.data.title
-            this.external_rating = movie.data.imdbRating
-            this.runtime = movie.data.runtime
-            this.source = movie.data.source
-            this.director = movie.data.director
-            this.suggestor_username = user.username
-            this.suggestor_profile_picture = user.profile_picture ? user.profile_picture : /* need some default image handling*/ "https://cdn.britannica.com/84/206384-050-00698723/Javan-gliding-tree-frog.jpg";
-            this.poster = movie.data.poster; 
-            this.created = suggestion.data.createdAt.substring(0, 10).replace(/-/g, '/');
         },
         // uses preloaded data instead of fetching it
         async loadDisplayData(){
             const suggestion = this.preloadedData
             const movie = this.preloadedData.movie_id
             const user = this.preloadedData.suggested_by
-            const me = await getMe()
-            this.enable_delete = me.userid === this.preloadedData.suggested_by._id
-            console.log(me.userid, "eh", this.preloadedData.suggested_by)
+            this.enable_delete = suggestion.me_id === this.preloadedData.suggested_by._id
             this.title = movie.title
             this.external_rating = movie.imdbRating
             this.runtime = movie.runtime
             this.source = movie.source
             this.director = movie.director
             this.suggestor_username = user.name
-            this.suggestor_profile_picture = user.profile_picture ? user.profile_picture : /* need some default image handling*/ "https://cdn.britannica.com/84/206384-050-00698723/Javan-gliding-tree-frog.jpg";
+            this.suggestor_profile_picture = user.profile_picture
             this.poster = movie.poster; 
+            this.tag = suggestion.tag ? suggestion.tag.name : ' '
+            
+            if(suggestion.vote !== undefined){
+                this.voteValue = suggestion.vote.rating
+                this.seenValue = suggestion.vote.seen
+            }
+
             this.created = suggestion.createdAt.substring(0, 10).replace(/-/g, '/');
         }
     },
     async mounted() {
         let id_for_getvote
-        if (this.preloaded){
-            await this.loadDisplayData();
-            id_for_getvote = this.preloadedData._id
-        } else {
-            id_for_getvote = this.id
-            await this.fetchDisplayData();
-        }
+        await this.loadDisplayData();
+        id_for_getvote = this.preloadedData._id
 
-        await apiGetVote(id_for_getvote)
-        .then((res)=>{
-                this.voteValue = res.data.rating; 
-                this.seenValue = res.data.seen; 
-                this.rating_loaded = true;
-            })
-        .catch(() => {
-                this.voteValue = 0;
-                this.seenValue = false;
-                this.rating_loaded = true;
-        })
-
-        const tag = await apiGetTagOnSuggestion(id_for_getvote)
-        .then((res)=>{
-            if (res.status !== 204){
-                this.tag = res.data.name
-            }
-        })
-        .catch(()=>{})
-        
         this.loaded = true
     }
 }
