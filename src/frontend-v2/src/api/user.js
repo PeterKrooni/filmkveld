@@ -26,8 +26,16 @@ export async function getMe(){
         username: user.data.name, 
         userid: user.data.id, 
         profile_picture: user.data.profile_picture,
-        karma: user.data.karma
+        karma: user.data.karma,
+        settings: user.data.settings
     };
+}
+
+export async function apiUpdateUserSettings(userid, oldSettings, settingType, value){
+    const newSettings = { ...oldSettings };
+    newSettings[settingType] = value;
+    const user = await axios.put("http://localhost:5000/crud/api/user/" + userid, {settings: newSettings});
+    return {username: user.data.name, userid: user.data.id, settings: user.data.settings}
 }
 
 export async function apiUpdateProfilePicture(userid, base64_img){

@@ -83,6 +83,9 @@ export default {
             type: Boolean, 
             default: false
         },
+        settings: {
+            type: Object
+        }
     },
     data() {
         return {
@@ -126,6 +129,8 @@ export default {
             this.suggestor_profile_picture = user.profile_picture
             this.poster = movie.poster; 
             this.tag = suggestion.tag ? suggestion.tag.name : ' '
+            this.showtag = this.settings.tag_setting;
+            this.showcreated = this.settings.date_setting;
             
             if(suggestion.vote !== undefined){
                 this.voteValue = suggestion.vote.rating
@@ -139,6 +144,7 @@ export default {
         let id_for_getvote
         await this.loadDisplayData();
         id_for_getvote = this.preloadedData._id
+
 
         this.loaded = true
     }

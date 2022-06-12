@@ -21,8 +21,8 @@
             </div>
             <div><h1>Settings</h1></div>
             <div id="settingsContainer">
-                <div><SettingsCheckbox :settingName="'Show Tags'" /></div>
-                <div><SettingsCheckbox :settingName="'Show CreatedAtDate'" /></div>
+                <div><SettingsCheckbox :defaultState="this.settings.tag_setting" :settingName="'Show Tags'" @changeSetting='updateSetting($event, "tag_setting")' /></div>
+                <div><SettingsCheckbox  :defaultState="this.settings.date_setting" :settingName="'Show CreatedAtDate'" @changeSetting='updateSetting($event, "date_setting")'/></div>
             </div>
             <div style="margin-top: 150px; margin-right: 35x; margin-bottom: -50px;"> <BigHeader :text="'Suggestions'"/> </div>
             <div id="suggestions">
@@ -47,7 +47,7 @@ import BigHeader from '../components/BigHeader.vue'
 import SettingsCheckbox from '../components/SettingsCheckbox.vue'
 
 import { apiGetSuggestions } from '../api/rest/suggestions'
-import { getMe, apiUpdateProfilePicture } from '../api/user'
+import { getMe, apiUpdateProfilePicture, apiUpdateUserSettings } from '../api/user'
 
 export default {
     components: {
@@ -60,10 +60,12 @@ export default {
     data() {
         return {
             imgSource: "https://us.123rf.com/450wm/happyvector071/happyvector0711904/happyvector071190414500/120957417-creative-illustration-of-default-avatar-profile-placeholder-isolated-on-background-art-design-grey-p.jpg?ver=6",
+            userid: '',
             name: "",
             email: "Not found",
             text: "Some text",
             karma: "",
+            settings: {},
             suggestionsByUser: [],
             loaded: false,
             preloaded: true, 
@@ -71,15 +73,27 @@ export default {
     },
     async mounted() {
         const me = await getMe()
+        this.userid = me.userid
         this.imgSource = me.profile_picture
         this.name = me.username;
-        this.karma = me.karma
+        this.karma = me.karma;
+        this.settings = me.settings;
 
         const suggestions = await apiGetSuggestions(true, true)
         this.suggestionsByUser = suggestions.data.filter(s => s.suggested_by !== me._id)
         this.loaded = true;
     },
     methods: {
+        async updateSetting(event, settingType) {
+            //write to database
+            console.log("The Tag value has been changed and is now", event);
+            console.log(settingType);
+
+            //Update settingvalue in databse
+            const updated = await apiUpdateUserSettings(this.userid, this.settings, settingType, event);
+            this.settings = updated.settings;
+            console.log(updated.settings);
+        },
         async updateProfilePicture(event) {
             if (event.target.files.length > 0){
                 const b64_img = await this.readFileAsDataURL(event.target.files[0])
@@ -202,6 +216,7 @@ export default {
     margin: auto;
     width: 38%;
     border: 1px solid #FFFF00;
+    border-radius: 10px;
 }
 
 @media screen and (min-width: 1401px){

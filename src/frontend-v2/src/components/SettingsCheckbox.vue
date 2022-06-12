@@ -13,25 +13,27 @@
 
 <script>
 export default {
+    mounted(){
+        this.buttonState = this.defaultState
+    },
     data() {
         return {
-            buttonState: this.defaultState
+            buttonState: false
         }
     },
     computed: {
         valueChecker: {  // updates the value after the elem has been clicked
             set(newState) {
-                console.log("CurrentState of button is", newState)
                 this.buttonState = newState;
-                this.$emit("change", newState) // makes value available for parent component
+                this.$emit("changeSetting", this.buttonState); // makes value available for parent component
             }
         }
     },
     props: {
         settingName: "",
-        defaultState: {
+        defaultState: {  // The state is read from the database
             type: Boolean,
-            default: false
+            default: false 
         }
     }
 }
@@ -46,7 +48,7 @@ export default {
 }
 
 #settingV, #settingT {
-    margin: 8px; 
+    margin: 12px; 
     display: flex;
 }
 
@@ -59,7 +61,7 @@ export default {
 }
 
 
-/** The Style code is taken from:
+/** The Style below code is taken from:
 https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_switch
 Accesed: 20.05.2022
 Publisher: https://www.w3schools.com/howto/howto_css_switch.asp
