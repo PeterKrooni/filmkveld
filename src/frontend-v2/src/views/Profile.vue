@@ -5,7 +5,7 @@
             <div id="ns">
                 <div id="profile-info">
                     <div id="profile-img">
-                        <img :src="imgSource" @click="openFileSelector" id="PP" alt="">
+                        <img :src="imgSource" @click="openFileSelector" id="PP" alt="max 5mb">
                         <input @change="updateProfilePicture" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" style="display: none;">
                     </div>
                     <div id="profile-details">
@@ -85,13 +85,19 @@ export default {
             await apiUpdateUserSettings(this.userid, newSettings);
         },
         async updateProfilePicture(event) {
+            alert("todo: remove existing images from cdn, fix that it updates, feedback if image too large")
             if (event.target.files.length > 0){
                 const b64_img = await this.readFileAsDataURL(event.target.files[0])
                 const me = await getMe()
                 const updated = await apiUpdateProfilePicture(me.userid, b64_img) 
-
-                console.log(updated)
-                this.imgSource = updated.profile_picture;
+                .then((res) => {
+                    console.log("picture updated!", res)
+                    this.imgSource = res.profile_picture;
+                    console.log(this.imgSource)
+                })
+                .catch((err) => {
+                    console.log("Failed to update profile picture", err)
+                })
             }
         },
         async readFileAsDataURL(file) {

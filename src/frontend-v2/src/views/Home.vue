@@ -6,7 +6,7 @@
 
       <SmallHeader style="" :toptext="'Filmkveld'" :bottomtext="'Sponsored by coffee!'" id="load-header" />
       <div class="loader" v-if="!loaded"></div>
-      <div 
+      <div v-if="false"
         id="loader-outer"
         :style="'background: linear-gradient(0deg, rgba(238,238,238,1)' + this.loader_progress + '%, rgb(133, 143, 149) ' + this.loader_progress + '%); '"></div>
     </div>
@@ -19,6 +19,7 @@
       <div id="logo">
         <img src="../assets/filmkveld.logo.png" style="width: 400px;" alt="">
       </div>
+      <Search v-if="loaded" @onInput="searchInput" />
       <div class="side-section">
         <SmallHeader :toptext="'Add a movie'" :bottomtext="'Wooo!'" />
         <AddMovie style="margin-top: 30px; width: 340px;" @added="movieAdded" />
@@ -79,12 +80,14 @@ import SmallHeader from '../components/SmallHeader.vue'
 import ProfileCard from '../components/profile/ProfileCard.vue'
 import NavMenu from '../components/NavMenu.vue'
 import KarmaLeaderBoard from '../components/stats/KarmaLeaderBoard.vue'
+import Search from '../components/Search.vue'
 import { apiGetSuggestions, apiGetSuggestionsPreloaded, apiDeleteSuggestion, apiTagSuggestion } from '../api/rest/suggestions'
 import { apiGetSuggestionById } from '../api/suggestion'
 import { apiGetVotesByLoggedIn } from '../api/vote'
 import { apiGetMovie } from '../api/movie'
 import { apiGetUser } from '../api/user'
 import { getMe } from '../api/user'
+import { sort_suggestions } from '../helpers/sort'
 
 export default {
   name: 'Home',
@@ -96,12 +99,16 @@ export default {
     ProfileCard,
     NavMenu,
     KarmaLeaderBoard,
+    Search,
   },
   data() {
     return {
       suggestions_l: [],
       suggestions_m: [],
       suggestions_r: [],
+      all_l: [],
+      all_m: [],
+      all_r: [],
       loaded: false,
       loader_progress: 0,
       settings: {},
@@ -120,8 +127,13 @@ export default {
     },
     removeSuggestionFromList(id){
       this.suggestions_l = this.suggestions_l.filter(x => x._id !== id)
+      this.all_l = this.all_l.filter(x => x._id !== id)
+
       this.suggestions_m = this.suggestions_m.filter(x => x._id !== id)
+      this.all_m = this.all_m.filter(x => x._id !== id)
+
       this.suggestions_r = this.suggestions_r.filter(x => x._id !== id)
+      this.all_r = this.all_r.filter(x => x._id !== id)
     },
     async movieAdded(sid, tag){
       const newSuggestion = await apiGetSuggestionById(sid)
@@ -148,14 +160,75 @@ export default {
       var r = this.suggestions_r <= this.suggestions_l && this.suggestions_r <= this.suggestions_m
       if (l) {
         this.suggestions_l.push(suggestion)
+        this.all_l.push(suggestion)
       } else if (m) {
         this.suggestions_m.push(suggestion)
+        this.all_m.push(suggestion)
       } else if (r) {
         this.suggestions_r.push(suggestion)
+        this.all_r.push(suggestion)
       } else {
         this.suggestions_l.push(suggestion)
+        this.all_l.push(suggestion)
       }
-    }
+    },
+    filterSuggestions(filter_input){
+      filter_input = filter_input.toLowerCase()
+
+      const left_filtered = this.filterArr(this.all_l, filter_input)
+      const middle_filtered = this.filterArr(this.all_m, filter_input)
+      const right_filtered = this.filterArr(this.all_r, filter_input)
+
+      this.suggestions_l = left_filtered
+      this.suggestions_m = middle_filtered
+      this.suggestions_r = right_filtered
+    },
+    filterArr(arr, filter_input){
+      return arr.filter(s => 
+          s.suggested_by.name.toLowerCase().includes(filter_input)
+          || s.tag ? s.tag.name.toLowerCase().includes(filter_input) : false
+          || s.movie_id.title.toLowerCase().includes(filter_input)
+          || s.movie_id.director.toLowerCase().includes(filter_input)
+          || (filter_input[0] === '>' ? parseFloat(filter_input.substr(1)) < parseFloat(s.movie_id.imdbRating) : false)
+          || (filter_input[0] === '<' ? parseFloat(filter_input.substr(1)) > parseFloat(s.movie_id.imdbRating) : false)
+          || (filter_input[0] === '=' ? parseFloat(filter_input.substr(1)) === parseFloat(s.movie_id.imdbRating) : false))
+    },
+    searchInput(content){
+      if (content !== ''){
+        this.filterSuggestions(content)
+      }else{
+        this.suggestions_l = this.all_l
+        this.suggestions_m = this.all_m
+        this.suggestions_r = this.all_r
+      }
+    },
+    filterInput(filter) {
+      let arr = this.suggestions_l + this.suggestions_m + this.suggestions_r
+      switch (filter) {
+        case 'imdb':
+          this.suggestions_l, 
+          this.suggestions_m, 
+          this.suggestions_r 
+            = sort_suggestions(arr, (a, b) => { a.imdbRating > b.imdbRating })
+          break;
+        case 'newest':
+          this.suggestions_l, 
+          this.suggestions_m, 
+          this.suggestions_r 
+            = sort_suggestions(arr, (a, b) => { a.created > b.created })
+          break;
+        case 'oldest':
+          this.suggestions_l, 
+          this.suggestions_m, 
+          this.suggestions_r 
+            = sort_suggestions(arr, (a, b) => { a.created < b.created })
+          break;
+        case 'not_seen':
+          break;
+        case 'not_rated':
+          break;
+      }
+    },
   },
   async mounted(){
     /*
@@ -179,14 +252,17 @@ export default {
       suggs[i].me_id = me.userid // add this here so each suggestion doesn't call getMe()
       if (side === 0){
         this.suggestions_l.push(suggs[i])
+        this.all_l.push(suggs[i])
         side ++
       }
       else if (side === 1){
         this.suggestions_m.push(suggs[i])
+        this.all_m.push(suggs[i])
         side ++
       }
       else if (side === 2){
         this.suggestions_r.push(suggs[i])
+        this.all_r.push(suggs[i])
         side = 0
       }
     }
@@ -291,11 +367,11 @@ export default {
   display: flex; 
   justify-content: space-evenly;
   flex-flow: row;
-  animation: fadeIn ease-out 1.25s;
-  -webkit-animation: fadeIn ease-out 1.25s;
-  -moz-animation: fadeIn ease-out 1.25s;
-  -o-animation: fadeIn ease-out 1.25s;
-  -ms-animation: fadeIn ease-out 1.25s;
+  animation: fadeIn ease-out 0.25s;
+  -webkit-animation: fadeIn ease-out 0.25s;
+  -moz-animation: fadeIn ease-out 0.25s;
+  -o-animation: fadeIn ease-out 0.25s;
+  -ms-animation: fadeIn ease-out 0.25s;
 }
 .sugg{
   margin: 40px;

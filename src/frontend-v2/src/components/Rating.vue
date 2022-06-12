@@ -98,7 +98,6 @@ export default {
     mounted() {
         this.seen = this.seenProp
         this.vote = this.voteProp
-        console.log(this.vote)
     }
 }
 </script>
