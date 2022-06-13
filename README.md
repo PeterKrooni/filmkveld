@@ -52,8 +52,8 @@ Add addtional info to:
 
 ## Environment Variables
 
-The backend and frontend both run on environment variables, partly to enable integration to MongoDB, Cloudinary and OMDB.
-Environment files (simple files with no name and the extension `.env`) are placed in the source directory of `.src/frontend-v2` and `./src/backend` respectively
+The backend and frontend both run using environment variables, partly to enable integration to MongoDB, Cloudinary and OMDB.
+Environment files (simple files with no name and the extension `.env`) are placed in the source directory of `.src/frontend-v2` and `./src/backend` respectively.
 
 ---
 
