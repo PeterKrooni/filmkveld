@@ -26,10 +26,10 @@ export default {
   font-weight: lighter;font-size: 22px;color: #969ca3; letter-spacing: 1px;
 }
 .separator{
-    margin-top: 45px;
+    margin-top: 35px;
     width: 150px;
     height: 1px;
-    transform: rotate3d(-10, -5, -4, 10deg);
+    transform: rotate3d(-10, -5, -4, 6deg);
     background-color: #797e84;
     display: flex;
     justify-content: center;
