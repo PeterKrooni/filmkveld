@@ -22,11 +22,11 @@ We have choosen to use the [MERN](https://www.mongodb.com/mern-stack) tech stack
 
 
 ## How to run
----
 #### Prerequisites:
 1. Node Package Manager (npm)
 2. Git clone the repository or download as .zip
 3. .env files (see Envorinment Variables section at the bottom of this README) 
+---
 
 ### Backend:
 1. open a terminal
@@ -49,9 +49,9 @@ Add addtional info to:
 
 
 ## Environment Variables
----
 The backend and frontend both run on environment variables, partly to enable integration to MongoDB, Cloudinary and OMDB.
 Environment files `.env` are placed in the source directory of `.src/frontend-v2` and `./src/backend` respectively
+---
 
 ##### Frontend .env 
 ```
