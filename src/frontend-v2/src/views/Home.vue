@@ -53,7 +53,6 @@
         </div>
       </div>
       <div class="suggestions-container">
-        <div style="height: 42px; width: 340px;"></div>
 
         <div v-for="i in this.suggestions_m" :key="i" class="suggestions">
             <Suggestion class="sugg"
