@@ -21,13 +21,13 @@
       </div>
       <div class="side-section">
         <SmallHeader :toptext="'Add a movie'" :bottomtext="'Wooo!'" />
-        <AddMovie style="margin-top: 30px; width: 340px;" @added="movieAdded" />
+        <AddMovie id="addmovie" @added="movieAdded" />
       </div>
       
 
       <div class="side-section">
         <SmallHeader :toptext="'Your profile!'" :bottomtext="'You are stuff!'" />
-        <ProfileCard style="margin-top: 85px;" />
+        <ProfileCard style="margin-top: 75px;" />
       </div>
       
       <div class="side-section" style="margin-bottom: 50px;">
@@ -36,7 +36,7 @@
     </div>
 
     <!-- Suggestions view -->
-    <div v-if="loaded">
+    <div v-if="loaded" style="position: relative;">
       <div id="suggestion-topbar">
         <div style="height: 42px; width: 340px;"><Search v-if="loaded" @onInput="searchInput" style="height: 30px; margin-left: 40px;" /></div>
       </div>
@@ -316,6 +316,15 @@ export default {
 .side-section{
   display:flex; justify-content: left; align-items: flex-start; flex-flow: column;
 }
+#addmovie{
+  margin-top: 25px; 
+  width: 340px;   
+  box-shadow: rgba(0, 0, 0, 0.027) 0px 12px 12.5px, rgba(0, 0, 0, 0.12) 0px -2px 6px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 2px 3px, rgba(0, 0, 0, 0.09) 0px -3px 5px; 
+  padding-top: 5px;
+  padding-bottom: 20px; 
+  padding-right: 15px; 
+  padding-left: 15px;
+}
 #stats-header{  
   box-shadow: rgb(26, 112, 173) 0px 0px 0px 2px inset, #303841 10px -10px 0px -3px, rgb(18, 104, 17) 10px -10px, #303841 20px -20px 0px -3px, rgb(234, 195, 5) 20px -20px, #303841 30px -30px 0px -3px, rgb(85, 221, 255) 30px -30px, #303841 40px -40px 0px -3px, rgb(18, 150, 47) 40px -40px; padding: 5px;
   padding-left: 40px;
@@ -335,12 +344,9 @@ export default {
   margin: auto;
 }
 #suggestion-topbar{
-  display: flex;
-  margin-bottom: -75px;
-  margin-left: -50px;
-  flex-flow: row;
-  justify-content: left;
-  align-items: center;
+  position: absolute;
+  left: -45px;
+  top: 50px;
 }
 #top-suggestions-container{
   display: flex;
@@ -419,14 +425,6 @@ export default {
   }
   #suggestions-section{
     width: auto;
-  }
-  #suggestion-topbar{
-    flex-flow: column;
-    margin-left: -135px;
-    margin-bottom: -85px;
-  }
-  #suggestion-topbar div {
-    margin-bottom: 10px;
   }
 }
 @media screen and (max-width: 1000px) {

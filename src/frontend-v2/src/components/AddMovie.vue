@@ -77,6 +77,7 @@ export default{
     border: none;
     border-bottom: 2px solid rgb(133, 172, 218);
     font-size: 18px;
+    width: 100%;
     margin-bottom: 5px;
 }
 #add-btn{

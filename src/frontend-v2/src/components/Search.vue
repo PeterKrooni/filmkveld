@@ -29,8 +29,9 @@ export default {
     justify-content: left;
     align-items: center;
     border: 1px solid #1d1f21; 
+    border-radius: 1em;
     padding: 2px;
-    background-color: #303841;
+    background-color: #505367;
     box-shadow: 
     rgba(0, 0, 0, 0.03133) 0px 8px 8.5px, 
     rgba(0, 0, 0, 0.0312) 0px -2px 6px, 
@@ -40,7 +41,7 @@ export default {
 }
 #mag-glass{
     width: 15px;
-    height: 15px;
+    height: 13px;
     padding: 6px;
     border-radius: 2em;
     transition-duration: 150ms;
@@ -52,7 +53,6 @@ export default {
     background: none;
     border: none;
     font-size: 14px;
-    border-bottom: 1px solid rgb(0, 0, 0);
 }
 #search-query:focus{
     outline: none !important;
