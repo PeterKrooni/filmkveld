@@ -40,6 +40,8 @@ We have choosen to use the [MERN](https://www.mongodb.com/mern-stack) tech stack
 3. install node dependecies by running `npm install`
 4. run the front-end by using  `npm run serve`
 
+After running both the frontend and backend, navigate to `localhost:8080` or the port specified in the frontend terminal.
+
 ## TODO
 
 Add addtional info to:
