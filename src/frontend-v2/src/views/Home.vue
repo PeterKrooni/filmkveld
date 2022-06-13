@@ -36,7 +36,7 @@
     </div>
 
     <!-- Suggestions view -->
-    <div>
+    <div v-if="loaded">
       <div id="suggestion-topbar">
         <div style="height: 42px; width: 340px;"><Search v-if="loaded" @onInput="searchInput" style="height: 30px; margin-left: 40px;" /></div>
       </div>
