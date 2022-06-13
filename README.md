@@ -49,6 +49,7 @@ Add addtional info to:
 
 
 ## Environment Variables
+
 The backend and frontend both run on environment variables, partly to enable integration to MongoDB, Cloudinary and OMDB.
 Environment files `.env` are placed in the source directory of `.src/frontend-v2` and `./src/backend` respectively
 ---
@@ -70,3 +71,5 @@ JWT_SECRET=<randomly generated secret>
 OMDB_API_KEY=<OMDB API key>
 CLOUDINARY_URL=<Cloudinary url> 
 ```
+
+The backend requires setting up a MongoDB Atlas cluster, an OMDB API key and a Cloudinary environment, however all of these are free to set up without needing to add credit cards to use the free tier service.
