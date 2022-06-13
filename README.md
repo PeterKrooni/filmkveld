@@ -22,7 +22,11 @@ We have choosen to use the [MERN](https://www.mongodb.com/mern-stack) tech stack
 
 
 ## How to run
-
+---
+#### Prerequisites:
+1. Node Package Manager (npm)
+2. Git clone the repository or download as .zip
+3. .env files (see Envorinment Variables section at the bottom of this README) 
 
 ### Backend:
 1. open a terminal
@@ -42,3 +46,27 @@ Add addtional info to:
 - How to install
 - Tech stack
 - Goals
+
+
+## Environment Variables
+---
+The backend and frontend both run on environment variables, partly to enable integration to MongoDB, Cloudinary and OMDB.
+Environment files `.env` are placed in the source directory of `.src/frontend-v2` and `./src/backend` respectively
+
+##### Frontend .env 
+```
+VUE_APP_SERVER=http://localhost:5000
+VUE_APP_REST=/rest/api/
+VUE_APP_CRUD=/crud/api/
+```
+
+##### Backend .env
+```
+FILMKVELD_DB_URI=<MongoDB atlas uri>
+FILMKVELD_NS=filmkveld
+NODE_ENV=production
+PORT=5000
+JWT_SECRET=<randomly generated secret>
+OMDB_API_KEY=<OMDB API key>
+CLOUDINARY_URL=<Cloudinary url> 
+```
