@@ -154,6 +154,7 @@ i {
 }
 .tag-suggestions{
     color: white;
+    background-color: rgb(95, 123, 146);
     font-size: 14px;
     margin-left: 40px;
     padding: 2px;
