@@ -1,6 +1,6 @@
 <template>
-    <div id="search-container">
-        <img @click="toggleInput" :style="this.toggle ? '' : 'opacity: 0.5'" id="mag-glass" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Magnifying_glass_icon.svg/1200px-Magnifying_glass_icon.svg.png" alt="">
+    <div id="search-container" :style="this.toggle ? 'width: 250px;' : 'width: 26px;'">
+        <img @click="toggleInput" id="mag-glass" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Magnifying_glass_icon.svg/1200px-Magnifying_glass_icon.svg.png" alt="">
         <input v-if="this.toggle" placeholder="Filter suggestions" @keyup="onInput" :style="this.toggle ? 'width: 100%' : 'width: 0px;'" type="text" name="" id="search-query">
     </div>    
 </template>
@@ -28,9 +28,9 @@ export default {
     display: flex;
     justify-content: left;
     align-items: center;
-    width: 250px;
-    padding: 5px;
-    border: 1px solid black;
+    border: 1px solid #1d1f21; 
+    padding: 2px;
+    background-color: #303841;
     box-shadow: 
     rgba(0, 0, 0, 0.03133) 0px 8px 8.5px, 
     rgba(0, 0, 0, 0.0312) 0px -2px 6px, 
@@ -39,9 +39,8 @@ export default {
     rgba(0, 0, 0, 0.0309) 0px -3px 5px; 
 }
 #mag-glass{
-    margin-top: 5px;
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     padding: 6px;
     border-radius: 2em;
     transition-duration: 150ms;
@@ -52,7 +51,7 @@ export default {
     margin-right: 4px;
     background: none;
     border: none;
-    font-size: 18px;
+    font-size: 14px;
     border-bottom: 1px solid rgb(0, 0, 0);
 }
 #search-query:focus{

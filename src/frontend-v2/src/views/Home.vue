@@ -19,7 +19,6 @@
       <div id="logo">
         <img src="../assets/filmkveld.logo.png" style="width: 400px;" alt="">
       </div>
-      <Search v-if="loaded" @onInput="searchInput" />
       <div class="side-section">
         <SmallHeader :toptext="'Add a movie'" :bottomtext="'Wooo!'" />
         <AddMovie style="margin-top: 30px; width: 340px;" @added="movieAdded" />
@@ -37,8 +36,13 @@
     </div>
 
     <!-- Suggestions view -->
+    <div>
+      <div id="suggestion-topbar">
+        <div style="height: 42px; width: 340px;"><Search v-if="loaded" @onInput="searchInput" style="height: 30px; margin-left: 40px;" /></div>
+      </div>
     <div id="suggestions-section" v-if="loaded">
       <div class="suggestions-container">
+
         <div v-for="i in this.suggestions_l" :key="i" class="suggestions">
             <Suggestion class="sugg"
               @delete="this.deleteSuggestion(i._id)"
@@ -49,6 +53,8 @@
         </div>
       </div>
       <div class="suggestions-container">
+        <div style="height: 42px; width: 340px;"></div>
+
         <div v-for="i in this.suggestions_m" :key="i" class="suggestions">
             <Suggestion class="sugg"
               @delete="this.deleteSuggestion(i._id)"
@@ -59,6 +65,7 @@
         </div>
       </div>
       <div class="suggestions-container">
+
         <div v-for="i in this.suggestions_r" :key="i" class="suggestions">
             <Suggestion class="sugg"
               @delete="this.deleteSuggestion(i._id)"
@@ -68,6 +75,7 @@
             />
         </div>
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -278,11 +286,6 @@ export default {
   justify-content: space-evenly;
   flex-flow: row;
 }
-@keyframes ree {
-  0% {transform: rotateZ(0deg);}
-  100% {transform: rotateZ(360deg);}
-  
-}
 @media screen and (max-width: 1000px) {
   #home {
   flex-flow: column;
@@ -331,6 +334,14 @@ export default {
   width: 23%;
   height: 84vh;
   margin: auto;
+}
+#suggestion-topbar{
+  display: flex;
+  margin-bottom: -75px;
+  margin-left: -50px;
+  flex-flow: row;
+  justify-content: left;
+  align-items: center;
 }
 #top-suggestions-container{
   display: flex;
@@ -409,6 +420,14 @@ export default {
   }
   #suggestions-section{
     width: auto;
+  }
+  #suggestion-topbar{
+    flex-flow: column;
+    margin-left: -135px;
+    margin-bottom: -85px;
+  }
+  #suggestion-topbar div {
+    margin-bottom: 10px;
   }
 }
 @media screen and (max-width: 1000px) {
