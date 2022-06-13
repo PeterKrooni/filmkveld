@@ -18,7 +18,7 @@ The goal of the prioject is to get well aquinted and familiar with production of
 
 ## Tech stack
 
-We have choosen to use the [MERN](https://www.mongodb.com/mern-stack) tech stack for this project. We also aim to use Typescript for type safety as well as TailwindCSS for CSS utility.
+We have choosen to use the MEVN (MongoDB, Express, Vue, Node) tech stack for this project.
 
 
 ## How to run
