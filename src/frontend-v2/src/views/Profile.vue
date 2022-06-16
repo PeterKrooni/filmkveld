@@ -237,8 +237,6 @@ export default {
         flex-flow: column;
         width: 45vw;
     }
-    #user-stats div{
-    }
 }
 @media screen and (max-width: 1000px){ 
     #ns {
@@ -256,7 +254,5 @@ export default {
     #profile-details{
         margin-left: 100px;
     } 
-    #suggestions-container{
-    }
 }
 </style>
