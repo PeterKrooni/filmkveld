@@ -346,7 +346,7 @@ export default {
 #suggestion-topbar{
   position: absolute;
   left: -45px;
-  top: 50px;
+  top: 35px;
 }
 #top-suggestions-container{
   display: flex;
@@ -399,7 +399,6 @@ export default {
 }
 @media screen and (min-width: 1400px){
   #suggestions-section{
-    
     animation: expandSuggestionsContainer cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
     -webkit-animation: expandSuggestionsContainer cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
     -moz-animation: expandSuggestionsContainer cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
@@ -426,6 +425,11 @@ export default {
   #suggestions-section{
     width: auto;
   }
+  #suggestion-topbar{
+    position: absolute;
+    left: -45px;
+    top: 40px;
+  }
 }
 @media screen and (max-width: 1000px) {
   #stats-section {
@@ -435,19 +439,50 @@ export default {
   #interactions-section {
     width: 67%;
     flex-flow: column;
+  }  
+  #suggestion-topbar{
+    position: absolute;
+    left: -45px;
+    top: 330px;
   }
 }
 
-@media screen and (max-height: 850px){
+@media screen and (max-width: 850px){
   .side-section{
     margin-top: 75px;
     margin-bottom: 75px;
     margin-left: 40px;
     align-items: center;
-    width: 350px;
+    width: 85%;
   }
   #suggestions-section {
     margin-top: 350px;
+  }
+}
+
+@media screen and (max-height: 800px) and (min-width: 600px) {
+  .side-section{
+    margin-top: 100px;
+  }
+  #suggestions-section {
+    margin-top: 50%;
+  }
+  #suggestion-topbar{
+    position: absolute;
+    left: -50px;
+    top: 170px;
+  }
+}
+
+/* Mostly just for really thin screens, like Galaxy Fold */
+@media screen and (max-width: 290px){
+    #suggestion-topbar{
+    position: absolute;
+    left: 15px;
+    top: 330px;
+  }
+  #suggestions-section {
+    margin-left: 25px;
   }
 }
 
