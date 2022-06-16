@@ -443,7 +443,7 @@ export default {
   #suggestion-topbar{
     position: absolute;
     left: -45px;
-    top: 330px;
+    top: 40px;
   }
 }
 
@@ -457,6 +457,11 @@ export default {
   }
   #suggestions-section {
     margin-top: 350px;
+  }  
+  #suggestion-topbar{
+    position: absolute;
+    left: -45px;
+    top: 330px;
   }
 }
 
@@ -465,7 +470,7 @@ export default {
     margin-top: 100px;
   }
   #suggestions-section {
-    margin-top: 50%;
+    margin-top: 18%;
   }
   #suggestion-topbar{
     position: absolute;
