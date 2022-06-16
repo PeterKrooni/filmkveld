@@ -19,10 +19,22 @@
                     <div><SmallHeader :toptext="'Your karmascore is ' + this.karma + '!'" :bottomtext="'True popularity!'" /></div>
                 </div>
             </div>            
-            <div style="margin-top: 150px; margin-right: 35x; margin-bottom: 50px;"> <BigHeader :text="'Settings'"/> </div>
+            <div style="margin-top: 75px; margin-bottom: 50px;"> <BigHeader :text="'Settings'"/> </div>
             <div id="settingsContainer">
-                <div><SettingsCheckbox :defaultState="this.tag_setting" :settingName="'Show Tags'" @changeSetting='updateSetting("tag_setting")' /></div>
-                <div><SettingsCheckbox  :defaultState="this.date_setting" :settingName="'Show CreatedAtDate'" @changeSetting='updateSetting("date_setting")'/></div>
+                <div style="display: flex; flex-flow: column; align-items: flex-end;">
+                    <div style="display: flex; flex-flow: row; align-items: center; justify-content: space-evenly;">
+                        <h4 style="margin-right: 15px;" :style="this.tag_setting ? 'color: white;' : 'color: grey;'"> Show tags by default: </h4> <Checkbox :defaultState="this.tag_setting" :settingName="'Show Tags'" @changeSetting='updateSetting("tag_setting")'  />
+                    </div>
+                    <div style="display: flex; flex-flow: row; align-items: center; justify-content: space-evenly;">
+                        <h4 style="margin-right: 15px;" :style="this.date_setting ? 'color: white;' : 'color: grey;'"> Show date created by default: </h4> <Checkbox :defaultState="this.date_setting" :settingName="'Show CreatedAtDate'" @changeSetting='updateSetting("date_setting")'/>
+                    </div>
+                    <div style="display: flex; flex-flow: row; align-items: center; justify-content: space-evenly;">
+                        <h4 style="margin-right: 15px; color: grey;"> Filter by tag when specifying tag: (WIP) </h4> <Checkbox />
+                    </div>
+                    <div style="display: flex; flex-flow: row; align-items: center; justify-content: space-evenly;">
+                        <h4 style="margin-right: 15px; color: grey;"> Show submitter karma on suggestions: (WIP) </h4> <Checkbox />
+                    </div>
+                </div>
            </div>
         </div>
     </div>
@@ -33,6 +45,7 @@ import NavMenu from '../components/NavMenu'
 import SmallHeader from '../components/SmallHeader.vue'
 import BigHeader from '../components/BigHeader.vue'
 import SettingsCheckbox from '../components/SettingsCheckbox.vue'
+import Checkbox from '../components/Checkbox.vue'
 
 import { getMe, apiUpdateProfilePicture, apiUpdateUserSettings } from '../api/user'
 
@@ -42,6 +55,7 @@ export default {
         SmallHeader,
         BigHeader,
         SettingsCheckbox,
+        Checkbox
     },
     data() {
         return {
@@ -209,9 +223,7 @@ export default {
 }
 
 #settingsContainer {
-    margin: auto;
-    width: 38%;
-    border: 1px solid #10af25;
+    margin: auto;;
     border-radius: 10px;
 }
 

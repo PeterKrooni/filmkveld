@@ -1,14 +1,14 @@
 <template>
 <div>
     <div id="container">
-        <div id="outer" @click="this.toggled = !this.toggled" :style="toggled ? 'background-color: rgb(100, 190, 100); transform: rotateZ(180deg);' : ''">
-            <div v-if="toggled" style="transform: rotateZ(-180deg); text-align: center; color: white">Yes!</div>
+        <div id="outer" @click="cs" :style="this.defaultState ? 'background-color: rgb(100, 190, 100); transform: rotateZ(180deg);' : ''">
+            <div v-if="this.defaultState" style="transform: rotateZ(-180deg); text-align: center; color: white">Yes!</div>
         </div>
-        <div id="inner" @click="this.toggled = !this.toggled" :style="toggled ? inner_on : inner_off">
-            <svg :style="toggled ? 'fill: white;' : 'fill: lightblue;'" xmlns="http://www.w3.org/2000/svg"> 
+        <div id="inner" @click="cs" :style="this.defaultState ? inner_on : inner_off">
+            <svg :style="this.defaultState ? 'fill: white;' : 'fill: lightblue;'" xmlns="http://www.w3.org/2000/svg"> 
                 <circle :cx="this.circle_size" :cy="this.circle_size" :r="this.circle_size" /> 
             </svg>    
-            <img v-if="toggled" id="checkmark" src="https://img.favpng.com/18/14/9/check-mark-computer-icons-icon-design-cheque-clip-art-png-favpng-mZqdunP14HCNhNqgs26DNPRcY.jpg" alt="">
+            <img v-if="this.defaultState" id="checkmark" src="https://img.favpng.com/18/14/9/check-mark-computer-icons-icon-design-cheque-clip-art-png-favpng-mZqdunP14HCNhNqgs26DNPRcY.jpg" alt="">
         </div>
     </div>
 </div>
@@ -35,6 +35,15 @@ from profile.vue
  -->
 <script>
 export default {
+    props: {
+        settingName: "",
+        defaultState: false
+    },
+    methods: {
+        cs(){
+            this.$emit("changeSetting")
+        }
+    },
     data() {
         return {
             circle_size: 12,
