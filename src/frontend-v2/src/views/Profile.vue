@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div id="user-stats">
-                    <div><SmallHeader :toptext="'You have '+ this.suggestionsByUser.length +  ' suggestions!'" :bottomtext="'Do you live on IMDB?'" /></div>
+                    <div><SmallHeader :toptext="'You have '+ 8 +  ' suggestions!'" :bottomtext="'Do you live on IMDB?'" /></div>
                     <div><SmallHeader :toptext="'Your karmascore is ' + this.karma + '!'" :bottomtext="'True popularity!'" /></div>
                 </div>
             </div>            
