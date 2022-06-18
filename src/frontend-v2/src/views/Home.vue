@@ -20,7 +20,7 @@
         <img src="../assets/filmkveld.logo.png" style="width: 400px;" alt="">
       </div>
       <div class="side-section">
-        <SmallHeader :toptext="'Add a movie'" :bottomtext="'Wooo!'" />
+        <SmallHeader :toptext="'Add a movie'" :bottomtext="'IMDB Integration by parts!'" />
         <AddMovie id="addmovie" @added="movieAdded" />
       </div>
       
