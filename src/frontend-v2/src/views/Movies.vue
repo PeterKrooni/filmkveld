@@ -1,8 +1,13 @@
 <template>
     <div id="movies-container">
         <NavMenu />
+        <!--
         <input id="imdb_input" type="text" placeholder="Paste IMDB link...">
         <button @click="addMovie" id="add-btn">Add movie!</button>
+        -->
+        <h2 style="color: orange;">🛠🛠</h2>
+        <h1 style="color: white;">Sorry! This page is under construction.</h1>
+        <h2 style="color: orange;">🛠🛠</h2>
     </div>
 </template>
 
