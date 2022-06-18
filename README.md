@@ -6,7 +6,7 @@ A web application for organization of movie nights.
 
 ## Key features 
 
-"Filmkveld" aims to solve the problem of organisation of "movie nights". The application keeps track of what movies have been watched by a collective, and showes who attened a given movie night, what movies where watched, and who suggested each movie. In addition every movie suggestion can be given a downvote or an upvote by each user that attended the movie night afer the collective/group has watched that movie, this affects the "taste" score of the user that suggested the movie.
+"Filmkveld" aims to solve the problem of organisation of "movie nights". The application keeps track of what movies have been watched by a collective, and showes who attened a given movie night, what movies where watched, and who suggested each movie. In addition every movie suggestion can be given a downvote or an upvote by each user that attended the movie night afer the collective/group has watched that movie, this affects the "karma" score of the user that suggested the movie.
 
 
 ## Project goal
