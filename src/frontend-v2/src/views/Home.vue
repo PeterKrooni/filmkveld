@@ -193,7 +193,7 @@ export default {
     filterArr(arr, filter_input){
       return arr.filter(s => 
           s.suggested_by.name.toLowerCase().includes(filter_input)
-          || s.tag ? s.tag.name.toLowerCase().includes(filter_input) : false
+          || (s.tag ? s.tag.name.toLowerCase().includes(filter_input) : false)
           || s.movie_id.title.toLowerCase().includes(filter_input)
           || s.movie_id.director.toLowerCase().includes(filter_input)
           || (filter_input[0] === '>' ? parseFloat(filter_input.substr(1)) < parseFloat(s.movie_id.imdbRating) : false)
