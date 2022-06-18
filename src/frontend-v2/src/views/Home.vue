@@ -94,7 +94,6 @@ import { apiGetVotesByLoggedIn } from '../api/vote'
 import { apiGetMovie } from '../api/movie'
 import { apiGetUser } from '../api/user'
 import { getMe } from '../api/user'
-import { sort_suggestions } from '../helpers/sort'
 
 export default {
   name: 'Home',
@@ -207,33 +206,6 @@ export default {
         this.suggestions_l = this.all_l
         this.suggestions_m = this.all_m
         this.suggestions_r = this.all_r
-      }
-    },
-    filterInput(filter) {
-      let arr = this.suggestions_l + this.suggestions_m + this.suggestions_r
-      switch (filter) {
-        case 'imdb':
-          this.suggestions_l, 
-          this.suggestions_m, 
-          this.suggestions_r 
-            = sort_suggestions(arr, (a, b) => { a.imdbRating > b.imdbRating })
-          break;
-        case 'newest':
-          this.suggestions_l, 
-          this.suggestions_m, 
-          this.suggestions_r 
-            = sort_suggestions(arr, (a, b) => { a.created > b.created })
-          break;
-        case 'oldest':
-          this.suggestions_l, 
-          this.suggestions_m, 
-          this.suggestions_r 
-            = sort_suggestions(arr, (a, b) => { a.created < b.created })
-          break;
-        case 'not_seen':
-          break;
-        case 'not_rated':
-          break;
       }
     },
   },

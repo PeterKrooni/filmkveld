@@ -1,5 +1,6 @@
 // sort suggestions
 // first entry of each suggestions array left to right
+// TODO
 export default {
     sort_suggestions(allSuggestions, compareFn=function(a, b){ a.created < b.created }, isSingleRow=false){
         allSuggestions.sort(compareFn)
