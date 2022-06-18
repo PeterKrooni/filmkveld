@@ -99,7 +99,7 @@ export default {
             await apiUpdateUserSettings(this.userid, newSettings);
         },
         async updateProfilePicture(event) {
-            alert("todo: remove existing images from cdn, fix that it updates, feedback if image too large")
+            // todo: remove existing images from cdn, fix that it updates, feedback if image too large")
             if (event.target.files.length > 0){
                 const b64_img = await this.readFileAsDataURL(event.target.files[0])
                 const me = await getMe()
