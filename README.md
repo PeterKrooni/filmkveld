@@ -42,13 +42,9 @@ We have choosen to use the MEVN (MongoDB, Express, Vue, Node) tech stack for thi
 
 After running both the frontend and backend, navigate to `localhost:8080` or the port specified in the frontend terminal.
 
-## TODO
-
-Add addtional info to:
-- How to install
-- Tech stack
-- Goals
-
+## Known issue
+There is a known bug with login handling (the page might end up loading forever), but simply refreshing (hard refresh) the site should fix this.
+If this does not work, try deleting the site cookies and logging in again.
 
 ## Environment Variables
 
