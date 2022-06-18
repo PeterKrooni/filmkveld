@@ -71,4 +71,5 @@ OMDB_API_KEY=<OMDB API key>
 CLOUDINARY_URL=<Cloudinary url> 
 ```
 
-The backend requires setting up a MongoDB Atlas cluster, an OMDB API key and a Cloudinary environment, however all of these are free to set up without needing to add credit cards to use the free tier service.
+
+To run this as your own website, the backend requires setting up a MongoDB Atlas cluster, an OMDB API key and a Cloudinary environment, however all of these are free to set up without needing to add credit cards to use the free tier service. 
