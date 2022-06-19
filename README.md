@@ -31,13 +31,13 @@ We have choosen to use the MEVN (MongoDB, Express, Vue, Node) tech stack for thi
 ### Backend:
 1. open a terminal
 2. navigate to filmkveld\src\backend
-3. install node dependecies by running `npm install`
+3. install dependecies by running `npm install`
 4. run the backend by using `npm run server`
 
 ### Frontend:
-1. open your terminal
+1. open a terminal
 2. navigete to filmkveld\src\frontend-v2
-3. install node dependecies by running `npm install`
+3. install dependecies by running `npm install`
 4. run the front-end by using  `npm run serve`
 
 After running both the frontend and backend, navigate to `localhost:8080` or the port specified in the frontend terminal.
