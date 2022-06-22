@@ -30,6 +30,16 @@ const userSchema = mongoose.Schema({
             type: Boolean,
             default: false
         }
+    },
+    discord_user: {
+        is_discord_user: {
+            type: Boolean, 
+            default: false
+        },
+        discord_id: {
+            type: String,
+            default: ""
+        }
     }
 }, {
     timestamps: true

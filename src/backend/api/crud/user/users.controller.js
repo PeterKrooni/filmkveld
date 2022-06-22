@@ -83,6 +83,51 @@ const apiRegisterUser = asyncHandler(async(req, res, next) => {
     }
 })
 
+// @desc    Logs in using Discord. If no account with the specific Discord ID is found, a pseudo account will be 
+//          created for the user (no password or email, logins will check for discord_user flag, and if true, will disallow password authentication) 
+// @params  required: discord user id, username, profile_picture
+// @route   POST /api/v1/user/discord
+// @access  Public
+const apiLoginDiscord = asyncHandler(async(req, res, next) => {
+    if (!req.body.discord_id){
+        return res.status(400).error("Missing Discord id in apiLoginDiscord.")    
+    }
+    const discord_user = {
+        is_discord_user: true,
+        discord_id: req.body.discord_id
+    }
+    
+    const existingUser = await User.findOne({discord_user: discord_user})
+    if (existingUser){
+        return res.status(200).json({
+            _id: existingUser.id,
+            name: existingUser.name,
+            email: 'Unavailable',
+            discord_user: existingUser.discord_user,
+            token: generateToken(existingUser.id)
+        })
+    } else {
+        const newUser = await User.create({
+            name: req.body.name,
+            password: 'dummy',
+            email: req.body.email ? req.body.email : "none",
+            profile_picture: req.body.profile_picture,
+            discord_user: discord_user
+        })
+        if (newUser) {
+            return res.status(200).json({
+                _id: newUser.id,
+                name: newUser.name,
+                email: 'Unavailable',
+                token: generateToken(newUser.id),
+                discord_user: newUser.discord_user
+            })
+        } else {
+            return res.status(400).error("Failed to create user account for Discord user.")
+        }
+    }
+})
+
 // @desc    Update user
 // @route   PUT /api/v1/user/:id
 // @access  Private
@@ -186,7 +231,7 @@ const generateToken = (id) => {
 }
 
 module.exports = {
-    apiRegisterUser,
+    apiRegisterUser, apiLoginDiscord,
     apiDeleteUser,
     apiGetMe, apiGetUsers, apiGetUser, apiGetProfilePicture,
     apiUpdateUser, apiAuthUser,

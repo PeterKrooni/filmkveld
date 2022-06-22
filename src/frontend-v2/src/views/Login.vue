@@ -4,9 +4,11 @@
       <div id="sign-container">
         <div class="login">{{register ? 'Register' : 'Login' }}</div>
         <div class="register-login-switch">{{register ? 'Already registered?   ' : "Don't have an account?  " }}<a @click="register=!register" style="text-decoration:underline; color: white;">{{register ? 'Login instead' : 'Register!'}}</a></div>
+        
       </div>
       <div id="login-form-container">
-        <div class="login-form">
+          <button @click="discordLogin" id="disc-btn"><img src="https://seeklogo.com/images/D/discord-color-logo-E5E6DFEF80-seeklogo.com.png" style="width: 25px; height: 20px; padding: 5px;"></button>
+          <div class="login-form">
 
           <div v-if="register">
           <label for="username">Username</label>
@@ -21,8 +23,6 @@
         
         </div>
       </div>
-    <button @click="discordLogin" id="disc-btn">Login with discord <img src="https://seeklogo.com/images/D/discord-color-logo-E5E6DFEF80-seeklogo.com.png" style="width: 40px; height: 30px; margin-top: 20px;"></button>
-      <!-- https://discordjs.guide/oauth2/#implicit-grant-flow -->
     </div>
   </div>
 </template>
@@ -63,7 +63,7 @@ export default {
       username: "",
       password: "tob",
       email: "tob@email.com",
-      discord_oauth_url: "https://discord.com/api/oauth2/authorize?client_id=989101562741801011&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Flogin&response_type=code&scope=identify"
+      discord_oauth_url: "https://discord.com/api/oauth2/authorize?client_id=989101562741801011&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Flogin&response_type=token&scope=identify"
     }
   }
 }
@@ -76,9 +76,12 @@ export default {
 }
 #disc-btn{
   color: rgb(199, 199, 199);
-  background: rgb(52, 56, 76);
+  background-color: #f7f7f7d6;
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  border-radius: 1em;
   border: none;
-  font-weight: bold;
 }
 #login {
   display: flex;

@@ -15,4 +15,18 @@ export async function apiLogin(email, password){
         })
 }
 
+export async function apiLoginDiscord(discord_info){
+    const details = {discord_id: discord_info.id, name: discord_info.username, profile_picture: discord_info.avatar}
+    return axios.post(env.crud_url() + "user/discord", details)
+    .then((res) => {
+        setJWT(res.data.token)
+        return true
+    })
+    .catch((err) => {
+        console.error(`Failed to create user account from Discord: ${err}`)
+        return false
+    })
+}
+
+
 export default apiLogin;

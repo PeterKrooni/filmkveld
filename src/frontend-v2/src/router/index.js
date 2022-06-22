@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { apiIsLoggedIn } from '../helpers/auth'
-import { getDiscordId } from '../helpers/discordmapper'
+import { getDiscordInformation } from '../helpers/discordmapper'
+import { apiLoginDiscord } from '../api/login'
 
 const routes = [
   {
@@ -22,12 +23,18 @@ const routes = [
     name: 'Login',   
     component: () => import('../views/Login.vue'),
     beforeEnter: (to, from, next) => {
-      const params = new Proxy(new URLSearchParams(window.location.search), {
-        get: (searchParams, prop) => searchParams.get(prop),
-      });
-      let access_token = params.code; 
-      if (access_token){
-        getDiscordId(access_token)
+      const fragment = new URLSearchParams(window.location.hash.slice(1));
+      const [access_token, token_type] = [fragment.get('access_token'), fragment.get('token_type')];
+
+      if (access_token && token_type){
+        return getDiscordInformation(access_token, token_type)
+        .then((res) => {
+            if (apiLoginDiscord(res.data)){
+              return next({
+                name: 'Home'
+              })
+            } 
+        })
       }
       next()
     }

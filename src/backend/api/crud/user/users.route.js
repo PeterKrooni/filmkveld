@@ -1,6 +1,6 @@
 const express = require('express')
 const {
-    apiRegisterUser, 
+    apiRegisterUser, apiLoginDiscord,
     apiUpdateUser, 
     apiGetMe, apiGetUsers, apiGetUser, apiGetProfilePicture,
     apiDeleteUser, apiAuthUser,
@@ -13,6 +13,9 @@ const protect = require('../../../middleware/authMiddleware')
 router.route("/")
     .get(protect, apiGetUsers)
     .post(apiRegisterUser)
+
+router.route("/discord")
+    .post(apiLoginDiscord)
 
 router.route("/login")
     .post(apiAuthUser)
