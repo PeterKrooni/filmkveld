@@ -88,7 +88,7 @@ import ProfileCard from '../components/profile/ProfileCard.vue'
 import NavMenu from '../components/NavMenu.vue'
 import KarmaLeaderBoard from '../components/stats/KarmaLeaderBoard.vue'
 import Search from '../components/Search.vue'
-import { apiGetSuggestions, apiGetSuggestionsPreloaded, apiDeleteSuggestion, apiTagSuggestion } from '../api/rest/suggestions'
+import { apiGetSuggestionsWithVotes, apiGetSuggestionsPreloaded, apiDeleteSuggestion, apiTagSuggestion } from '../api/rest/suggestions'
 import { apiGetSuggestionById } from '../api/suggestion'
 import { apiGetVotesByLoggedIn } from '../api/vote'
 import { apiGetMovie } from '../api/movie'
@@ -210,23 +210,17 @@ export default {
     },
   },
   async mounted(){
-    /*
-    const allWithMovie = await apiGetSuggestions(true, true)
-    const suggs = allWithMovie.data;
-    */
-    this.loader_progress += 5
     const suggestions = await apiGetSuggestionsPreloaded()
-    this.loader_progress += 30
+    const swv = await apiGetSuggestionsWithVotes()
     const votes = await apiGetVotesByLoggedIn()
-    this.loader_progress += 40
-    const suggs = suggestions.data.map(s => ({...s,  vote: votes.data.filter(v => v.suggestion === s._id)[0]}))
-    this.loader_progress += 20
-    var side = 0;
+    const swv2 = suggestions.data.map(s => ({...s,  vote: votes.data.filter(v => v.suggestion === s._id)[0]}))
+    
+    const suggs = swv2.map(s => ({...s, votes: swv.data.filter(v => v._id === s._id)[0].votes}))
+    
     const me = await getMe()
     this.settings = me.settings
-    console.log(me.settings);
-    console.log(this.settings);
-    this.loader_progress += 5
+    
+    var side = 0;
     for (var i = 0; i<suggs.length; i++){
       suggs[i].me_id = me.userid // add this here so each suggestion doesn't call getMe()
       if (side === 0){

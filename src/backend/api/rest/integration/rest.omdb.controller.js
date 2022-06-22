@@ -41,10 +41,6 @@ const apiAddMovieFromOMDB = asyncHandler(async(req, res, next)=>{
         return res.status(400).json({response: `OMDB returned nothing on IMDB id ${imdb_id}`})
     }
 
-    // TODO: code below shouldn't be done here, this functionality already exists
-    // perhaps make this entire controller into a middleware function or something
-
-    console.log(omdb_response)
     // create movie
     const movie = await Movie.create({
         title: omdb_response.data.Title,

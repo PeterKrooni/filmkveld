@@ -2,17 +2,17 @@
     <div id="rating">
         <div id="vote-container">
             <div id="rate-container">
-                <div style="width: 50px; margin-bottom: 10px;">Rate it!</div>
+                <div style="width: 50px; margin-bottom: 10px; font-size: 14px;">Rate it!</div>
                 <div id="up-down-container">
                     <i :style="this.vote === 1 ? 'color: orange' : ''" @click="upvote()" class="fa fa-arrow-up"></i>
                     <i :style="this.vote === -1 ? 'color: lightblue' : ''" @click="downvote()" class="fa fa-arrow-down"></i>
                 </div>
             </div>
 
-            <div class="seen-container" v-if="this.seen">Seen 
+            <div class="seen-container" v-if="this.seen">Seen: {{numSeen}}
                 <i :style="'color: green; margin-top: 3px; font-size: 15px;'" class="fa fa-check" @click="this.voteSeen(false); resetVote()"></i>
             </div>
-            <div class="seen-container" v-else>Seen 
+            <div class="seen-container" v-else>Seen: {{numSeen}}
                 <i :style="'color: rgb(171, 136, 136); margin-top: 3.5px; font-weight: light; font-size: 15px;'" class="fa fa-times" @click="this.voteSeen(true); resetVote()"></i>
             </div>
         </div>
@@ -25,13 +25,14 @@ import { apiVoteSeen, apiVoteRating } from '../api/vote'
 export default {
     name: 'Rating',
     props: {
-        seenProp: false,
+        seenProp: { num: 0, seen: false },
         voteProp: 0,
         suggestionID: "",
     },
     data() {
         return{
             seen: false,
+            numSeen: 0,
             vote: 0,
         }
     },
@@ -96,7 +97,8 @@ export default {
         }
     },
     mounted() {
-        this.seen = this.seenProp
+        this.seen = this.seenProp.seen
+        this.numSeen = this.seenProp.num
         this.vote = this.voteProp
     }
 }

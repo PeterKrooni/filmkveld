@@ -50,13 +50,22 @@ const getSuggestionsPreloaded = asyncHandler(async(req, res, next) => {
     })
 })
 
-// @desc    Get most "want to see" voted suggestion
-// @route   GET /mostwanted
-// @access  Public
-const getMostWanted = asyncHandler(async(req, res, next) => {
-    const s = await Suggestion.findOne();
-    console.log("TODO implement getMostWanted in rest.suggestion.controller")
-    return res.status(200).json(s)
+// @desc    Get list of suggestion id's with how many seen and rated votes the suggestion has (sidwv: suggestionID with votes)
+// @route   GET /sidwv
+// @access  Private 
+const getSuggestionIDsWithVotes = asyncHandler(async(req, res, next) => {
+    const data = await Suggestion.aggregate([{
+        $lookup: {
+            from: 'votes',
+            localField: '_id',
+            foreignField: 'suggestion',
+            as: 'votes'
+        }
+    }])
+    if (!data){
+        return res.status(404).error('rest Suggestion controller: getSuggestionIDsWithVotes::No data found.')
+    }
+    return res.status(200).json(data)
 })
 
 // @desc    Delete suggestion, revert karma from votes on suggestion on user that made suggestion, and delete movie 
@@ -159,7 +168,7 @@ const removeTag = asyncHandler(async(req, res, next) => {
 module.exports = {
     getSuggestions,
     getSuggestionsPreloaded,
-    getMostWanted,
+    getSuggestionIDsWithVotes,
     deleteSuggestion,
     addTag,
     getTag,

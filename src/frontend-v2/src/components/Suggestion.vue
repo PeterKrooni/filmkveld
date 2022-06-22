@@ -90,7 +90,7 @@ export default {
     data() {
         return {
             voteValue: 0,
-            seenValue: false,
+            seenValue: {num: 0, seen: false},
             loaded: false,
             compact_container: {
                 width: '150px',
@@ -134,7 +134,11 @@ export default {
             
             if(suggestion.vote !== undefined){
                 this.voteValue = suggestion.vote.rating
-                this.seenValue = suggestion.vote.seen
+                this.seenValue.seen = suggestion.vote.seen
+                
+                let numVotes = 0
+                suggestion.votes.filter(v => v.seen).map(m => m.seen).forEach(s => numVotes++)
+                this.seenValue.num = numVotes
             }
 
             this.created = suggestion.createdAt.substring(0, 10).replace(/-/g, '/');

@@ -1,7 +1,7 @@
 const express = require('express')
 
 const {
-    getSuggestions, getSuggestionsPreloaded, getMostWanted, deleteSuggestion, addTag, getTag, removeTag
+    getSuggestions, getSuggestionsPreloaded, getSuggestionIDsWithVotes, deleteSuggestion, addTag, getTag, removeTag
 } = require('./rest.suggestion.controller')
 
 const router = express.Router()
@@ -13,8 +13,8 @@ router.route("/")
 router.route("/:movieData/:profileData")
     .get(protect, getSuggestions)
 
-router.route("/mostwanted")
-    .get(protect, getMostWanted)
+router.route("/sidwv")
+    .get(protect, getSuggestionIDsWithVotes)
 
 router.route("/:id")
     .delete(protect, deleteSuggestion)

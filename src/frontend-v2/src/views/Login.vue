@@ -21,6 +21,8 @@
         
         </div>
       </div>
+    <button @click="discordLogin" id="disc-btn">Login with discord <img src="https://seeklogo.com/images/D/discord-color-logo-E5E6DFEF80-seeklogo.com.png" style="width: 40px; height: 30px; margin-top: 20px;"></button>
+      <!-- https://discordjs.guide/oauth2/#implicit-grant-flow -->
     </div>
   </div>
 </template>
@@ -50,6 +52,9 @@ export default {
         await apiLogin(this.email, this.password)
         this.$router.push('/') 
       }
+    },
+    discordLogin(){
+      window.location.href = this.discord_oauth_url
     }
   },
   data() {
@@ -57,7 +62,8 @@ export default {
       register: false,
       username: "",
       password: "tob",
-      email: "tob@email.com"
+      email: "tob@email.com",
+      discord_oauth_url: "https://discord.com/api/oauth2/authorize?client_id=989101562741801011&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Flogin&response_type=code&scope=identify"
     }
   }
 }
@@ -67,6 +73,12 @@ export default {
 .form-inputs{
   border-radius: 0.25em;
   box-shadow: rgba(39, 39, 39, 0.25) 0px 54px 55px, rgba(68, 68, 68, 0.12) 0px -12px 30px, rgba(39, 39, 39, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+#disc-btn{
+  color: rgb(199, 199, 199);
+  background: rgb(52, 56, 76);
+  border: none;
+  font-weight: bold;
 }
 #login {
   display: flex;

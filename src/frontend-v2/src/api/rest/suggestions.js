@@ -28,3 +28,7 @@ export async function apiTagSuggestion(tagid, suggestionid){
 export async function apiGetTagOnSuggestion(sid){
     return axios.get(env.rest_url() + "suggestions/tag/get/" + sid)
 }
+
+export async function apiGetSuggestionsWithVotes(){
+    return axios.get(env.rest_url() + "suggestions/sidwv")
+}
