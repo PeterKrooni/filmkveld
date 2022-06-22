@@ -2,6 +2,7 @@
     <div class="profile-card-container">
         <div id="profile-container" style="margin-top: -50px;">
             <div id="profile-info">
+                <img :src="disc_logo" id="disc_indicator" v-if="disc_user">
                 <img :src="imgSource" id="PP" alt="">
                 <input @change="updateProfilePicture" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" style="display: none;">
                 <h1 class="profile-header">{{name}}</h1>
@@ -23,6 +24,8 @@ export default {
     data() {
         return {
             imgSource: "https://us.123rf.com/450wm/happyvector071/happyvector0711904/happyvector071190414500/120957417-creative-illustration-of-default-avatar-profile-placeholder-isolated-on-background-art-design-grey-p.jpg?ver=6",
+            disc_logo: "https://res.cloudinary.com/dzp42orzn/image/upload/v1655902426/disc-logo2_vl7bqm.png",
+            disc_user: false,
             name: "",
             karma: "",
             suggestions_count: 0,
@@ -35,6 +38,9 @@ export default {
         this.imgSource = me.profile_picture
         this.name = me.username;
         this.karma = me.karma
+        if (me.discord_user){
+            this.disc_user = me.discord_user.is_discord_user
+        }
         
         const suggestions = await apiGetSuggestionsBy(me.userid)
         this.suggestions_count = suggestions.data.length
@@ -62,6 +68,7 @@ export default {
     box-shadow: 0px 12px 30px 4px rgb(255, 255, 255);
 }
 #profile-info{
+  position: relative;
   width: 200px;
   display: flex;
   flex-flow: column;
@@ -78,5 +85,13 @@ export default {
     border-radius: 20em;
     height: 85px; 
     width: 85px; 
+}
+#disc_indicator{
+    position: absolute;
+    top: 0;
+    opacity: 0.5;
+    left: 45px;
+    width: 18px;
+    height: 18px;
 }
 </style>

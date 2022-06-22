@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { apiIsLoggedIn } from '../helpers/auth'
 import { getDiscordInformation } from '../helpers/discordmapper'
 import { apiLoginDiscord } from '../api/login'
+import { setOAUTH } from '../helpers/auth'
 
 const routes = [
   {
@@ -27,9 +28,10 @@ const routes = [
       const [access_token, token_type] = [fragment.get('access_token'), fragment.get('token_type')];
 
       if (access_token && token_type){
-        return getDiscordInformation(access_token, token_type)
+        return getDiscordInformation(`${token_type} ${access_token}`)
         .then((res) => {
             if (apiLoginDiscord(res.data)){
+              setOAUTH(`${token_type} ${access_token}`)
               return next({
                 name: 'Home'
               })
@@ -42,12 +44,30 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
-    component: () => import('../views/Profile.vue')
+    component: () => import('../views/Profile.vue'),
+    beforeEnter: (to, from, next) => {
+      if (!apiIsLoggedIn()){
+        return next({
+          name: 'Login'
+        })
+      } else {
+        next();
+      }
+    },
   },
   {
     path: '/movies',
     name: 'Movies',
-    component: () => import('../views/Movies.vue')
+    component: () => import('../views/Movies.vue'),
+    beforeEnter: (to, from, next) => {
+      if (!apiIsLoggedIn()){
+        return next({
+          name: 'Login'
+        })
+      } else {
+        next();
+      }
+    },
   }
 ]
 

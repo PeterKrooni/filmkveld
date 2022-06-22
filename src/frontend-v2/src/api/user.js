@@ -27,8 +27,13 @@ export async function getMe(){
         userid: user.data.id, 
         profile_picture: user.data.profile_picture,
         karma: user.data.karma,
-        settings: user.data.settings
+        settings: user.data.settings,
+        discord_user: user.data.discord_user
     };
+}
+
+export async function apiSynchronizeUserWithDiscord(old_discord_user, new_discord_user){
+    return axios.put(env.crud_url() + "user/discord", {old_discord_user: old_discord_user, new_discord_user: new_discord_user})
 }
 
 export async function apiUpdateUserSettings(userid, settings){

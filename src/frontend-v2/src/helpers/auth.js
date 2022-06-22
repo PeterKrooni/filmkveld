@@ -12,7 +12,7 @@ import Cookies from 'js-cookies'
 export function setJWT(token){
     if (token != undefined){
         const cookie = Cookies.getItem("jwt")
-        if (cookie == undefined){
+        if (cookie === null){
             Cookies.setItem("jwt", token, {httpOnly: true, secure: true, sameSite: 'strict', expires: 30})
         }
         axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.getItem("jwt")}`    
@@ -20,6 +20,26 @@ export function setJWT(token){
         axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.getItem("jwt")}`    
     }
  }
+
+export function setOAUTH(token){
+    if (token !== null){
+        const cookie = Cookies.getItem("oauth")
+        if (cookie === null){
+            Cookies.setItem("oauth", `${token}`, { httpOnly: true, secure: true, sameSite: 'strict', expries: 30 })
+        }
+    } else {
+        console.error("Tried to set OAUTH cookies, but token or tokentype was empty.")
+    }
+}
+
+export function getOAUTH(){
+    const cookie = Cookies.getItem("oauth")
+    if (cookie === undefined){
+        console.error("Tried to get OAUTH token from cookies, but cookie was undefined.")
+        return ''
+    }
+    return cookie
+}
 
  /**
   * Check if user is logged in, by checking if they have a JWT cookie set

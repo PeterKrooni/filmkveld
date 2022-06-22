@@ -6,7 +6,8 @@
   "type": "commonjs",
   "scripts": {
     "start": "node server.js",
-    "server": "nodemon server.js",
+    "server-dev": "set NODE_ENV=development&& nodemon server.js",
+    "server-prod": "set NODE_ENV=production&& nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

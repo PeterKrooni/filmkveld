@@ -1,6 +1,6 @@
 const express = require('express')
 const {
-    apiRegisterUser, apiLoginDiscord,
+    apiRegisterUser, apiLoginDiscord, apiSynchronizeUserWithDiscord,
     apiUpdateUser, 
     apiGetMe, apiGetUsers, apiGetUser, apiGetProfilePicture,
     apiDeleteUser, apiAuthUser,
@@ -16,6 +16,7 @@ router.route("/")
 
 router.route("/discord")
     .post(apiLoginDiscord)
+    .put(protect, apiSynchronizeUserWithDiscord)
 
 router.route("/login")
     .post(apiAuthUser)

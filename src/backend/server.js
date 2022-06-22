@@ -2,7 +2,6 @@ const express =         require('express')
 const cors =            require('cors')
 const colors =          require('colors')
 const connectDB =       require('./config/db')
-const dotenv =          require('dotenv')
 const {errorHandler} =  require('./middleware/errorMiddleware')
 
 // crud api
@@ -19,7 +18,7 @@ const suggestions =     require('./api/rest/suggestions/rest.suggestion.route')
 
 const app = express();
 
-dotenv.config()
+require('dotenv').config({path: `./.env.${process.env.NODE_ENV}`})
 const port = process.env.PORT || 8000
 
 connectDB()

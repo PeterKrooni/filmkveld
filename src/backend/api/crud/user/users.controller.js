@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs')
 const User = require('../../../model/user')
 
 // Image CDN
-require('dotenv').config()
+require('dotenv').config({path: `./.env.${process.env.NODE_ENV}`})
 const cloudinary = require('cloudinary').v2
 
 // @desc    Authenticate user login
@@ -31,14 +31,15 @@ const apiAuthUser = asyncHandler(async(req, res, next) => {
 // @route   GET /api/v1/user/me
 // @access  Private
 const apiGetMe = asyncHandler(async(req, res, next) => {
-    const {_id, name, email, profile_picture, karma, settings} = await User.findById(req.user.id) // user.id from auth middleware
+    const {_id, name, email, profile_picture, karma, settings, discord_user} = await User.findById(req.user.id) // user.id from auth middleware
     res.status(200).json({
         id: _id,
         name: name,
         email: email,
         profile_picture: profile_picture,
         karma: karma,
-        settings: settings
+        settings: settings,
+        discord_user: discord_user
     })
 })
 
@@ -90,7 +91,7 @@ const apiRegisterUser = asyncHandler(async(req, res, next) => {
 // @access  Public
 const apiLoginDiscord = asyncHandler(async(req, res, next) => {
     if (!req.body.discord_id){
-        return res.status(400).error("Missing Discord id in apiLoginDiscord.")    
+        return res.status(400).err("Missing Discord id in apiLoginDiscord.")    
     }
     const discord_user = {
         is_discord_user: true,
@@ -123,9 +124,35 @@ const apiLoginDiscord = asyncHandler(async(req, res, next) => {
                 discord_user: newUser.discord_user
             })
         } else {
-            return res.status(400).error("Failed to create user account for Discord user.")
+            return res.status(500).err("Failed to create user account for Discord user.")
         }
     }
+})
+
+// @desc    Gets profile picture and name from Discord API, updates FK user
+// @params  old_discord_user: old discord user information, new_discord_user: discord user information fetched from Discord API
+// @route   PUT /api/v1/user/discord/
+// @access  Private
+const apiSynchronizeUserWithDiscord = asyncHandler(async(req, res, next) => {
+    if (!req.body.old_discord_user){
+        return res.status(400).err("Missing old discord user info to update user.")
+    }
+    if (!req.body.new_discord_user){
+        return res.status(400).err("Missing new discord user info to update user.")
+    }
+    const discord_user = {
+        is_discord_user: true,
+        discord_id: req.body.old_discord_user.id
+    }
+    const new_user = {
+        username: req.body.new_discord_user.name, 
+        profile_picture: req.body.new_discord_user.profile_picture,
+    }
+    const updatedUser = await User.findByIdAndUpdate(req.body.old_discord_user.userid, {username: new_user.username, profile_picture: new_user.profile_picture})
+    if (!updatedUser){
+        return res.status(500).err("Failed to synchronize user with Discord.")
+    }
+    return res.status(200).json(updatedUser)
 })
 
 // @desc    Update user
@@ -193,7 +220,8 @@ const apiGetUser = asyncHandler(async(req, res, next) => {
     const ret = {
         username: user.name, 
         userid: user._id,
-        karma: user.karma
+        karma: user.karma,
+        discord_user: user.discord_user
     }
     res.status(200).json(ret)
 })
@@ -231,7 +259,7 @@ const generateToken = (id) => {
 }
 
 module.exports = {
-    apiRegisterUser, apiLoginDiscord,
+    apiRegisterUser, apiLoginDiscord, apiSynchronizeUserWithDiscord,
     apiDeleteUser,
     apiGetMe, apiGetUsers, apiGetUser, apiGetProfilePicture,
     apiUpdateUser, apiAuthUser,

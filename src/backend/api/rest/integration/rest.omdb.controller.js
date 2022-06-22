@@ -2,9 +2,8 @@ const asyncHandler = require('express-async-handler')
 const Movie = require('../../../model/movie')
 const Suggestion = require('../../../model/suggestion')
 const axios = require('axios')
-const dotenv = require('dotenv')
+require('dotenv').config({path: `./.env.${process.env.NODE_ENV}`})
 
-dotenv.config()
 const OMDB_KEY = process.env.OMDB_API_KEY || ""
 
 // @desc    Add movie from OMDB request, request body link: imdb page link

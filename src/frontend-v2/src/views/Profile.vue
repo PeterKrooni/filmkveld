@@ -9,9 +9,12 @@
                         <input @change="updateProfilePicture" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" style="display: none;">
                     </div>
                     <div id="profile-details">
+                        <div v-if="!disc_user"><p><b>Email: </b></p> <p>{{email}}</p></div>
+                        <div id="disc_indicator" v-else><img :src="disc_logo"><button id="refresh-disc-btn" @click="refresh_discord_profile">Refresh profile</button></div>
+                    
                         <div><p><b>Name:  </b></p> <p>{{name}}</p></div>
                         <div><p><b>Karma: </b></p> <p>{{karma}}</p></div>
-                        <div><p><b>Email: </b></p> <p>{{email}}</p></div>
+                      
                     </div>
                 </div>
                 <div id="user-stats">
@@ -47,7 +50,9 @@ import BigHeader from '../components/BigHeader.vue'
 import SettingsCheckbox from '../components/SettingsCheckbox.vue'
 import Checkbox from '../components/Checkbox.vue'
 
-import { getMe, apiUpdateProfilePicture, apiUpdateUserSettings } from '../api/user'
+import { getMe, apiUpdateProfilePicture, apiUpdateUserSettings, apiSynchronizeUserWithDiscord } from '../api/user'
+import { getOAUTH } from '../helpers/auth'
+import { getDiscordInformation } from '../helpers/discordmapper'
 
 export default {
     components: {
@@ -69,7 +74,10 @@ export default {
             date_setting: false,
             suggestionsByUser: [],
             loaded: false,
-            preloaded: true, 
+            preloaded: true,             
+            disc_logo: "https://res.cloudinary.com/dzp42orzn/image/upload/v1655902426/disc-logo2_vl7bqm.png",
+            disc_user: false,
+            disc_id: ''
         }
     },
     async mounted() {
@@ -80,6 +88,10 @@ export default {
         this.karma = me.karma;
         this.tag_setting = me.settings.tag_setting
         this.date_setting = me.settings.date_setting;
+        if (me.discord_user){
+            this.disc_user = me.discord_user.is_discord_user
+            this.disc_id = me.discord_user.discord_id
+        }
         this.loaded = true;
     },
     methods: {
@@ -124,6 +136,34 @@ export default {
         },
         openFileSelector(){
             document.getElementById("avatar").click();
+        },
+        async refresh_discord_profile(){
+            if (!this.disc_user){
+                alert("You are not a Discord user. How did you manage to click this button? 🤔")
+                return
+            }
+            if (confirm("Refresh Discord data? This will undo any changes to your name or profile picture on this website.")){
+               await getDiscordInformation(getOAUTH())
+                .then((res) => {
+                    const oldUser = {
+                        userid: this.userid,
+                        is_discord_user: this.disc_user,
+                        discord_id: this.disc_id
+                    }
+                    const newUser = {
+                        is_discord_user: true,
+                        discord_id: this.disc_id,
+                        profile_picture: res.data.avatar,
+                        username: res.data.username
+                    }
+                    apiSynchronizeUserWithDiscord(oldUser, newUser)
+                    .then((res) => {
+                        this.imgSource = res.data.profile_picture
+                        this.name = res.data.name
+                    })
+                })
+                
+            }
         }
     }
 }
@@ -139,6 +179,7 @@ export default {
     color: rgb(221, 217, 217); 
 }
 #page-container{
+    position: relative;
     width: 90%;
     display: flex;
     flex-flow: column;
@@ -180,6 +221,25 @@ export default {
     align-items: center;
     border-radius: 20em;
     font-size: 12px;
+}
+#disc_indicator {
+    margin-bottom: 10px;
+}
+#disc_indicator img{
+    margin-left: 6px;
+    margin-right: 15px;
+    opacity: 1;
+    left: -25px;
+    width: 22px;
+    height: 22px;
+}
+#refresh-disc-btn {
+    border: none;
+    border-radius: 0.5em;
+    color: rgb(238, 238, 238);
+    padding: 5px;
+    background: rgb(155, 153, 153);
+    background: linear-gradient(0deg, rgb(132, 129, 129) 0%, rgba(58,71,80,1) 0%, rgba(38,40,42,0.8659664549413515) 49%, rgba(128,137,147,0.8659664549413515) 99%);
 }
 #suggestions{
     width: 80vw;

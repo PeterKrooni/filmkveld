@@ -6,10 +6,10 @@
 
  import axios from 'axios'
 
-export async function getDiscordInformation(access_token, token_type){
+export async function getDiscordInformation(token){
     const info = axios.get('https://discord.com/api/users/@me',{
         headers: {
-            'Authorization': ` ${token_type} ${access_token}`
+            'Authorization': `${token}`
         }
     })
     .then((res) => {
