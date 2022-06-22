@@ -9,12 +9,20 @@
                         <input @change="updateProfilePicture" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" style="display: none;">
                     </div>
                     <div id="profile-details">
+
+
+                        <div><p><b>Name:</b></p></div>
+                        <span style="margin-left: 11px; margin-bottom: 15px;">
+                            <input id="tag-input" v-model="name" :style="this.toggle  ? 'opacity: 0.5' : ''" :disabled="this.toggle" @keyup="keyEntered">
+                            <i v-if="this.toggle" class="fa fa-pencil" style="margin-left: 12px;"  @click="this.toggleInput()"></i>
+                            <i v-if="!this.toggle" class="fa fa-times" style="margin-left: 12px;"  @click="this.toggleInput()"></i>
+                       </span>
+                       
+                        <div><p><b>Karma: </b></p> <p>{{karma}}</p></div>
+                        
                         <div v-if="!disc_user"><p><b>Email: </b></p> <p>{{email}}</p></div>
                         <div id="disc_indicator" v-else><img :src="disc_logo"><button id="refresh-disc-btn" @click="refresh_discord_profile">Refresh profile</button></div>
-                    
-                        <div><p><b>Name:  </b></p> <p>{{name}}</p></div>
-                        <div><p><b>Karma: </b></p> <p>{{karma}}</p></div>
-                      
+
                     </div>
                 </div>
                 <div id="user-stats">
@@ -50,7 +58,7 @@ import BigHeader from '../components/BigHeader.vue'
 import SettingsCheckbox from '../components/SettingsCheckbox.vue'
 import Checkbox from '../components/Checkbox.vue'
 
-import { getMe, apiUpdateProfilePicture, apiUpdateUserSettings, apiSynchronizeUserWithDiscord } from '../api/user'
+import { getMe, apiUpdateProfilePicture, apiUpdateUserSettings, apiSynchronizeUserWithDiscord, apiUpdateUsername } from '../api/user'
 import { getOAUTH } from '../helpers/auth'
 import { getDiscordInformation } from '../helpers/discordmapper'
 
@@ -77,7 +85,8 @@ export default {
             preloaded: true,             
             disc_logo: "https://res.cloudinary.com/dzp42orzn/image/upload/v1655902426/disc-logo2_vl7bqm.png",
             disc_user: false,
-            disc_id: ''
+            disc_id: '',
+            toggle: true
         }
     },
     async mounted() {
@@ -95,6 +104,25 @@ export default {
         this.loaded = true;
     },
     methods: {
+        toggleInput(){
+            this.toggle = !this.toggle
+        },
+        async keyEntered(val){
+            if (val.key === 'Enter'){
+                if (this.name.length > 15 || this.name.length < 1){
+                    alert("Wrong username length, required: 1-15, provided: ${this.name.length}")
+                    return
+                }
+                await apiUpdateUsername(this.userid, this.name)
+                .then(() => {
+                    console.log(`Username updated: ${this.name}`)
+                    this.toggle = true
+                })
+                .catch((err) => {
+                    console.error(`Error updating username: ${err}`)
+                })
+            }
+        },
         async updateSetting(settingType) {
             switch (settingType){
                 case "tag_setting":
@@ -117,9 +145,7 @@ export default {
                 const me = await getMe()
                 const updated = await apiUpdateProfilePicture(me.userid, b64_img) 
                 .then((res) => {
-                    console.log("picture updated!", res)
                     this.imgSource = res.profile_picture;
-                    console.log(this.imgSource)
                 })
                 .catch((err) => {
                     console.log("Failed to update profile picture", err)
@@ -186,6 +212,10 @@ export default {
     justify-content: center;
     align-items: center;
 }
+#tag-input{
+    color: white; font-size: 14px; font-weight: bold; border: 1px solid white; padding: 5px; border-radius: 0.5em;
+    background-color: rgb(63, 69, 83);
+}
 #ns{
     margin-top: 50px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
@@ -223,7 +253,8 @@ export default {
     font-size: 12px;
 }
 #disc_indicator {
-    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: 5px;
 }
 #disc_indicator img{
     margin-left: 6px;

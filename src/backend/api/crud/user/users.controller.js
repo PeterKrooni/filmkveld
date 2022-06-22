@@ -145,10 +145,10 @@ const apiSynchronizeUserWithDiscord = asyncHandler(async(req, res, next) => {
         discord_id: req.body.old_discord_user.id
     }
     const new_user = {
-        username: req.body.new_discord_user.name, 
+        username: req.body.new_discord_user.username, 
         profile_picture: req.body.new_discord_user.profile_picture,
     }
-    const updatedUser = await User.findByIdAndUpdate(req.body.old_discord_user.userid, {username: new_user.username, profile_picture: new_user.profile_picture})
+    const updatedUser = await User.findByIdAndUpdate(req.body.old_discord_user.userid, {name: new_user.username, profile_picture: new_user.profile_picture})
     if (!updatedUser){
         return res.status(500).err("Failed to synchronize user with Discord.")
     }

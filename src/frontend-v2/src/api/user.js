@@ -40,6 +40,10 @@ export async function apiUpdateUserSettings(userid, settings){
     return axios.put(env.crud_url() + "user/" + userid, {settings: settings});
 }
 
+export async function apiUpdateUsername(userid, username){
+    return axios.put(env.crud_url() + "user/" + userid, {name: username});
+}
+
 export async function apiUpdateProfilePicture(userid, base64_img){
     const user = await axios.put(env.crud_url() + "user/" + userid, {profile_picture: base64_img})
     return {username: user.data.name, userid: user.data._id, profile_picture: user.data.profile_picture}
