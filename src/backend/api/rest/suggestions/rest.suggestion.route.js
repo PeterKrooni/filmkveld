@@ -23,7 +23,7 @@ router.route("/tag/add")
     .put(protect, addTag)
 
 router.route("/tag/get/:sid")
-    .get(getTag)
+    .get(protect, getTag)
 
 router.route("/tag/remove")
     .put(protect, removeTag)

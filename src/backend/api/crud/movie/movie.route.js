@@ -13,16 +13,16 @@ const router = express.Router()
 const protect = require('../../../middleware/authMiddleware')
 
 router.route("/")
-    .get(apiGetMovies)
+    .get(protect, apiGetMovies)
     .post(protect, apiAddMovie)
 
 router.route("/:id")
-    .get(apiGetMovieWithID)
+    .get(protect, apiGetMovieWithID)
     .put(protect, apiUpdateMovie)
     .delete(protect, apiDeleteMovie)
 
 router.route("/:title")
-    .get(apiGetMovieWithTitle)
+    .get(protect, apiGetMovieWithTitle)
 
 
 module.exports = router;

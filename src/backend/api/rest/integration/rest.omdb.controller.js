@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler')
 const Movie = require('../../../model/movie')
 const Suggestion = require('../../../model/suggestion')
 const axios = require('axios')
-require('dotenv').config({path: `./.env.${process.env.NODE_ENV}`})
+require('dotenv').config()//{path: `./.env.${process.env.NODE_ENV}`})
 
 const OMDB_KEY = process.env.OMDB_API_KEY || ""
 

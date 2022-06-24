@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs')
 const User = require('../../../model/user')
 
 // Image CDN
-require('dotenv').config({path: `./.env.${process.env.NODE_ENV}`})
+require('dotenv').config()//{path: `./.env.${process.env.NODE_ENV}`})
 const cloudinary = require('cloudinary').v2
 
 // @desc    Authenticate user login
@@ -140,10 +140,21 @@ const apiSynchronizeUserWithDiscord = asyncHandler(async(req, res, next) => {
     if (!req.body.new_discord_user){
         return res.status(400).err("Missing new discord user info to update user.")
     }
-    const discord_user = {
-        is_discord_user: true,
-        discord_id: req.body.old_discord_user.id
+    if (!req.user.id){
+        return res.status(400).err("Missing FK user id to synchronize user with Discord.")
     }
+
+    // Verify user authenticity 
+    const FKUser = await User.findById(req.user.id)
+    if (!FKUser){
+        return res.status(500).err(`Unable to find FK user with id: ${req.user.id}`)
+    }
+
+    if (FKUser._id.toString() !== req.user.id){
+        console.error("FK user id authentication error.s", FKUser._id.toString(), req.user.id)
+        return res.status(401).err(`FK User id was not same as JWT id.`)
+    }
+    
     const new_user = {
         username: req.body.new_discord_user.username, 
         profile_picture: req.body.new_discord_user.profile_picture,

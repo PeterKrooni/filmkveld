@@ -13,7 +13,7 @@ const protect = require('../../../middleware/authMiddleware')
 router.route("/")
     .post(protect, apiAddTag)
     .put(protect, apiUpdateTag)
-    .get(apiGetTags)
+    .get(protect, apiGetTags)
 
 router.route("/:id")
     .get(protect, apiGetTag)

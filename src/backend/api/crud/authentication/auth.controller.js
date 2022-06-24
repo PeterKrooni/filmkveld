@@ -9,9 +9,9 @@ const apiVerifyAuthToken = asyncHandler(async(req, res, next) => {
     const token = req.body.token;
     try {
         jwt.verify(token, process.env.JWT_SECRET)
-        return true;
+        return res.status(200).json(true);
     } catch {
-        return false
+        return res.status(401).json(false)
     }
 })
 

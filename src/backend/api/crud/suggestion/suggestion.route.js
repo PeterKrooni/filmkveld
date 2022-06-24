@@ -8,11 +8,11 @@ const router = express.Router()
 const protect = require('../../../middleware/authMiddleware')
 
 router.route("/")
-    .get(apiGetSuggestions)
+    .get(protect, apiGetSuggestions)
     .post(protect, apiAddSuggestion)
 
 router.route("/:id")
-    .get(apiGetSuggestion)
+    .get(protect, apiGetSuggestion)
     .delete(protect, apiDeleteSuggestion)
 
 router.route("/get/:suggestion_id")
