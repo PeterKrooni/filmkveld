@@ -13,11 +13,17 @@
                     <p>🔗 <a :href='this.source' target="_blank" style="text-decoration:underline">Source</a></p>
                     <p>🎬 {{this.director}}</p>
                 </div>
-                <ProfileFrame 
+                <ProfileFrame @open="toggleProfileModal"
                     :preloaded="true"
                     :pl_profile_picture="this.suggestor_profile_picture"
                     :pl_username="this.suggestor_username"
                 />
+                <ProfileModal 
+                    :username="this.suggestor_username"
+                    :profile_picture="this.suggestor_profile_picture"
+                    :karma="this.suggestor_karma"
+                    :open="this.profile_modal_open" 
+                    @modalClosed="toggleProfileModal" />
             </div>
             <div id="poster" v-if="!compact">
                 <img :src="this.poster" id="poster-img" alt="">
@@ -47,6 +53,7 @@
 import Rating from './Rating.vue'
 import Button from './Button.vue'
 import ProfileFrame from './profile/ProfileFrame.vue'
+import ProfileModal from './profile/ProfileModal.vue'
 
 export default {
     name: 'Suggestion',
@@ -54,6 +61,7 @@ export default {
         Rating,
         Button,
         ProfileFrame,
+        ProfileModal
     },
     data() {
         return {
@@ -63,7 +71,8 @@ export default {
             source: "Unknown",
             director: "Unknown",
             suggestor_username: "None",
-            suggestor_profile_picture: "",            
+            suggestor_profile_picture: "",     
+            suggestor_karma: 0,       
             poster: "https://s.studiobinder.com/wp-content/uploads/2017/12/Movie-Poster-Template-Dark-with-Image.jpg?x81279",
         }   
     }, 
@@ -89,6 +98,7 @@ export default {
     },
     data() {
         return {
+            profile_modal_open: false,
             voteValue: 0,
             seenValue: {num: 0, seen: false},
             loaded: false,
@@ -105,6 +115,9 @@ export default {
         }
     },
     methods: {
+        toggleProfileModal(){
+            this.profile_modal_open = !this.profile_modal_open
+        },
         toggletag(){
             this.showtag = !this.showtag
         },
@@ -127,6 +140,7 @@ export default {
             this.director = movie.director
             this.suggestor_username = user.name
             this.suggestor_profile_picture = user.profile_picture
+            this.suggestor_karma = user.karma
             this.poster = movie.poster; 
             this.tag = suggestion.tag ? suggestion.tag.name : ' '
             this.showtag = this.settings.tag_setting;

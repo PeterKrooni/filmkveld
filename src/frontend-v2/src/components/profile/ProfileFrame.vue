@@ -1,5 +1,5 @@
 <template>
-    <div id="profile-frame" v-if="loaded">
+    <div id="profile-frame" v-if="loaded" @click="this.$emit('open')">
         <img style="width: 19px; height: 19px; border-radius: 20em;" :src="this.profile_picture" alt=""> 
         {{this.username}}
     </div>    
