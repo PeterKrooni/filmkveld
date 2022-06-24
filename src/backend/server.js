@@ -3,6 +3,7 @@ const cors =            require('cors')
 const colors =          require('colors')
 const connectDB =       require('./config/db')
 const {errorHandler} =  require('./middleware/errorMiddleware')
+const rateLimit =       require('express-rate-limit')
 
 // crud api
 const users =           require('./api/crud/user/users.route')
@@ -11,6 +12,16 @@ const suggestion =      require('./api/crud/suggestion/suggestion.route')
 const vote =            require('./api/crud/vote/vote.route')
 const authentication =  require('./api/crud/authentication/auth.route')
 const tag =             require('./api/crud/tag/tag.route')
+
+
+// request limiter
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+    message: 'Rate limiter throttling this IP address. Max requests per 15 minutes: 100.',
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
 
 // rest api
 const omdbIntegration = require('./api/rest/integration/rest.omdb.route')
@@ -27,6 +38,8 @@ app.use(cors());
 app.use(express.json({limit: '5mb'}));
 app.use(express.urlencoded({ extended: false, limit: '5mb' }))
 app.use(errorHandler)
+
+app.use("/", limiter)
 
 const crudPath = "/crud/api/"
 app.use(crudPath + "user/", users);
