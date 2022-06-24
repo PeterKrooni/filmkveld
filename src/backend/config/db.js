@@ -5,7 +5,7 @@ const connectDB = async() => {
         const conn = await mongoose.connect(process.env.FILMKVELD_DB_URI)
         console.log(`Connected to MongoDB: ${conn.connection.host}`.cyan.underline)
     } catch (error) {
-        console.log(error)
+        console.log(`Failed to connect to MongoDB: ${error}`)
         process.exit(1)
     }
 }
