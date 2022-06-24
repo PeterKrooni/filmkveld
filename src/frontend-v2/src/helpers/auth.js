@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Cookies from 'js-cookies'
+import env from '../api/config/env'
 
 /**
  * Usage: 
@@ -50,7 +51,7 @@ export function apiIsLoggedIn(){
     if (cookie == undefined){
         return false
     } else {
-        return axios.post("http://localhost:5000/crud/api/auth/", {token: cookie})
+        return axios.post(env.crud_url() + "auth/", {token: cookie})
     }
 }
 
